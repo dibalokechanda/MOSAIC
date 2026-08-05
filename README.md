@@ -1,6 +1,6 @@
 # MOSAIC: Towards a Universal Latent Space for Computational Pathology Foundation Models
 
-![MOSAIC](images/mosaic.jpg)
+<img src="images/mosaic.jpg" alt="MOSAIC" width="400"/>
 
 Towards a Universal Latent Space for Computational Pathology Foundation Models.
 Full research plan in [PLAN.md](PLAN.md).
