@@ -28,8 +28,10 @@ Aligner                 Use it to answer
                         Is the shared structure nonlinear? If this substantially
                         beats GCCA, the linear methods were the limiting factor.
 ``OptimalTransportAligner``
-                        Can models be aligned **without** knowing patch
-                        correspondences? The strongest form of the hypothesis.
+                        Rigid alignment via optimal transport. Supervised mode
+                        works well; the unsupervised mode (align *without*
+                        patch correspondences) is exploratory — read its module
+                        docstring before reporting anything from it.
 ======================  ===========================================================
 
 >>> from utils.alignment import build_aligner, split_views

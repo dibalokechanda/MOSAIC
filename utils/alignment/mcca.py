@@ -95,7 +95,6 @@ class MCCAAligner(BaseAligner):
         names = list(prepared)
         dims = [prepared[n].shape[1] for n in names]
         offsets = np.cumsum([0] + dims)
-        total = int(offsets[-1])
         n = prepared[names[0]].shape[0]
         k = self.latent_dim
 

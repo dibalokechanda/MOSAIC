@@ -252,6 +252,12 @@ class BaseAligner(ABC):
         embeddings.
     scaling : {'rms', 'std', 'none'}, default 'rms'
         Per-view scaling, see :class:`ViewPreprocessor`.
+    whiten : bool, default False
+        Scale each view's PCA components to unit variance. Requires
+        ``pca_dim``. Necessary for the optimal-transport aligner (two clouds
+        with different variance spectra are not related by any rotation) and
+        harmless-to-helpful for the CCA family, which whitens internally
+        anyway.
     decoder_reg : float, default 1e-6
         Ridge penalty for the least-squares decoders, relative to the mean
         eigenvalue of the latent covariance.
@@ -281,12 +287,14 @@ class BaseAligner(ABC):
         latent_dim: int = 64,
         pca_dim: int | None = None,
         scaling: str = "rms",
+        whiten: bool = False,
         decoder_reg: float = 1e-6,
         random_state: int = 0,
     ):
         self.latent_dim = int(latent_dim)
         self.pca_dim = pca_dim
         self.scaling = scaling
+        self.whiten = bool(whiten)
         self.decoder_reg = float(decoder_reg)
         self.random_state = int(random_state)
         self.is_fitted_ = False
@@ -543,6 +551,7 @@ class BaseAligner(ABC):
             pp = ViewPreprocessor(
                 scaling=self.scaling,
                 pca_dim=self.pca_dim,
+                whiten=self.whiten,
                 random_state=self.random_state,
             )
             prepared[name] = pp.fit_transform(X)

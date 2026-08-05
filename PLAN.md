@@ -159,6 +159,12 @@ Compare *every transformer block*, not only the final embedding.
 
 ## Phase V — Shared latent space  *(core methodological contribution)*
 
+> **Status: implemented.** All six approaches live in `utils/alignment/`
+> behind one encode/decode interface, with evaluation in
+> `utils/alignment_metrics.py` and a driver at `scripts/run_phase5.py`.
+> See [README.md](README.md). Caveat: the *unsupervised* optimal-transport
+> mode is exploratory and does not currently work reliably; supervised OT does.
+
 **Goal:** construct a common latent representation shared across multiple PFMs.
 
 **Candidate approaches**

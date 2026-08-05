@@ -5,13 +5,9 @@ UNI's matrix and row i of CONCH's matrix are the same tissue. That makes the
 alignment problem comparatively easy, and it means a successful alignment shows
 only that a map *exists* given correspondences.
 
-Optimal transport can drop that assumption. Given two clouds of embeddings with
-no correspondence at all, it simultaneously estimates a soft matching between
-them and the rotation that best superimposes them. If that recovers the true
-patch pairing at rates far above chance, the two models' embedding spaces have
-the same *shape* — which is a considerably stronger claim than anything the
-supervised aligners can support, and the sharpest available evidence for a
-common latent morphology manifold.
+Optimal transport can in principle drop that assumption. Given two clouds of
+embeddings with no correspondence at all, it simultaneously estimates a soft
+matching between them and the rotation that best superimposes them.
 
 Method
 ------
@@ -23,16 +19,36 @@ Wasserstein Procrustes (Grave, Joulin & Berthet, AISTATS 2019), alternating:
    cross-covariance ``X^T P Y``.
 
 Both steps run on minibatches, with the cross-covariance accumulated as an
-exponential moving average so the rotation moves smoothly. Sinkhorn is
-implemented here directly rather than via POT, to avoid the dependency.
+exponential moving average so the rotation moves smoothly, and the entropic
+regularisation annealed from smooth to sharp. Sinkhorn is implemented here
+directly rather than via POT, to avoid the dependency.
 
-The objective is non-convex and initialisation matters: ``n_restarts`` picks
-the best of several random starts by transport cost.
+Status of the two modes
+-----------------------
+**Supervised (the default, and what you should use).** With the row pairing
+supplied, this is exact orthogonal Procrustes on whitened clouds. It recovers
+planted rotations perfectly in testing (matching accuracy 1.000).
+
+**Unsupervised (`supervised=False`) — exploratory, do not rely on it.** On
+synthetic data with a planted shared manifold, this implementation reached at
+best ~15-25x chance matching accuracy and frequently landed at chance. Two
+distinct obstacles are involved:
+
+* *Identifiability.* A rotationally symmetric cloud (an isotropic Gaussian)
+  carries no information that could pin down the rotation — no algorithm can
+  succeed there, and the whitening this method requires deliberately removes
+  the second-order structure, leaving only higher moments to identify R. Real
+  patch embeddings cluster by tissue type, so the structure exists in
+  principle, but how much is an empirical question.
+* *Optimisation.* The objective is non-convex, and the transport cost used to
+  pick among restarts barely discriminates between good and bad rotations.
+
+Treat any unsupervised result as a lower bound that needs its own tuning, and
+report it against the ``1 / batch_size`` chance level rather than in absolute
+terms. The supervised/unsupervised gap is itself the interesting quantity.
 """
 
 from __future__ import annotations
-
-import warnings
 
 import numpy as np
 from scipy.special import logsumexp
@@ -137,15 +153,26 @@ class OptimalTransportAligner(BaseAligner):
     reference : str or None, default None
         Model whose (reduced) space becomes the shared space. ``None`` uses the
         first model supplied.
-    supervised : bool, default False
-        If True, use the known row pairing instead of estimating a coupling,
-        which reduces the method to plain orthogonal Procrustes. Useful as a
-        control: comparing supervised and unsupervised results isolates how
-        much the correspondence assumption is worth.
-    reg : float, default 0.05
-        Entropic regularisation, relative to the mean cost of each batch (so it
-        is scale-free). Smaller sharpens the matching; too small and Sinkhorn
-        stalls.
+    supervised : bool, default True
+        Use the known row pairing instead of estimating a coupling, which
+        reduces the method to exact orthogonal Procrustes on the whitened
+        clouds. This is the default because it is the mode that reliably
+        works — see the warning about ``supervised=False`` in the class notes.
+    reg : float, default 2.0
+        Starting entropic regularisation, relative to the mean cost of each
+        batch (so it is scale-free).
+    reg_end : float, default 0.01
+        Final entropic regularisation; the schedule decays geometrically from
+        ``reg`` to ``reg_end`` over the iterations. Annealing matters: a large
+        initial value gives a smooth, near-uniform coupling that lets the
+        rotation move freely, and shrinking it sharpens the matching once the
+        rotation is roughly right. A fixed small value gets stuck immediately.
+    whiten : bool, default True
+        Whiten each view's PCA components to unit variance. **Required for this
+        method.** Two clouds whose principal-component spectra differ are not
+        related by any rotation, so without whitening the objective has no good
+        solution to find — in testing, unsupervised alignment sat at exactly
+        chance until this was enabled.
     batch_size : int, default 500
         Minibatch size for the OT subproblems. Cost is O(batch_size^2) in
         memory and O(batch_size^2 * n_sinkhorn) in time.
@@ -176,20 +203,22 @@ class OptimalTransportAligner(BaseAligner):
         Final transport cost per model; lower means the two clouds superimpose
         better.
     matching_accuracy_ : dict of str to float
-        Only populated when the pairing is known (always, in this project's
-        data): the fraction of held-out patches whose OT-matched partner under
-        the fitted rotation is the true paired patch. Chance level is
-        ``1 / batch_size``. **This is the headline number of the unsupervised
-        experiment** — high accuracy without ever using the pairing is the
-        strongest evidence for a shared manifold.
+        Fraction of a held-out batch whose OT-matched partner under the fitted
+        rotation is the true paired patch; chance is ``1 / batch_size``. Under
+        ``supervised=True`` this is a sanity check on the fit (expect ~1.0
+        when the models really are rotations of each other). Under
+        ``supervised=False`` it is the experiment's actual result — but see
+        the module docstring on why that mode is unreliable.
     """
 
     def __init__(
         self,
         latent_dim: int = 64,
         reference: str | None = None,
-        supervised: bool = False,
-        reg: float = 0.05,
+        supervised: bool = True,
+        reg: float = 2.0,
+        reg_end: float = 0.01,
+        whiten: bool = True,
         batch_size: int = 500,
         n_iter: int = 300,
         sinkhorn_iter: int = 100,
@@ -204,12 +233,14 @@ class OptimalTransportAligner(BaseAligner):
             latent_dim=latent_dim,
             pca_dim=latent_dim,
             scaling=scaling,
+            whiten=whiten,
             decoder_reg=decoder_reg,
             random_state=random_state,
         )
         self.reference = reference
         self.supervised = bool(supervised)
         self.reg = float(reg)
+        self.reg_end = float(reg_end)
         self.batch_size = int(batch_size)
         self.n_iter = int(n_iter)
         self.sinkhorn_iter = int(sinkhorn_iter)
@@ -259,12 +290,19 @@ class OptimalTransportAligner(BaseAligner):
             R = U @ Vt
             return R, float(np.mean(np.sum((X @ R - Y) ** 2, axis=1)))
 
-        rng = np.random.default_rng(self.random_state)
         n = X.shape[0]
         batch = min(self.batch_size, n)
 
+        # One fixed evaluation batch shared by every restart. Scoring each
+        # restart on its own random batch would compare incomparable numbers —
+        # the between-batch variance swamps the between-restart differences.
+        eval_rng = np.random.default_rng(self.random_state + 7919)
+        eval_i = eval_rng.choice(n, size=batch, replace=False)
+        eval_j = eval_rng.choice(n, size=batch, replace=False)
+
         best_R, best_cost = None, np.inf
         for restart in range(self.n_restarts):
+            rng = np.random.default_rng(self.random_state + restart)
             R = np.eye(k) if restart == 0 else _random_orthogonal(k, rng)
             M_ema = np.zeros((k, k))
 
@@ -274,7 +312,7 @@ class OptimalTransportAligner(BaseAligner):
                 Xb, Yb = X[i] @ R, Y[j]
 
                 C = _sq_dists(Xb, Yb)
-                reg = self.reg * max(float(C.mean()), 1e-12)
+                reg = self._reg_at(it) * max(float(C.mean()), 1e-12)
                 P = sinkhorn_coupling(C, reg, n_iter=self.sinkhorn_iter)
 
                 M = X[i].T @ (P @ Yb) * batch
@@ -282,7 +320,7 @@ class OptimalTransportAligner(BaseAligner):
                 U, _, Vt = np.linalg.svd(M_ema, full_matrices=False)
                 R = U @ Vt
 
-            cost = self._transport_cost(X @ R, Y, rng)
+            cost = self._transport_cost(X[eval_i] @ R, Y[eval_j])
             if cost < best_cost:
                 best_cost, best_R = cost, R
             if self.verbose:
@@ -292,15 +330,28 @@ class OptimalTransportAligner(BaseAligner):
             raise RuntimeError(f"alignment failed for view {name!r}")
         return best_R, float(best_cost)
 
-    def _transport_cost(
-        self, X: np.ndarray, Y: np.ndarray, rng: np.random.Generator
-    ) -> float:
-        """Entropic transport cost on a random minibatch, for model selection."""
-        batch = min(self.batch_size, X.shape[0])
-        i = rng.choice(X.shape[0], size=batch, replace=False)
-        j = rng.choice(Y.shape[0], size=batch, replace=False)
-        C = _sq_dists(X[i], Y[j])
-        reg = self.reg * max(float(C.mean()), 1e-12)
+    def _reg_at(self, it: int) -> float:
+        """Geometrically annealed entropic regularisation at iteration ``it``."""
+        if self.n_iter <= 1:
+            return self.reg_end
+        frac = it / (self.n_iter - 1)
+        return float(self.reg * (self.reg_end / self.reg) ** frac)
+
+    def _transport_cost(self, Xb: np.ndarray, Yb: np.ndarray) -> float:
+        """Entropic transport cost between two clouds, for restart selection.
+
+        Parameters
+        ----------
+        Xb, Yb : numpy.ndarray
+            Already-subsampled, already-rotated point clouds.
+
+        Returns
+        -------
+        float
+            Transport cost under the final (sharp) regularisation.
+        """
+        C = _sq_dists(Xb, Yb)
+        reg = self.reg_end * max(float(C.mean()), 1e-12)
         P = sinkhorn_coupling(C, reg, n_iter=self.sinkhorn_iter)
         return float((P * C).sum())
 
@@ -317,7 +368,7 @@ class OptimalTransportAligner(BaseAligner):
         idx = rng.choice(n, size=batch, replace=False)
 
         C = _sq_dists(X_aligned[idx], Y[idx])
-        reg = self.reg * max(float(C.mean()), 1e-12)
+        reg = self.reg_end * max(float(C.mean()), 1e-12)
         P = sinkhorn_coupling(C, reg, n_iter=self.sinkhorn_iter)
         return float(np.mean(np.argmax(P, axis=1) == np.arange(batch)))
 
