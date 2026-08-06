@@ -10,6 +10,9 @@
   <a href="https://github.com/dibalokechanda/MOSAIC/releases">
     <img src="https://img.shields.io/badge/version-1.0.0-success.svg" alt="Version">
   </a>
+  <a href="https://dibalokechanda.github.io/MOSAIC/">
+    <img src="https://img.shields.io/badge/Website-Live-brightgreen.svg" alt="Website">
+  </a>
 </div>
 
 
