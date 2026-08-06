@@ -1105,7 +1105,7 @@ footer {
 .section-desc {
     font-size: 1.15rem;
     color: var(--text-muted);
-    margin: 0 auto;
+    margin: 0;
     line-height: 1.6;
 }
 
