@@ -1,0 +1,114 @@
+$ /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/downstream_mil.py --task cptac_coad_kras --group best --latent-dim 64 --max-patches 4000 --epochs 80 --align-patches 50000 --mil abmil transmil --seed 0 --out results/full_run/downstream/downstream/cptac_coad_kras
+
+FeatureGroup(cptac_benchmark/10x_256px, 6 encoders: ['conch_v1', 'ctranspath', 'gigapath', 'keep', 'resnet50', 'uni_v2'])
+task: cptac_coad_kras — CPTAC-COAD: predict KRAS mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+223 slides, 106 patients
+label
+WT     151
+MUT     72
+split: 160 train / 63 test slides (patient-disjoint)
+
+Fitting gcca on TRAINING slides only ... /users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+/users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+/users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+/users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+/users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+/users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+/users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+/users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  warnings.warn(
+done (115.9s)
+
+=== single [conch_v1] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=512 (5.3s)
+  abmil     auc=0.5326 bacc=0.5169 f1=0.4949 acc=0.6508
+  transmil  auc=0.5302 bacc=0.5250 f1=0.4571 acc=0.6984
+
+=== single [ctranspath] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=768 (6.2s)
+  abmil     auc=0.5384 bacc=0.5000 f1=0.4057 acc=0.6825
+  transmil  auc=0.5814 bacc=0.5250 f1=0.4571 acc=0.6984
+
+=== single [gigapath] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=1536 (8.7s)
+  abmil     auc=0.5570 bacc=0.5436 f1=0.5392 acc=0.6508
+  transmil  auc=0.5767 bacc=0.5017 f1=0.4415 acc=0.6667
+
+=== single [keep] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=768 (6.2s)
+  abmil     auc=0.5279 bacc=0.4855 f1=0.4834 acc=0.5714
+  transmil  auc=0.5209 bacc=0.5250 f1=0.4571 acc=0.6984
+
+=== single [resnet50] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=1024 (6.2s)
+  abmil     auc=0.5640 bacc=0.5000 f1=0.4057 acc=0.6825
+  transmil  auc=0.6314 bacc=0.5000 f1=0.4057 acc=0.6825
+
+=== single [uni_v2] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=1536 (8.8s)
+  abmil     auc=0.4721 bacc=0.4570 f1=0.4312 acc=0.5873
+  transmil  auc=0.4826 bacc=0.5250 f1=0.4571 acc=0.6984
+
+=== concat [all] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=6144 (17.1s)
+  abmil     auc=0.5698 bacc=0.4669 f1=0.4185 acc=0.6190
+  transmil  auc=0.5616 bacc=0.5017 f1=0.4415 acc=0.6667
+
+=== shared [all] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=64 (25.3s)
+  abmil     auc=0.5826 bacc=0.5000 f1=0.4057 acc=0.6825
+  transmil  auc=0.5628 bacc=0.5000 f1=0.4057 acc=0.6825
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition   encoders      mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single   conch_v1    abmil  512 0.5326    0.6508 0.4949             0.5169      63     11.7
+   single   conch_v1 transmil  512 0.5302    0.6984 0.4571             0.5250      63      8.9
+   single ctranspath    abmil  768 0.5384    0.6825 0.4057             0.5000      63      3.6
+   single ctranspath transmil  768 0.5814    0.6984 0.4571             0.5250      63      8.9
+   single   gigapath    abmil 1536 0.5570    0.6508 0.5392             0.5436      63      9.3
+   single   gigapath transmil 1536 0.5767    0.6667 0.4415             0.5017      63     10.3
+   single       keep    abmil  768 0.5279    0.5714 0.4834             0.4855      63      9.7
+   single       keep transmil  768 0.5209    0.6984 0.4571             0.5250      63      8.9
+   single   resnet50    abmil 1024 0.5640    0.6825 0.4057             0.5000      63      7.0
+   single   resnet50 transmil 1024 0.6314    0.6825 0.4057             0.5000      63      9.3
+   single     uni_v2    abmil 1536 0.4721    0.5873 0.4312             0.4570      63      9.0
+   single     uni_v2 transmil 1536 0.4826    0.6984 0.4571             0.5250      63     10.3
+   concat        all    abmil 6144 0.5698    0.6190 0.4185             0.4669      63     13.9
+   concat        all transmil 6144 0.5616    0.6667 0.4415             0.5017      63     20.4
+   shared        all    abmil   64 0.5826    0.6825 0.4057             0.5000      63     14.5
+   shared        all transmil   64 0.5628    0.6825 0.4057             0.5000      63      9.3
+
+Wrote results to results/full_run/downstream/downstream/cptac_coad_kras

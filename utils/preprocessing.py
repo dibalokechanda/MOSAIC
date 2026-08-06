@@ -43,7 +43,10 @@ def as_matrix(X, dtype=np.float64, copy: bool = True) -> np.ndarray:
         routines involve SVDs of ill-conditioned matrices where float32 loses
         meaningful precision.
     copy : bool, default True
-        If False, avoid copying when the input already has the right dtype.
+        If False, skip the copy when the input is already a suitable array.
+        A copy still happens when one is unavoidable (e.g. converting stored
+        float32 features to float64) — this is "avoid copying when possible",
+        not NumPy 2's "never copy", which would raise here.
 
     Returns
     -------
@@ -58,7 +61,9 @@ def as_matrix(X, dtype=np.float64, copy: bool = True) -> np.ndarray:
     if hasattr(X, "detach"):  # torch.Tensor (avoids a hard torch dependency)
         X = X.detach().cpu().numpy()
 
-    X = np.array(X, dtype=dtype, copy=copy, order="C")
+    # np.asarray copies only when required; np.array(copy=False) would raise
+    # under NumPy 2 whenever a dtype conversion forces one.
+    X = np.array(X, dtype=dtype, order="C") if copy else np.asarray(X, dtype=dtype, order="C")
 
     if X.ndim != 2:
         raise ValueError(

@@ -1,0 +1,67 @@
+$ /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/scan_features.py --verify 2 --out results/full_run/analysis/feature_inventory.json
+
+FeatureStore(root=/users/home/dchanda/trident_features, 22 groups, 12 registered encoders) 
+
+=== Registered encoders ===
+                   display_name   dim           family                                          objective                                 architecture                        hf_id
+encoder                                                                                                                                                                            
+uni_v2                   UNI2-h  1536       vision_ssl                                             DINOv2                         ViT-H/14 (registers)            MahmoodLab/UNI2-h
+conch_v1                  CONCH   512  vision_language                    CoCa (contrastive + captioning)                      ViT-B/16 + text encoder             MahmoodLab/conch
+conch_v15            CONCH v1.5   768  vision_language  vision-language pretraining (TITAN patch encoder)                             ViT-L/16 @ 448px         MahmoodLab/conchv1_5
+gigapath          Prov-GigaPath  1536       vision_ssl                                             DINOv2                                     ViT-g/14  prov-gigapath/prov-gigapath
+virchow                 Virchow  2560       vision_ssl                                             DINOv2                                     ViT-H/14             paige-ai/Virchow
+virchow2               Virchow2  2560       vision_ssl       DINOv2 with pathology-specific augmentations                                     ViT-H/14            paige-ai/Virchow2
+hoptimus0           H-optimus-0  1536       vision_ssl                                             DINOv2                                     ViT-g/14        bioptimus/H-optimus-0
+gpfm                       GPFM  1024       vision_ssl      expert knowledge distillation (multi-teacher)                                     ViT-L/14                 majiabo/GPFM
+keep                       KEEP   768  vision_language     knowledge-enhanced vision-language pretraining                                     ViT-L/16             Astaxanthin/KEEP
+musk                       MUSK  1024  vision_language       masked modelling + vision-language alignment  BEiT-3 style multimodal transformer @ 384px                 xiangjx/musk
+ctranspath           CTransPath   768       vision_ssl  SRCL (semantically-relevant contrastive learning)                          CNN + Swin-T hybrid        MahmoodLab/hest-bench
+resnet50    ResNet50 (ImageNet)  1024       supervised                 ImageNet supervised classification              ResNet50 truncated after layer3                          NaN 
+
+=== Feature groups (row-pairable sets) ===
+                     group           cohort  magnification  patch_size  n_encoders                                          encoders                       dims  n_shared_slides
+ cptac_benchmark/10x_256px  cptac_benchmark           10.0         256           6 conch_v1,ctranspath,gigapath,keep,resnet50,uni_v2 512,768,1536,768,1024,1536             2296
+ cptac_benchmark/20x_256px  cptac_benchmark           20.0         256           5          ctranspath,gigapath,keep,resnet50,uni_v2     768,1536,768,1024,1536             2296
+  cptac_benchmark/5x_256px  cptac_benchmark            5.0         256           5          ctranspath,gigapath,keep,resnet50,uni_v2     768,1536,768,1024,1536             2296
+master_benchmark/10x_256px master_benchmark           10.0         256           5      conch_v1,ctranspath,gigapath,resnet50,uni_v2     512,768,1536,1024,1536             2169
+master_benchmark/20x_256px master_benchmark           20.0         256           5          ctranspath,gigapath,keep,resnet50,uni_v2     768,1536,768,1024,1536             1126
+ cptac_benchmark/20x_224px  cptac_benchmark           20.0         224           4                   gpfm,hoptimus0,virchow,virchow2        1024,1536,2560,2560             2296
+master_benchmark/20x_224px master_benchmark           20.0         224           4                   gpfm,hoptimus0,virchow,virchow2        1024,1536,2560,2560             2169
+ master_benchmark/5x_256px master_benchmark            5.0         256           4               ctranspath,gigapath,resnet50,uni_v2         768,1536,1024,1536             2169
+ cptac_benchmark/10x_224px  cptac_benchmark           10.0         224           3                           gpfm,hoptimus0,virchow2             1024,1536,2560             2296
+  cptac_benchmark/5x_224px  cptac_benchmark            5.0         224           3                           gpfm,hoptimus0,virchow2             1024,1536,2560             2296
+master_benchmark/10x_224px master_benchmark           10.0         224           3                           gpfm,hoptimus0,virchow2             1024,1536,2560             2169
+ master_benchmark/5x_224px master_benchmark            5.0         224           3                           gpfm,hoptimus0,virchow2             1024,1536,2560             2169
+ cptac_benchmark/10x_512px  cptac_benchmark           10.0         512           2                                conch_v1,conch_v15                    512,768             2296
+ cptac_benchmark/20x_512px  cptac_benchmark           20.0         512           2                                conch_v1,conch_v15                    512,768             2296
+  cptac_benchmark/5x_512px  cptac_benchmark            5.0         512           2                                conch_v1,conch_v15                    512,768             2296
+master_benchmark/20x_512px master_benchmark           20.0         512           2                                conch_v1,conch_v15                    512,768             1126
+ cptac_benchmark/10x_384px  cptac_benchmark           10.0         384           1                                              musk                       1024             2296
+ cptac_benchmark/20x_384px  cptac_benchmark           20.0         384           1                                              musk                       1024             2296
+  cptac_benchmark/5x_384px  cptac_benchmark            5.0         384           1                                              musk                       1024             2296
+master_benchmark/10x_384px master_benchmark           10.0         384           1                                              musk                       1024             2169
+master_benchmark/20x_384px master_benchmark           20.0         384           1                                              musk                       1024             2169
+ master_benchmark/5x_384px master_benchmark            5.0         384           1                                              musk                       1024             2169 
+
+Widest comparison: cptac_benchmark/10x_256px with 6 encoders
+  ['conch_v1', 'ctranspath', 'gigapath', 'keep', 'resnet50', 'uni_v2']
+
+=== Verifying coordinate alignment (2 slides/group) ===
+cptac_benchmark/10x_224px            OK (2/2 slides)
+cptac_benchmark/10x_256px            OK (2/2 slides)
+cptac_benchmark/10x_512px            OK (2/2 slides)
+cptac_benchmark/20x_224px            OK (2/2 slides)
+cptac_benchmark/20x_256px            OK (2/2 slides)
+cptac_benchmark/20x_512px            OK (2/2 slides)
+cptac_benchmark/5x_224px             OK (2/2 slides)
+cptac_benchmark/5x_256px             OK (2/2 slides)
+cptac_benchmark/5x_512px             OK (2/2 slides)
+master_benchmark/10x_224px           OK (2/2 slides)
+master_benchmark/10x_256px           OK (2/2 slides)
+master_benchmark/20x_224px           OK (2/2 slides)
+master_benchmark/20x_256px           OK (2/2 slides)
+master_benchmark/20x_512px           OK (2/2 slides)
+master_benchmark/5x_224px            OK (2/2 slides)
+master_benchmark/5x_256px            OK (2/2 slides)
+
+Wrote inventory to results/full_run/analysis/feature_inventory.json

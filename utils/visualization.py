@@ -38,6 +38,8 @@ __all__ = [
     "plot_umap",
     "plot_model_space",
     "plot_metric_panel",
+    "plot_magnification_trends",
+    "plot_magnification_panel",
     "save_figure",
 ]
 
@@ -835,6 +837,143 @@ def plot_metric_panel(
 
     if suptitle:
         fig.suptitle(suptitle)
+    fig.tight_layout()
+    return fig
+
+
+def plot_magnification_trends(
+    trends: pd.DataFrame,
+    metric: str = "linear_cka",
+    highlight: Sequence[str] | None = None,
+    title: str | None = None,
+    ax: plt.Axes | None = None,
+    figsize: tuple[float, float] = (7.0, 5.0),
+) -> tuple[Figure, plt.Axes]:
+    """Plot each model pair's similarity against magnification.
+
+    One line per model pair. Lines that stay flat mean the pair's relationship
+    is magnification-independent; lines that cross mean the answer to "which
+    models are most alike" depends on the magnification you looked at.
+
+    Parameters
+    ----------
+    trends : pandas.DataFrame
+        Long-format output of :func:`utils.ablation.similarity_trends`.
+    metric : str, default 'linear_cka'
+        Metric to plot.
+    highlight : sequence of str, optional
+        Pair labels (``'a~b'``) to draw in colour with everything else greyed
+        out — useful for pointing at the control model's pairs.
+    title : str, optional
+        Axes title.
+    ax : matplotlib.axes.Axes, optional
+        Draw into an existing axes.
+    figsize : tuple of float, default (7.0, 5.0)
+        Figure size, used only when ``ax`` is None.
+
+    Returns
+    -------
+    tuple
+        ``(figure, axes)``.
+    """
+    sub = trends[trends["metric"] == metric]
+    if sub.empty:
+        raise ValueError(f"no rows for metric {metric!r}")
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=figsize)
+    else:
+        fig = ax.figure
+
+    mags = sorted(sub["magnification"].unique())
+    for pair, grp in sub.groupby("pair"):
+        grp = grp.sort_values("magnification")
+        muted = highlight is not None and pair not in highlight
+        ax.plot(
+            grp["magnification"],
+            grp["similarity"],
+            marker="o",
+            markersize=4,
+            linewidth=2.0 if not muted else 1.0,
+            color="0.8" if muted else None,
+            label=None if muted else pair,
+            zorder=1 if muted else 3,
+        )
+
+    ax.set_xscale("log", base=2)
+    ax.set_xticks(mags)
+    ax.set_xticklabels([f"{m:g}x" for m in mags])
+    ax.minorticks_off()
+    ax.set_xlabel("magnification")
+    ax.set_ylabel(f"{metric} similarity")
+    ax.set_title(title or f"{metric} across magnification")
+    ax.grid(alpha=0.25, linewidth=0.5)
+
+    handles, labels = ax.get_legend_handles_labels()
+    if handles and len(handles) <= 16:
+        ax.legend(fontsize=7, ncol=2, frameon=False, loc="best")
+    fig.tight_layout()
+    return fig, ax
+
+
+def plot_magnification_panel(
+    results: Mapping[float, Mapping[str, pd.DataFrame]],
+    metric: str = "linear_cka",
+    labels: Sequence[str] | None = None,
+    vmin: float | None = 0.0,
+    vmax: float | None = 1.0,
+    cmap: str = "viridis",
+    suptitle: str | None = None,
+    figsize_per_panel: tuple[float, float] = (4.2, 3.8),
+) -> Figure:
+    """Show one similarity heatmap per magnification on a shared colour scale.
+
+    The shared scale is the point — it makes level shifts between
+    magnifications visible rather than normalising them away.
+
+    Parameters
+    ----------
+    results : mapping
+        ``{magnification: {metric: similarity_matrix}}``.
+    metric : str, default 'linear_cka'
+        Metric to display.
+    labels : sequence of str, optional
+        Model display names, if the matrices are not already labelled.
+    vmin, vmax : float, optional
+        Shared colour limits. Defaults to ``[0, 1]``.
+    cmap : str, default 'viridis'
+        Matplotlib colormap.
+    suptitle : str, optional
+        Figure title.
+    figsize_per_panel : tuple of float, default (4.2, 3.8)
+        Size of each panel.
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+    """
+    mags = sorted(results)
+    missing = [m for m in mags if metric not in results[m]]
+    if missing:
+        raise KeyError(f"metric {metric!r} missing at magnifications {missing}")
+
+    fig, axes = plt.subplots(
+        1,
+        len(mags),
+        figsize=(figsize_per_panel[0] * len(mags), figsize_per_panel[1]),
+        squeeze=False,
+    )
+    for ax, mag in zip(axes.ravel(), mags):
+        plot_similarity_heatmap(
+            results[mag][metric],
+            labels=labels,
+            title=f"{mag:g}x",
+            cmap=cmap,
+            vmin=vmin,
+            vmax=vmax,
+            ax=ax,
+        )
+    fig.suptitle(suptitle or f"{metric} across magnification")
     fig.tight_layout()
     return fig
 

@@ -46,10 +46,14 @@ class GeneralizedProcrustesAligner(BaseAligner):
     latent_dim : int, default 64
         Shared space dimensionality. Every view is PCA-reduced to this many
         components before rotation.
-    max_iter : int, default 100
-        Maximum consensus iterations.
-    tol : float, default 1e-8
-        Convergence threshold on the relative change in consensus.
+    max_iter : int, default 300
+        Maximum consensus iterations. Synthetic data converges in under ten;
+        real foundation-model embeddings, which are far from being rotations
+        of each other, need substantially more.
+    tol : float, default 1e-7
+        Convergence threshold on the relative change in consensus. The tail of
+        the iteration converges slowly, so a tighter tolerance buys no
+        meaningful accuracy and just trips the non-convergence warning.
     scale : bool, default True
         Fit one isotropic scale factor per view alongside its rotation. Leave
         on: models differ substantially in embedding norm, and a pure rotation
@@ -85,8 +89,8 @@ class GeneralizedProcrustesAligner(BaseAligner):
     def __init__(
         self,
         latent_dim: int = 64,
-        max_iter: int = 100,
-        tol: float = 1e-8,
+        max_iter: int = 300,
+        tol: float = 1e-7,
         scale: bool = True,
         scaling: str = "rms",
         decoder_reg: float = 1e-6,

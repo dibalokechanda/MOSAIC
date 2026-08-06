@@ -1,4 +1,4 @@
-"""Phase V driver: build and evaluate shared latent spaces across PFMs.
+"""Build and evaluate shared latent spaces across foundation models (Phase V).
 
 Fits every requested aligner on a training split of row-paired embeddings,
 evaluates all of them on the same held-out patches, and writes a comparison
@@ -8,12 +8,12 @@ Examples
 --------
 Real embeddings::
 
-    python scripts/run_phase5.py --emb-dir /path/to/embeddings \\
+    python scripts/shared_latent_space.py --emb-dir /path/to/embeddings \\
         --out results/phase5 --latent-dim 64
 
 Synthetic smoke test (no data needed)::
 
-    python scripts/run_phase5.py --demo --out /tmp/phase5_demo --latent-dim 16
+    python scripts/shared_latent_space.py --demo --out /tmp/phase5_demo --latent-dim 16
 """
 
 from __future__ import annotations
@@ -39,7 +39,7 @@ from utils.visualization import (  # noqa: E402
 )
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from run_phase1 import load_embedding_dir  # noqa: E402
+from representation_similarity import load_embedding_dir, load_from_feature_store  # noqa: E402
 
 #: Per-method overrides applied on top of the shared latent_dim.
 METHOD_KWARGS: dict[str, dict] = {
@@ -107,7 +107,21 @@ def main() -> None:
     )
     src = parser.add_mutually_exclusive_group(required=True)
     src.add_argument("--emb-dir", type=Path, help="directory of row-paired embeddings")
+    src.add_argument(
+        "--group",
+        type=str,
+        help="feature-store group, e.g. 'cptac_benchmark/10x_256px', or 'best'",
+    )
     src.add_argument("--demo", action="store_true", help="use synthetic data")
+    parser.add_argument(
+        "--encoders", nargs="+", default=None, help="restrict --group to these encoders"
+    )
+    parser.add_argument(
+        "--n-patches", type=int, default=50000, help="patches to sample for --group"
+    )
+    parser.add_argument(
+        "--max-slides", type=int, default=400, help="slides to sample from for --group"
+    )
 
     parser.add_argument("--out", type=Path, required=True, help="output directory")
     parser.add_argument("--latent-dim", type=int, default=64, help="shared space size")
@@ -134,7 +148,18 @@ def main() -> None:
     args = parser.parse_args()
 
     print("Loading representations...")
-    views = make_demo_views() if args.demo else load_embedding_dir(args.emb_dir)
+    if args.demo:
+        views = make_demo_views()
+    elif args.group:
+        views, _ = load_from_feature_store(
+            args.group,
+            encoders=args.encoders,
+            n_patches=args.n_patches,
+            max_slides=args.max_slides,
+            seed=args.seed,
+        )
+    else:
+        views = load_embedding_dir(args.emb_dir)
     n = next(iter(views.values())).shape[0]
     print(f"{len(views)} models, {n} patches")
 

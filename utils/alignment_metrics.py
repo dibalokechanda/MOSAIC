@@ -130,6 +130,7 @@ def alignment_error(
 
 def paired_cosine(
     latents: Mapping[str, np.ndarray],
+    center: bool = True,
 ) -> pd.DataFrame:
     """Mean cosine between two models' projections of the same patch.
 
@@ -137,6 +138,13 @@ def paired_cosine(
     ----------
     latents : mapping of str to numpy.ndarray
         ``{model_name: shared_coordinates}``, row-paired.
+    center : bool, default True
+        Subtract the per-dimension mean before computing cosines. This matters
+        more than it sounds: when every patch shares a large common component —
+        routine in shared latent spaces — the uncentered cosine saturates at
+        1.000 even for a space whose cross-model Recall@1 is only 0.5. The
+        centered version measures agreement about what makes *patches differ*,
+        which is what a shared space is for.
 
     Returns
     -------
@@ -144,7 +152,10 @@ def paired_cosine(
         Symmetric matrix of mean paired cosines, indexed by model.
     """
     names = list(latents)
-    norm = {n: l2_normalize(np.asarray(latents[n], dtype=np.float64)) for n in names}
+    arrays = {n: np.asarray(latents[n], dtype=np.float64) for n in names}
+    if center:
+        arrays = {n: X - X.mean(axis=0, keepdims=True) for n, X in arrays.items()}
+    norm = {n: l2_normalize(X) for n, X in arrays.items()}
 
     S = np.eye(len(names))
     for i, a in enumerate(names):

@@ -1,0 +1,273 @@
+MOSAIC study — preset 'full', 6 stages
+output: /users/home/dchanda/pfm_latent_space/results/full_run/analysis
+tasks : ['cptac_brca_gata3', 'cptac_brca_map3k1', 'cptac_brca_pik3ca', 'cptac_coad_kras', 'cptac_coad_pik3ca', 'cptac_coad_tp53', 'cptac_luad_kras', 'cptac_luad_stk11', 'cptac_luad_tp53', 'cptac_nsclc', 'tcga_brca_stage', 'tcga_brca_subtype', 'tcga_nsclc', 'tcga_nsclc_stage']
+
+==============================================================================
+[inventory] /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/scan_features.py --verify 2 --out results/full_run/analysis/feature_inventory.json
+==============================================================================
+FeatureStore(root=/users/home/dchanda/trident_features, 22 groups, 12 registered encoders) 
+
+=== Registered encoders ===
+                   display_name   dim           family                                          objective                                 architecture                        hf_id
+encoder                                                                                                                                                                            
+uni_v2                   UNI2-h  1536       vision_ssl                                             DINOv2                         ViT-H/14 (registers)            MahmoodLab/UNI2-h
+conch_v1                  CONCH   512  vision_language                    CoCa (contrastive + captioning)                      ViT-B/16 + text encoder             MahmoodLab/conch
+conch_v15            CONCH v1.5   768  vision_language  vision-language pretraining (TITAN patch encoder)                             ViT-L/16 @ 448px         MahmoodLab/conchv1_5
+gigapath          Prov-GigaPath  1536       vision_ssl                                             DINOv2                                     ViT-g/14  prov-gigapath/prov-gigapath
+virchow                 Virchow  2560       vision_ssl                                             DINOv2                                     ViT-H/14             paige-ai/Virchow
+virchow2               Virchow2  2560       vision_ssl       DINOv2 with pathology-specific augmentations                                     ViT-H/14            paige-ai/Virchow2
+hoptimus0           H-optimus-0  1536       vision_ssl                                             DINOv2                                     ViT-g/14        bioptimus/H-optimus-0
+gpfm                       GPFM  1024       vision_ssl      expert knowledge distillation (multi-teacher)                                     ViT-L/14                 majiabo/GPFM
+keep                       KEEP   768  vision_language     knowledge-enhanced vision-language pretraining                                     ViT-L/16             Astaxanthin/KEEP
+musk                       MUSK  1024  vision_language       masked modelling + vision-language alignment  BEiT-3 style multimodal transformer @ 384px                 xiangjx/musk
+ctranspath           CTransPath   768       vision_ssl  SRCL (semantically-relevant contrastive learning)                          CNN + Swin-T hybrid        MahmoodLab/hest-bench
+resnet50    ResNet50 (ImageNet)  1024       supervised                 ImageNet supervised classification              ResNet50 truncated after layer3                          NaN 
+
+=== Feature groups (row-pairable sets) ===
+                     group           cohort  magnification  patch_size  n_encoders                                          encoders                       dims  n_shared_slides
+ cptac_benchmark/10x_256px  cptac_benchmark           10.0         256           6 conch_v1,ctranspath,gigapath,keep,resnet50,uni_v2 512,768,1536,768,1024,1536             2296
+ cptac_benchmark/20x_256px  cptac_benchmark           20.0         256           5          ctranspath,gigapath,keep,resnet50,uni_v2     768,1536,768,1024,1536             2296
+  cptac_benchmark/5x_256px  cptac_benchmark            5.0         256           5          ctranspath,gigapath,keep,resnet50,uni_v2     768,1536,768,1024,1536             2296
+master_benchmark/10x_256px master_benchmark           10.0         256           5      conch_v1,ctranspath,gigapath,resnet50,uni_v2     512,768,1536,1024,1536             2169
+master_benchmark/20x_256px master_benchmark           20.0         256           5          ctranspath,gigapath,keep,resnet50,uni_v2     768,1536,768,1024,1536             1126
+ cptac_benchmark/20x_224px  cptac_benchmark           20.0         224           4                   gpfm,hoptimus0,virchow,virchow2        1024,1536,2560,2560             2296
+master_benchmark/20x_224px master_benchmark           20.0         224           4                   gpfm,hoptimus0,virchow,virchow2        1024,1536,2560,2560             2169
+ master_benchmark/5x_256px master_benchmark            5.0         256           4               ctranspath,gigapath,resnet50,uni_v2         768,1536,1024,1536             2169
+ cptac_benchmark/10x_224px  cptac_benchmark           10.0         224           3                           gpfm,hoptimus0,virchow2             1024,1536,2560             2296
+  cptac_benchmark/5x_224px  cptac_benchmark            5.0         224           3                           gpfm,hoptimus0,virchow2             1024,1536,2560             2296
+master_benchmark/10x_224px master_benchmark           10.0         224           3                           gpfm,hoptimus0,virchow2             1024,1536,2560             2169
+ master_benchmark/5x_224px master_benchmark            5.0         224           3                           gpfm,hoptimus0,virchow2             1024,1536,2560             2169
+ cptac_benchmark/10x_512px  cptac_benchmark           10.0         512           2                                conch_v1,conch_v15                    512,768             2296
+ cptac_benchmark/20x_512px  cptac_benchmark           20.0         512           2                                conch_v1,conch_v15                    512,768             2296
+  cptac_benchmark/5x_512px  cptac_benchmark            5.0         512           2                                conch_v1,conch_v15                    512,768             2296
+master_benchmark/20x_512px master_benchmark           20.0         512           2                                conch_v1,conch_v15                    512,768             1126
+ cptac_benchmark/10x_384px  cptac_benchmark           10.0         384           1                                              musk                       1024             2296
+ cptac_benchmark/20x_384px  cptac_benchmark           20.0         384           1                                              musk                       1024             2296
+  cptac_benchmark/5x_384px  cptac_benchmark            5.0         384           1                                              musk                       1024             2296
+master_benchmark/10x_384px master_benchmark           10.0         384           1                                              musk                       1024             2169
+master_benchmark/20x_384px master_benchmark           20.0         384           1                                              musk                       1024             2169
+ master_benchmark/5x_384px master_benchmark            5.0         384           1                                              musk                       1024             2169 
+
+Widest comparison: cptac_benchmark/10x_256px with 6 encoders
+  ['conch_v1', 'ctranspath', 'gigapath', 'keep', 'resnet50', 'uni_v2']
+
+=== Verifying coordinate alignment (2 slides/group) ===
+cptac_benchmark/10x_224px            OK (2/2 slides)
+cptac_benchmark/10x_256px            OK (2/2 slides)
+cptac_benchmark/10x_512px            OK (2/2 slides)
+cptac_benchmark/20x_224px            OK (2/2 slides)
+cptac_benchmark/20x_256px            OK (2/2 slides)
+cptac_benchmark/20x_512px            OK (2/2 slides)
+cptac_benchmark/5x_224px             OK (2/2 slides)
+cptac_benchmark/5x_256px             OK (2/2 slides)
+cptac_benchmark/5x_512px             OK (2/2 slides)
+master_benchmark/10x_224px           OK (2/2 slides)
+master_benchmark/10x_256px           OK (2/2 slides)
+master_benchmark/20x_224px           OK (2/2 slides)
+master_benchmark/20x_256px           OK (2/2 slides)
+master_benchmark/20x_512px           OK (2/2 slides)
+master_benchmark/5x_224px            OK (2/2 slides)
+master_benchmark/5x_256px            OK (2/2 slides)
+
+Wrote inventory to results/full_run/analysis/feature_inventory.json
+[inventory] ok in 0.1 min  (log: results/full_run/analysis/logs/inventory.log)
+
+==============================================================================
+[similarity] /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/representation_similarity.py --group best --n-patches 50000 --max-slides 500 --max-samples 8000 --seed 0 --no-umap --out results/full_run/analysis/similarity
+==============================================================================
+Loading representations...
+  group cptac_benchmark/10x_256px: ['conch_v1', 'ctranspath', 'gigapath', 'keep', 'resnet50', 'uni_v2']
+  25/500 slides, 2469/50000 patches
+  50/500 slides, 4969/50000 patches
+  75/500 slides, 7469/50000 patches
+  100/500 slides, 9969/50000 patches
+  125/500 slides, 12469/50000 patches
+  150/500 slides, 14969/50000 patches
+  175/500 slides, 17469/50000 patches
+  200/500 slides, 19969/50000 patches
+  225/500 slides, 22469/50000 patches
+  250/500 slides, 24969/50000 patches
+  275/500 slides, 27469/50000 patches
+  300/500 slides, 29969/50000 patches
+  325/500 slides, 32469/50000 patches
+  350/500 slides, 34969/50000 patches
+  375/500 slides, 37469/50000 patches
+  400/500 slides, 39969/50000 patches
+  425/500 slides, 42469/50000 patches
+  450/500 slides, 44969/50000 patches
+  475/500 slides, 47469/50000 patches
+  500/500 slides, 49969/50000 patches
+  collected 49969 patches from 500 slides
+6 models, 49969 patches
+
+=== linear_cka ===
+[linear_cka]     conch_v1 vs conch_v1     = 1.0000  (0.23s)
+[linear_cka]     conch_v1 vs ctranspath   = 0.6461  (0.15s)
+[linear_cka]     conch_v1 vs gigapath     = 0.5968  (0.33s)
+[linear_cka]     conch_v1 vs keep         = 0.7280  (0.15s)
+[linear_cka]     conch_v1 vs resnet50     = 0.5717  (0.17s)
+[linear_cka]     conch_v1 vs uni_v2       = 0.6665  (0.22s)
+[linear_cka]   ctranspath vs ctranspath   = 1.0000  (0.15s)
+[linear_cka]   ctranspath vs gigapath     = 0.6688  (0.41s)
+[linear_cka]   ctranspath vs keep         = 0.5758  (0.18s)
+[linear_cka]   ctranspath vs resnet50     = 0.5955  (0.21s)
+[linear_cka]   ctranspath vs uni_v2       = 0.6357  (0.38s)
+[linear_cka]     gigapath vs gigapath     = 1.0000  (0.45s)
+[linear_cka]     gigapath vs keep         = 0.5865  (0.37s)
+[linear_cka]     gigapath vs resnet50     = 0.4492  (0.39s)
+[linear_cka]     gigapath vs uni_v2       = 0.7542  (0.49s)
+[linear_cka]         keep vs keep         = 1.0000  (0.24s)
+[linear_cka]         keep vs resnet50     = 0.3955  (0.26s)
+[linear_cka]         keep vs uni_v2       = 0.7344  (0.45s)
+[linear_cka]     resnet50 vs resnet50     = 1.0000  (0.30s)
+[linear_cka]     resnet50 vs uni_v2       = 0.3987  (0.40s)
+[linear_cka]       uni_v2 vs uni_v2       = 1.0000  (0.51s)
+=== kernel_cka ===
+[kernel_cka]     conch_v1 vs conch_v1     = 1.0000  (37.61s)
+[kernel_cka]     conch_v1 vs ctranspath   = 0.6783  (31.20s)
+[kernel_cka]     conch_v1 vs gigapath     = 0.6181  (30.87s)
+[kernel_cka]     conch_v1 vs keep         = 0.7477  (32.14s)
+[kernel_cka]     conch_v1 vs resnet50     = 0.5938  (32.06s)
+[kernel_cka]     conch_v1 vs uni_v2       = 0.6998  (31.94s)
+[kernel_cka]   ctranspath vs ctranspath   = 1.0000  (31.28s)
+[kernel_cka]   ctranspath vs gigapath     = 0.6924  (33.99s)
+[kernel_cka]   ctranspath vs keep         = 0.6008  (33.88s)
+[kernel_cka]   ctranspath vs resnet50     = 0.6582  (33.29s)
+[kernel_cka]   ctranspath vs uni_v2       = 0.6667  (31.71s)
+[kernel_cka]     gigapath vs gigapath     = 1.0000  (29.25s)
+[kernel_cka]     gigapath vs keep         = 0.6003  (30.71s)
+[kernel_cka]     gigapath vs resnet50     = 0.4843  (35.79s)
+[kernel_cka]     gigapath vs uni_v2       = 0.7690  (34.45s)
+[kernel_cka]         keep vs keep         = 1.0000  (31.82s)
+[kernel_cka]         keep vs resnet50     = 0.4117  (32.54s)
+[kernel_cka]         keep vs uni_v2       = 0.7519  (32.08s)
+[kernel_cka]     resnet50 vs resnet50     = 1.0000  (30.63s)
+[kernel_cka]     resnet50 vs uni_v2       = 0.4293  (31.11s)
+[kernel_cka]       uni_v2 vs uni_v2       = 1.0000  (30.68s)
+=== svcca ===
+[svcca]     conch_v1 vs conch_v1     = 1.0000  (0.98s)
+[svcca]     conch_v1 vs ctranspath   = 0.6155  (1.27s)
+[svcca]     conch_v1 vs gigapath     = 0.7253  (2.06s)
+[svcca]     conch_v1 vs keep         = 0.6072  (0.80s)
+[svcca]     conch_v1 vs resnet50     = 0.5342  (1.04s)
+[svcca]     conch_v1 vs uni_v2       = 0.7470  (2.00s)
+[svcca]   ctranspath vs ctranspath   = 1.0000  (1.07s)
+[svcca]   ctranspath vs gigapath     = 0.6326  (2.24s)
+[svcca]   ctranspath vs keep         = 0.4382  (1.09s)
+[svcca]   ctranspath vs resnet50     = 0.4786  (1.41s)
+[svcca]   ctranspath vs uni_v2       = 0.6485  (2.42s)
+[svcca]     gigapath vs gigapath     = 1.0000  (3.53s)
+[svcca]     gigapath vs keep         = 0.5840  (2.25s)
+[svcca]     gigapath vs resnet50     = 0.4907  (2.55s)
+[svcca]     gigapath vs uni_v2       = 0.5014  (3.71s)
+[svcca]         keep vs keep         = 1.0000  (1.16s)
+[svcca]         keep vs resnet50     = 0.3740  (1.38s)
+[svcca]         keep vs uni_v2       = 0.6227  (2.32s)
+[svcca]     resnet50 vs resnet50     = 1.0000  (1.68s)
+[svcca]     resnet50 vs uni_v2       = 0.4995  (2.65s)
+[svcca]       uni_v2 vs uni_v2       = 1.0000  (3.73s)
+=== pwcca ===
+[pwcca]     conch_v1 vs conch_v1     = 1.0000  (1.41s)
+[pwcca]     conch_v1 vs ctranspath   = 0.6454  (1.62s)
+[pwcca]     conch_v1 vs gigapath     = 0.7227  (3.70s)
+[pwcca]     conch_v1 vs keep         = 0.6278  (1.62s)
+[pwcca]     conch_v1 vs resnet50     = 0.5944  (1.99s)
+[pwcca]     conch_v1 vs uni_v2       = 0.7308  (3.56s)
+[pwcca]   ctranspath vs ctranspath   = 1.0000  (2.35s)
+[pwcca]   ctranspath vs gigapath     = 0.6980  (4.32s)
+[pwcca]   ctranspath vs keep         = 0.5592  (2.22s)
+[pwcca]   ctranspath vs resnet50     = 0.6127  (2.68s)
+[pwcca]   ctranspath vs uni_v2       = 0.6968  (4.32s)
+[pwcca]     gigapath vs gigapath     = 1.0000  (6.57s)
+[pwcca]     gigapath vs keep         = 0.6669  (4.27s)
+[pwcca]     gigapath vs resnet50     = 0.5956  (4.96s)
+[pwcca]     gigapath vs uni_v2       = 0.6119  (6.89s)
+[pwcca]         keep vs keep         = 1.0000  (2.25s)
+[pwcca]         keep vs resnet50     = 0.5232  (2.99s)
+[pwcca]         keep vs uni_v2       = 0.6863  (4.39s)
+[pwcca]     resnet50 vs resnet50     = 1.0000  (3.21s)
+[pwcca]     resnet50 vs uni_v2       = 0.5837  (4.97s)
+[pwcca]       uni_v2 vs uni_v2       = 1.0000  (6.36s)
+=== procrustes ===
+[procrustes]     conch_v1 vs conch_v1     = 1.0000  (0.09s)
+[procrustes]     conch_v1 vs ctranspath   = 0.6536  (0.19s)
+[procrustes]     conch_v1 vs gigapath     = 0.5438  (0.24s)
+[procrustes]     conch_v1 vs keep         = 0.6698  (0.18s)
+[procrustes]     conch_v1 vs resnet50     = 0.5939  (0.16s)
+[procrustes]     conch_v1 vs uni_v2       = 0.5672  (0.20s)
+[procrustes]   ctranspath vs ctranspath   = 1.0000  (0.15s)
+[procrustes]   ctranspath vs gigapath     = 0.6477  (0.35s)
+[procrustes]   ctranspath vs keep         = 0.6310  (0.15s)
+[procrustes]   ctranspath vs resnet50     = 0.6978  (0.23s)
+[procrustes]   ctranspath vs uni_v2       = 0.6331  (0.34s)
+[procrustes]     gigapath vs gigapath     = 1.0000  (0.39s)
+[procrustes]     gigapath vs keep         = 0.5910  (0.22s)
+[procrustes]     gigapath vs resnet50     = 0.5369  (0.36s)
+[procrustes]     gigapath vs uni_v2       = 0.6976  (0.42s)
+[procrustes]         keep vs keep         = 1.0000  (0.17s)
+[procrustes]         keep vs resnet50     = 0.5238  (0.24s)
+[procrustes]         keep vs uni_v2       = 0.6289  (0.36s)
+[procrustes]     resnet50 vs resnet50     = 1.0000  (0.22s)
+[procrustes]     resnet50 vs uni_v2       = 0.5171  (0.40s)
+[procrustes]       uni_v2 vs uni_v2       = 1.0000  (0.41s)
+=== cosine_rsa ===
+[cosine_rsa]     conch_v1 vs conch_v1     = 1.0000  (20.75s)
+[cosine_rsa]     conch_v1 vs ctranspath   = 0.6330  (24.02s)
+[cosine_rsa]     conch_v1 vs gigapath     = 0.5392  (22.37s)
+[cosine_rsa]     conch_v1 vs keep         = 0.7099  (21.22s)
+[cosine_rsa]     conch_v1 vs resnet50     = 0.5640  (21.20s)
+[cosine_rsa]     conch_v1 vs uni_v2       = 0.6403  (21.11s)
+[cosine_rsa]   ctranspath vs ctranspath   = 1.0000  (21.29s)
+[cosine_rsa]   ctranspath vs gigapath     = 0.6029  (21.33s)
+[cosine_rsa]   ctranspath vs keep         = 0.5307  (20.46s)
+[cosine_rsa]   ctranspath vs resnet50     = 0.6535  (20.38s)
+[cosine_rsa]   ctranspath vs uni_v2       = 0.5834  (20.29s)
+[cosine_rsa]     gigapath vs gigapath     = 1.0000  (20.42s)
+[cosine_rsa]     gigapath vs keep         = 0.5155  (20.32s)
+[cosine_rsa]     gigapath vs resnet50     = 0.4105  (20.38s)
+[cosine_rsa]     gigapath vs uni_v2       = 0.6855  (20.41s)
+[cosine_rsa]         keep vs keep         = 1.0000  (20.18s)
+[cosine_rsa]         keep vs resnet50     = 0.3928  (20.30s)
+[cosine_rsa]         keep vs uni_v2       = 0.6885  (20.29s)
+[cosine_rsa]     resnet50 vs resnet50     = 1.0000  (20.39s)
+[cosine_rsa]     resnet50 vs uni_v2       = 0.3523  (20.46s)
+[cosine_rsa]       uni_v2 vs uni_v2       = 1.0000  (20.57s)
+=== distance_correlation ===
+[distance_correlation]     conch_v1 vs conch_v1     = 1.0000  (15.46s)
+[distance_correlation]     conch_v1 vs ctranspath   = 0.8261  (17.36s)
+[distance_correlation]     conch_v1 vs gigapath     = 0.7885  (23.78s)
+[distance_correlation]     conch_v1 vs keep         = 0.8662  (16.74s)
+[distance_correlation]     conch_v1 vs resnet50     = 0.7691  (19.17s)
+[distance_correlation]     conch_v1 vs uni_v2       = 0.8402  (23.65s)
+[distance_correlation]   ctranspath vs ctranspath   = 1.0000  (18.88s)
+[distance_correlation]   ctranspath vs gigapath     = 0.8327  (25.77s)
+[distance_correlation]   ctranspath vs keep         = 0.7756  (19.08s)
+[distance_correlation]   ctranspath vs resnet50     = 0.8135  (21.36s)
+[distance_correlation]   ctranspath vs uni_v2       = 0.8177  (25.73s)
+[distance_correlation]     gigapath vs gigapath     = 1.0000  (32.57s)
+[distance_correlation]     gigapath vs keep         = 0.7749  (25.56s)
+[distance_correlation]     gigapath vs resnet50     = 0.6963  (27.86s)
+[distance_correlation]     gigapath vs uni_v2       = 0.8766  (32.22s)
+[distance_correlation]         keep vs keep         = 1.0000  (18.47s)
+[distance_correlation]         keep vs resnet50     = 0.6394  (20.86s)
+[distance_correlation]         keep vs uni_v2       = 0.8685  (25.16s)
+[distance_correlation]     resnet50 vs resnet50     = 1.0000  (23.29s)
+[distance_correlation]     resnet50 vs uni_v2       = 0.6565  (31.10s)
+[distance_correlation]       uni_v2 vs uni_v2       = 1.0000  (32.74s)
+
+Cross-metric agreement (Spearman over model pairs):
+                      linear_cka  kernel_cka  svcca  pwcca  procrustes  cosine_rsa  distance_correlation
+linear_cka                 1.000       0.989  0.604  0.629       0.668       0.889                 0.989
+kernel_cka                 0.989       1.000  0.554  0.582       0.696       0.921                 1.000
+svcca                      0.604       0.554  1.000  0.932       0.075       0.407                 0.554
+pwcca                      0.629       0.582  0.932  1.000       0.175       0.450                 0.582
+procrustes                 0.668       0.696  0.075  0.175       1.000       0.782                 0.696
+cosine_rsa                 0.889       0.921  0.407  0.450       0.782       1.000                 0.921
+distance_correlation       0.989       1.000  0.554  0.582       0.696       0.921                 1.000
+
+Wrote 7 matrices and figures to results/full_run/analysis/similarity
+[similarity] ok in 37.1 min  (log: results/full_run/analysis/logs/similarity.log)
+
+==============================================================================
+[magnification] /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/magnification_ablation.py --series best --n-patches 50000 --max-slides 500 --max-samples 8000 --latent-dim 64 --seed 0 --alignment joint_pca gcca mcca procrustes autoencoder --out results/full_run/analysis/magnification
+==============================================================================

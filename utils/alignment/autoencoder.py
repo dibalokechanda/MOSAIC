@@ -314,7 +314,11 @@ class SharedAutoencoderAligner(BaseAligner):
 
         z_stack = torch.stack(zs, dim=0)
         consensus = z_stack.mean(dim=0, keepdim=True)
-        align = ((z_stack - consensus) ** 2).sum(dim=-1).mean()
+        # Mean over latent dimensions, not sum: a sum would make this term
+        # latent_dim times larger than the per-element reconstruction MSE, so
+        # align_weight=1.0 would silently mean "weight 64" and collapse the
+        # latent space.
+        align = ((z_stack - consensus) ** 2).mean()
 
         return recon + self.align_weight * align, recon, align
 

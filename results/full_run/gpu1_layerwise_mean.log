@@ -1,0 +1,61 @@
+/users/home/dchanda/.local/lib/python3.12/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+Traceback (most recent call last):
+  File "/users/home/dchanda/trident/trident/patch_encoder_models/load.py", line 375, in _build
+    from .model_zoo.ctranspath.ctran import ctranspath
+  File "/users/home/dchanda/trident/trident/patch_encoder_models/model_zoo/ctranspath/ctran.py", line 27, in <module>
+    from timm_ctp.models.layers.helpers import to_2tuple
+ModuleNotFoundError: No module named 'timm_ctp'
+FeatureGroup(master_benchmark/10x_256px, 5 encoders: ['conch_v1', 'ctranspath', 'gigapath', 'resnet50', 'uni_v2'])
+
+Cropping 512 patches from /users/home/dchanda/Datasets/tcga_slides_layerwise ...
+  TCGA-44-7661-01Z-00-DX1.baf72abd-edb9-4f: 128 patches at 256px
+  TCGA-55-8207-01Z-00-DX1.2dafc442-f927-4b: 60 patches at 256px
+  TCGA-56-8082-01Z-00-DX1.f0056ce7-58cf-4f: 128 patches at 256px
+  TCGA-63-A5MH-01Z-00-DX1.596077FF-9CE1-4E: 128 patches at 256px
+  444 patches of 256px
+
+Extracting uni_v2 ...
+  hooking 24 blocks
+    16/444
+    176/444
+    336/444
+  24 blocks, final width 1536
+
+Extracting conch_v1 ...
+  hooking 12 blocks
+    16/444
+    176/444
+    336/444
+  12 blocks, final width 768
+
+Extracting ctranspath ...
+Traceback (most recent call last):
+  File "/users/home/dchanda/trident/trident/patch_encoder_models/load.py", line 375, in _build
+    from .model_zoo.ctranspath.ctran import ctranspath
+  File "/users/home/dchanda/trident/trident/patch_encoder_models/model_zoo/ctranspath/ctran.py", line 27, in <module>
+    from timm_ctp.models.layers.helpers import to_2tuple
+ModuleNotFoundError: No module named 'timm_ctp'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/users/home/dchanda/pfm_latent_space/scripts/layerwise_alignment.py", line 362, in <module>
+    main()
+  File "/users/home/dchanda/pfm_latent_space/scripts/layerwise_alignment.py", line 294, in main
+    model, size, mean, std = load_encoder(name, args.trident_root)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/home/dchanda/pfm_latent_space/scripts/layerwise_alignment.py", line 230, in load_encoder
+    enc = encoder_factory(name)
+          ^^^^^^^^^^^^^^^^^^^^^
+  File "/users/home/dchanda/trident/trident/patch_encoder_models/load.py", line 79, in encoder_factory
+    return encoder_registry[model_name](**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/home/dchanda/trident/trident/patch_encoder_models/load.py", line 368, in __init__
+    super().__init__(**build_kwargs)
+  File "/users/home/dchanda/trident/trident/patch_encoder_models/load.py", line 115, in __init__
+    self.model, self.eval_transforms, self.precision = self._build(**build_kwargs)
+                                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/users/home/dchanda/trident/trident/patch_encoder_models/load.py", line 378, in _build
+    raise Exception("Failed to import CTransPath model, make sure timm_ctp is installed. `pip install timm_ctp`")
+Exception: Failed to import CTransPath model, make sure timm_ctp is installed. `pip install timm_ctp`

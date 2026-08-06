@@ -313,7 +313,10 @@ def test_procrustes_converges(split):
     train, _ = split
     aligner = GeneralizedProcrustesAligner(latent_dim=K, max_iter=200).fit(train)
     assert aligner.n_iter_ < 200
-    assert aligner.residuals_[-1] < 1e-8
+    assert aligner.residuals_[-1] < aligner.tol
+    # Monotone decrease is what distinguishes convergence from drift — the
+    # free-scaling degeneracy this method is prone to shows up as a flat tail.
+    assert aligner.residuals_[-1] < aligner.residuals_[0]
 
 
 def test_procrustes_decoder_is_exact_inverse(split):

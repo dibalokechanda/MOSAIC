@@ -1,6 +1,6 @@
 # Towards a Universal Latent Space for Computational Pathology Foundation Models
 
-**Status:** Research plan (v1)
+**Status:** Phases I, IV, V, VI, VII, VIII and the magnification ablation implemented and running
 **Location:** `~/pfm_latent_space` (host: `alt`)
 
 ### Alternative titles
@@ -55,36 +55,43 @@ If the hypothesis holds, then:
 
 ## 4. Datasets
 
-Use the existing benchmark suite. Candidates:
+Two cohorts, features extracted with [trident](https://github.com/mahmoodlab/trident):
 
-- TCGA
-- PANDA
-- CAMELYON
-- BRACS
-- RCC
-- (extend as needed)
+| Cohort | Store key | Slides | Contents |
+|---|---|---|---|
+| TCGA | `master_benchmark` | 2169 | BRCA 1126, LUAD 531, LUSC 512 |
+| CPTAC | `cptac_benchmark` | 2296 | LUAD 1139, BRCA 654, COAD 369, LSCC 134 |
 
-**Key requirement:** every image patch must have embeddings from *all* foundation models under study — paired embeddings are what make similarity and alignment analysis well-defined.
+**Key requirement:** every patch must have embeddings from all models compared.
+Trident writes one coordinate grid per `(magnification, patch_size)`, so
+encoders sharing a grid are row-paired by index and encoders on different grids
+are not. That makes `(cohort, magnification, patch_size)` the unit of analysis;
+the widest set is `cptac_benchmark/10x_256px` with **6 encoders over 2296
+slides**.
+
+---
 
 ## 5. Models
 
-Candidate PFMs (extend depending on availability and licensing):
+Twelve patch encoders are extracted; the registry with dimensions, HF ids and
+pretraining objectives is `configs/encoders.yaml`.
 
-- UNI
-- UNI2
-- CONCH
-- KEEP
-- MUSK
-- Virchow
-- Phikon
-- GigaPath
+| Family | Encoders |
+|---|---|
+| vision SSL | uni_v2, gigapath, virchow, virchow2, hoptimus0, gpfm, ctranspath |
+| vision-language | conch_v1, conch_v15, keep, musk |
+| supervised control | resnet50 |
+
+**ResNet50 is the control** — ImageNet-supervised, never saw a slide. Any claim
+of a shared morphological manifold must show the pathology models agree with
+each other substantially more than with it.
 
 ---
 
 ## Phase I — Representation similarity
 
 > **Status: implemented.** All seven metrics and the three outputs live in
-> `utils/`, driven by `scripts/run_phase1.py`. See [README.md](README.md).
+> `utils/`, driven by `scripts/representation_similarity.py`. See [README.md](README.md).
 
 **Goal:** quantify how similar different PFMs are.
 
@@ -112,35 +119,25 @@ Candidate PFMs (extend depending on availability and licensing):
 
 ---
 
-## Phase II — Local geometry analysis
-
-Global similarity can mask local structure, so measure neighborhood-level agreement directly.
-
-**Metrics**
-
-- Nearest-neighbor overlap
-- Trustworthiness
-- Continuity
-- Neighborhood preservation
-- Mutual k-NN consistency
-
-**Question:** do different models preserve the *same* morphological neighborhoods?
-
----
-
-## Phase III — Organ-wise analysis
-
-Rather than computing similarity globally, compute representational similarity **per organ** (lung, kidney, colon, …).
-
-**Questions**
-
-- Does representation agreement depend on tissue type?
-- Which organs are universally represented across models?
-- Which organs are encoder-specialized?
-
----
-
 ## Phase IV — Layer-wise alignment
+
+> **Status: implemented.** `utils/layers.py`, driven by
+> `scripts/layerwise_alignment.py`.
+>
+> **This is the one stage that does not read the feature store.** Trident saved
+> only final pooled embeddings, so intermediate activations had to be recreated
+> by re-running the models with forward hooks — which needs slide images and
+> model weights. Weights were already cached locally; slides were not, so
+> `scripts/download_slides.py` fetches a few small TCGA slides (~77 MB for four)
+> that are **already in the feature store**, and patches are re-cropped at the
+> coordinates trident recorded. Using the store's own coordinates keeps the
+> analysis on the same tissue as every other phase.
+>
+> Outputs: an `L_a x L_b` CKA matrix per model pair with the lockstep diagonal
+> overlaid, best-match alignment trajectories against relative depth (relative,
+> because models differ in block count), a divergence-depth profile, and a
+> within-model depth reference. `--pool {cls,mean,cls_mean}` selects how each
+> block's tokens are reduced; it materially changes the answer, so sweep it.
 
 Compare *every transformer block*, not only the final embedding.
 
@@ -161,7 +158,7 @@ Compare *every transformer block*, not only the final embedding.
 
 > **Status: implemented.** All six approaches live in `utils/alignment/`
 > behind one encode/decode interface, with evaluation in
-> `utils/alignment_metrics.py` and a driver at `scripts/run_phase5.py`.
+> `utils/alignment_metrics.py` and a driver at `scripts/shared_latent_space.py`.
 > See [README.md](README.md). Caveat: the *unsupervised* optimal-transport
 > mode is exploratory and does not currently work reliably; supervised OT does.
 
@@ -187,15 +184,48 @@ Compare *every transformer block*, not only the final embedding.
 
 ## Phase VI — Cross-model transfer
 
+> **Status: implemented.** `utils/transfer.py`, driven by
+> `scripts/cross_model_transfer.py`. Four evaluations in increasing strictness:
+> cosine/R² fidelity, retrieval against the target's **real** index in its
+> native space, and a linear probe **trained on the target's real embeddings**
+> and tested on translated ones. Each encoder's self-round-trip is reported as
+> the ceiling, isolating the cost of the shared space from the cost of crossing
+> models.
+>
+> **Scope: every ordered pair within a pairable set.** Transfer needs row-paired
+> patches, so it runs within a feature group (one coordinate grid), all ordered
+> pairs at once — not a hand-picked list. The driver defaults to exactly that;
+> `--pairs src:tgt` narrows it if wanted, and `--list-pairs` enumerates them:
+>
+> | Set | Ordered pairs | Encoders |
+> |---|---|---|
+> | `cptac_benchmark/10x_256px` | **30** | conch_v1, ctranspath, gigapath, keep, resnet50, uni_v2 |
+> | `{cptac,master}/20x_224px` | 12 | gpfm, hoptimus0, virchow, virchow2 |
+> | `master_benchmark/10x_256px` | 20 | conch_v1, ctranspath, gigapath, resnet50, uni_v2 |
+> | `*/{5,20}x_256px` | 20 | ctranspath, gigapath, keep, resnet50, uni_v2 |
+> | `*/512px` | 2 | conch_v1, conch_v15 |
+>
+> Cross-*set* pairs (e.g. KEEP@256px → MUSK@384px) are not defined without
+> re-extracting one encoder onto the other's grid.
+
 **Question:** can one model's representation be converted into another's?
 
-**Experiments:** CONCH → UNI, UNI → CONCH, KEEP → MUSK, Virchow → CONCH.
+**Experiments:** all ordered source → target pairs within each pairable set.
+(The plan's original CONCH → UNI, KEEP → MUSK, Virchow → CONCH were
+illustrative; the first is covered by the 10x/256px set, the latter two span
+different grids.)
 
 **Evaluation:** cosine similarity, retrieval, linear-probe accuracy, feature reconstruction.
 
 ---
 
 ## Phase VII — Cross-model retrieval
+
+> **Status: implemented.** `utils/retrieval.py`, driven by
+> `scripts/cross_model_retrieval.py`. Two relevance modes: *identity* (retrieve
+> the same patch — mAP collapses to MRR by definition there) and *label*
+> (retrieve any patch of the same class, which makes mAP and NDCG distinct).
+> The unaligned control is per-model independent PCA to the same dimension.
 
 Build the database with **model A**, issue queries with **model B**.
 
@@ -207,6 +237,20 @@ Build the database with **model A**, issue queries with **model B**.
 ---
 
 ## Phase VIII — Downstream learning
+
+> **Status: implemented.** `utils/mil.py` (ABMIL, TransMIL, mean-pool control),
+> `utils/bags.py` (the three input conditions) and `utils/labels.py` (14 tasks),
+> driven by `scripts/downstream_mil.py`. Splits are patient-grouped, and the
+> aligner for the shared condition is fitted on training slides only.
+>
+> **Tasks** — all confined to a single cancer type; tissue-of-origin tasks are
+> excluded because they saturate and cannot rank encoders:
+> `tcga_nsclc` (LUAD/LUSC, 1043 slides), `tcga_brca_subtype` (IDC/ILC, 958),
+> `tcga_brca_stage` (1012), `tcga_nsclc_stage` (831), `cptac_nsclc` (1273),
+> plus 9 CPTAC mutation tasks — BRCA (PIK3CA/MAP3K1/GATA3, 377 slides),
+> COAD (KRAS/PIK3CA/TP53, 223), LUAD (TP53/STK11/KRAS, 1058).
+> CPTAC-LSCC mutation tasks are omitted: only 134 of 1081 LSCC slides are
+> extracted, leaving 28 patients.
 
 Keep the downstream head simple (ABMIL).
 
@@ -224,27 +268,17 @@ Optionally add one more MIL baseline (CLAM or TransMIL) to show the findings are
 
 ## Ablation studies
 
-- Latent dimensionality
-- Alignment method
-- Number of encoders included
-- Organ
-- Training-set size
-- Retrieval metric
+- **Magnification (5x / 10x / 20x)** — *implemented*, `scripts/magnification_ablation.py`.
+  The same experiment repeated at each resolution: same encoders, same slides,
+  same seed. Each magnification is an independent replication — the coordinate
+  grids differ, so patches are *not* paired across magnifications; what is
+  compared is the result (the similarity matrix, the alignment quality), never
+  the embeddings.
 
----
-
-## Biological analysis
-
-Which morphology types show high cross-model agreement?
-
-- Tumor
-- Stroma
-- Lymphocytes
-- Necrosis
-- Adipose
-- Glands
-
-**Questions:** which morphological concepts appear universal, and which remain encoder-specific?
+Latent dimensionality, alignment method, encoder count, training-set size and
+retrieval metric are all exposed as CLI flags on the existing drivers
+(`--latent-dim`, `--methods`, `--encoders`, `--n-patches`, `--max-slides`), so
+sweeping them needs no new code.
 
 ---
 
@@ -260,6 +294,11 @@ Which morphology types show high cross-model agreement?
 
 ## Open items
 
-- Confirm dataset availability and which cohorts give full model coverage.
-- Confirm which PFM weights are actually obtainable (gated repos / licensing).
-- Decide compute split between `alt` and `raj` (HPC) for embedding extraction.
+- **Extract the rest of CPTAC-LSCC.** Only 134 of 1081 slides have features,
+  which leaves 28 patients — too few for the LSCC mutation tasks (dropped from
+  the registry) and the reason `cptac_nsclc` is 1139:134.
+- **Re-extract MUSK and CONCH v1.5 at 256px.** MUSK is stranded alone at 384px
+  and CONCH v1.5 only pairs with CONCH v1 at 512px, so neither can enter the
+  main six-encoder comparison.
+- **Sweep `--pool` in the layer-wise analysis.** Only CLS pooling has been run;
+  `mean` follows the spatial pathway and may change the conclusion.

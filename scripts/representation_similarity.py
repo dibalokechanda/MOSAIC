@@ -1,4 +1,4 @@
-"""Phase I driver: representational similarity across pathology foundation models.
+"""Representational similarity across pathology foundation models (Phase I).
 
 Loads one embedding matrix per model, computes every registered similarity
 metric over a shared patch subsample, and writes the matrices and figures to an
@@ -12,12 +12,12 @@ Examples
 --------
 Real embeddings::
 
-    python scripts/run_phase1.py --emb-dir /path/to/embeddings \\
+    python scripts/representation_similarity.py --emb-dir /path/to/embeddings \\
         --out results/phase1 --max-samples 5000
 
 Synthetic smoke test (no data needed)::
 
-    python scripts/run_phase1.py --demo --out /tmp/phase1_demo
+    python scripts/representation_similarity.py --demo --out /tmp/phase1_demo
 """
 
 from __future__ import annotations
@@ -144,6 +144,51 @@ def make_demo_representations(
     }
 
 
+def load_from_feature_store(
+    group_key: str,
+    encoders: list[str] | None = None,
+    n_patches: int = 20_000,
+    max_slides: int | None = 200,
+    seed: int = 0,
+) -> tuple[dict[str, np.ndarray], list[str]]:
+    """Sample row-paired patch features from the trident feature store.
+
+    Parameters
+    ----------
+    group_key : str
+        Group identifier, e.g. ``'cptac_benchmark/10x_256px'``, or ``'best'``
+        to pick whichever group offers the most encoders.
+    encoders : list of str, optional
+        Restrict to these encoders.
+    n_patches : int, default 20000
+        Patches to sample.
+    max_slides : int or None, default 200
+        Cap on slides read.
+    seed : int, default 0
+        Sampling seed.
+
+    Returns
+    -------
+    tuple
+        ``({encoder: matrix}, display_names)``.
+    """
+    from utils.features import FeatureStore
+
+    store = FeatureStore()
+    group = store.best_group() if group_key == "best" else store.group(group_key)
+    print(f"  group {group.key}: {sorted(group.encoders)}")
+
+    reps = group.sample_patches(
+        n_patches=n_patches,
+        encoders=encoders,
+        max_slides=max_slides,
+        seed=seed,
+        verbose=True,
+    )
+    names = list(reps)
+    return reps, store.display_names(names)
+
+
 def main() -> None:
     """Parse arguments, run Phase I, and write matrices and figures."""
     parser = argparse.ArgumentParser(
@@ -157,9 +202,25 @@ def main() -> None:
         help="directory with one row-paired embedding file per model",
     )
     src.add_argument(
+        "--group",
+        type=str,
+        help="feature-store group to load, e.g. 'cptac_benchmark/10x_256px'; "
+        "use 'best' for the group with the most encoders "
+        "(see scripts/scan_features.py)",
+    )
+    src.add_argument(
         "--demo",
         action="store_true",
         help="run on synthetic data with a known structure instead",
+    )
+    parser.add_argument(
+        "--encoders", nargs="+", default=None, help="restrict --group to these encoders"
+    )
+    parser.add_argument(
+        "--n-patches", type=int, default=20000, help="patches to sample for --group"
+    )
+    parser.add_argument(
+        "--max-slides", type=int, default=200, help="slides to sample from for --group"
     )
     parser.add_argument(
         "--out", type=Path, required=True, help="output directory for CSVs and figures"
@@ -192,11 +253,19 @@ def main() -> None:
     args = parser.parse_args()
 
     print("Loading representations...")
-    reps = (
-        make_demo_representations()
-        if args.demo
-        else load_embedding_dir(args.emb_dir)
-    )
+    labels = None
+    if args.demo:
+        reps = make_demo_representations()
+    elif args.group:
+        reps, labels = load_from_feature_store(
+            args.group,
+            encoders=args.encoders,
+            n_patches=args.n_patches,
+            max_slides=args.max_slides,
+            seed=args.seed,
+        )
+    else:
+        reps = load_embedding_dir(args.emb_dir)
     n_patches = next(iter(reps.values())).shape[0]
     print(f"{len(reps)} models, {n_patches} patches\n")
 
@@ -208,6 +277,12 @@ def main() -> None:
         seed=args.seed,
         verbose=True,
     )
+
+    if labels is not None:
+        # Relabel with human-readable model names for the figures.
+        for S in matrices.values():
+            S.index = labels
+            S.columns = labels
 
     out = args.out
     (out / "matrices").mkdir(parents=True, exist_ok=True)

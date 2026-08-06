@@ -1,0 +1,2 @@
+$ /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/magnification_ablation.py --series best --n-patches 50000 --max-slides 500 --max-samples 8000 --latent-dim 64 --seed 0 --alignment joint_pca gcca mcca procrustes autoencoder --out results/full_run/analysis/magnification
+

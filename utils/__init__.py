@@ -59,6 +59,12 @@ from .distance_correlation import (
     distance_covariance,
     pairwise_distance_matrix,
 )
+from .features import (
+    EncoderInfo,
+    FeatureGroup,
+    FeatureStore,
+    load_encoder_config,
+)
 from .pairwise import (
     METRIC_REGISTRY,
     QUADRATIC_METRICS,
@@ -137,6 +143,11 @@ __all__ = [
     "distance_correlation",
     "distance_covariance",
     "pairwise_distance_matrix",
+    # feature store
+    "FeatureStore",
+    "FeatureGroup",
+    "EncoderInfo",
+    "load_encoder_config",
     # pairwise driver
     "METRIC_REGISTRY",
     "QUADRATIC_METRICS",

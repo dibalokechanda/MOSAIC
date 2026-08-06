@@ -114,6 +114,19 @@ def test_shared_signal_beats_independent(metric, X, rng):
     assert metric(X, shared) > metric(X, unrelated)
 
 
+def test_float32_input_is_accepted(X, rng):
+    """Stored features are float32; converting them must not raise.
+
+    Under NumPy 2, ``np.array(x, copy=False)`` raises whenever a dtype
+    conversion forces a copy, which is exactly this case.
+    """
+    from utils import as_matrix
+
+    X32 = X.astype(np.float32)
+    assert as_matrix(X32, copy=False).dtype == np.float64
+    assert linear_cka(X32, X32) == pytest.approx(1.0, abs=1e-6)
+
+
 def test_handles_different_feature_dims(X, rng):
     Y = rng.normal(size=(N, 3 * D))
     for metric in INVARIANT_METRICS:

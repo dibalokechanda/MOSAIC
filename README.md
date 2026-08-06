@@ -202,6 +202,61 @@ group = store.best_group()                      # cptac_benchmark/10x_256px
 views = group.sample_patches(n_patches=20000)   # {encoder: (20000, d)}, row-paired
 ```
 
+### 5.1 Slide-level encoders — the constraint dissolves
+
+The store also holds **six slide-level encoders**, which consume a whole slide
+and emit one vector per slide:
+
+| Encoder | Dim | Built on grid |
+|---|---|---|
+| CHIEF | 768 | 10x/256px |
+| Madeleine | 512 | 10x/256px |
+| PRISM | 1280 | 20x/224px |
+| GigaPath-slide | 768 | 20x/256px |
+| TITAN | 768 | 20x/512px |
+| Feather | 512 | 20x/512px |
+
+Because the unit is the **slide**, not the patch, the pairing constraint above
+does not apply: encoders built on *different* patch grids still describe the same
+slides and are directly comparable. **All six can be compared at once, on all
+2169 TCGA / 2296 CPTAC slides** — where the patch encoders top out at six on a
+single grid.
+
+```python
+store = FeatureStore()
+sset = store.slide_encoders("master_benchmark")     # all 6, across 4 grids
+views, slide_ids = sset.load()                      # {encoder: (2169, d)}
+```
+
+The returned dict is row-paired by slide, so it drops straight into the Phase I
+metrics, the aligners, transfer and retrieval:
+
+```python
+from utils import compute_similarity_matrix
+from utils.alignment import build_aligner, split_views
+
+M = compute_similarity_matrix(views, "linear_cka")
+train, test, _, _ = split_views(views, test_size=0.3)
+aligner = build_aligner("gcca", latent_dim=32).fit(train)
+```
+
+**What transfers and what does not:**
+
+| Phase | Slide-level? | Note |
+|---|---|---|
+| I — similarity | yes | n = 2169 slides instead of 50k patches |
+| V — shared space | yes | keep `latent_dim` well under n |
+| VI — transfer | yes | |
+| VII — retrieval | yes | slide retrieval is arguably the more useful task |
+| VIII — downstream | **simpler** | one vector per slide means a linear probe, no MIL |
+| IV — layer-wise | no | would need to hook the slide encoders themselves |
+| magnification ablation | no | each slide encoder is tied to one grid |
+
+The caveat is **sample size**: n is 2169–2296 slides against dimensions of
+512–1280. That is comfortable for CKA and Procrustes but close to the floor for
+the CCA family, which saturates as n approaches d — so read SVCCA/PWCCA on slide
+features with particular caution.
+
 ---
 
 ## 6. Labels: TCGA and CPTAC
