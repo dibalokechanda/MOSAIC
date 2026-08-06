@@ -146,20 +146,66 @@
 
 
 
-    <section id="key-idea" class="animate-up" style="padding: 4rem 2rem; background: var(--bg-light); border-bottom: 1px solid #eee;">
+    <section id="key-idea" class="animate-up" style="padding: 5rem 2rem; background: var(--bg-light); border-bottom: 1px solid #eee;">
         <div style="max-width: 1100px; margin: 0 auto;">
-            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">The Key Idea</h2>
-            <div style="text-align: center; margin-bottom: 3rem;">
-                <img src="concept.png" alt="MOSAIC Concept" style="max-width: 100%; height: auto; mix-blend-mode: multiply;">
-            </div>
-            <div class="math-detail" style="margin-top: 0; padding-top: 0; border-top: none;">
-                <p style="font-size: 1.05rem; color: var(--text-main); line-height: 1.7; text-align: left; margin: 0 auto; max-width: 1000px;">
-                    <span style="display: block; margin-bottom: 1rem; font-size: 1.1rem;"><strong>Overview of the MOSAIC framework.</strong></span>
-                    <span style="display: block; margin-bottom: 0.75rem;"><strong>(1) Calibration phase.</strong> Patches are randomly sampled from a calibration set of WSIs and encoded by \(K_v\) pathology foundation models, each producing features in its own native dimensionality. Generalized Canonical Correlation Analysis (GCCA) fits projection matrices \(\{\mathbf{W}_k\}\) that map all encoders into a unified \(D\)-dimensional representation space.</span>
-                    <span style="display: block; margin-bottom: 0.75rem;"><strong>(2) Global agreement signal.</strong> In the unified space, each feature dimension is characterized by how strongly the projected encoder views correlate. The agreement spectrum \(\boldsymbol{\rho} \in [0,1]^D\) separates dimensions where encoders <em>Do Agree</em> (encoder-invariant tissue structure) from dimensions where they <em>Do Not Agree</em> (encoder-specific variation).</span>
-                    <span style="display: block; margin-bottom: 0.75rem;"><strong>(3) Local uncertainty signal.</strong> At inference time, each patch is projected by all encoders and the cross-encoder variance is computed. Patches with high variance (red Gaussian) indicate encoder disagreement and are treated as locally uncertain; patches with low variance (green Gaussian) indicate consensus and are treated as informative. MOSAIC uses \(\boldsymbol{\rho}\) and \(\boldsymbol{\sigma}^2(x)\) jointly to guide prompt-based MIL aggregation.</span>
+            <h2 class="section-title" style="text-align: center; margin-bottom: 1rem;">The Key Idea</h2>
+            <p style="text-align: center; color: var(--text-muted); font-size: 1.1rem; max-width: 750px; margin: 0 auto 3rem;">
+                Do independently trained pathology foundation models learn the same thing?
+            </p>
+
+            <!-- Central hypothesis callout -->
+            <div style="background: linear-gradient(135deg, rgba(59,130,246,0.06), rgba(139,92,246,0.06)); border: 1px solid rgba(59,130,246,0.15); border-radius: 16px; padding: 2rem 2.5rem; margin-bottom: 3rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+                <p style="font-size: 1.1rem; font-weight: 600; color: var(--dark); margin: 0; line-height: 1.7;">
+                    <span style="background: linear-gradient(120deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800;">Central Hypothesis:</span>
+                    Independently trained pathology foundation models learn <em>different coordinate systems</em> over a <em>shared underlying morphological manifold</em>.
+                </p>
+                <p style="font-size: 0.95rem; color: var(--text-muted); margin: 1rem 0 0; line-height: 1.7;">
+                    If that holds, representations should be alignable, semantic neighbourhoods should survive alignment, features should transfer between models, and a downstream classifier should be able to live inside one shared space.
                 </p>
             </div>
+
+            <!-- Research questions grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: #3b82f6; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ1 — Similarity</div>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">How similar are the representation spaces of 18 pathology encoders measured by 7 similarity metrics?</p>
+                </div>
+                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: #7c3aed; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ2 — Architecture vs Objective</div>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">Does the pretraining objective (vision SSL vs vision-language) drive latent geometry more than architecture?</p>
+                </div>
+                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: #0d9488; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ3 — Alignment</div>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">Can GCCA, Procrustes, optimal transport and other methods align several models into one shared latent space?</p>
+                </div>
+                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: #e11d48; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ4 — Downstream Impact</div>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">Does the aligned space improve downstream MIL classification on 14 molecular and morphological tasks?</p>
+                </div>
+                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: #d97706; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ5 — Cross-model Transfer</div>
+                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">Does a classifier trained on one encoder generalise to another encoder's features through the shared space?</p>
+                </div>
+            </div>
+
+            <!-- Two difficulty regimes -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 900px; margin: 0 auto;">
+                <div style="background: #fff; border-radius: 14px; padding: 1.5rem 1.8rem; border-left: 4px solid #10b981; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                    <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: #059669;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: -2px; margin-right: 0.3rem;"><circle cx="12" cy="12" r="9" stroke="#10b981" stroke-width="2"/><path d="M8 12l3 3 5-5" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        High-level Tasks
+                    </h4>
+                    <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">NSCLC subtyping, breast IDC-vs-ILC, staging. Directly visible in tissue architecture — saturates near AUC 0.97, separates encoders poorly.</p>
+                </div>
+                <div style="background: #fff; border-radius: 14px; padding: 1.5rem 1.8rem; border-left: 4px solid #f59e0b; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+                    <h4 style="margin: 0 0 0.5rem; font-size: 1rem; color: #d97706;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align: -2px; margin-right: 0.3rem;"><circle cx="12" cy="12" r="9" stroke="#f59e0b" stroke-width="2"/><path d="M12 8v4M12 16h.01" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/></svg>
+                        Low-level Tasks
+                    </h4>
+                    <p style="margin: 0; font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">9 mutation predictions (TP53, KRAS, PIK3CA, GATA3, MAP3K1, STK11). Weak morphological signal, AUCs 0.6–0.75 — <strong>these discriminate between representations.</strong></p>
+                </div>
+            </div>
+
         </div>
     </section>
 
