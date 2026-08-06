@@ -87,6 +87,10 @@
           <stop offset="0%" stop-color="#e11d48"/>
           <stop offset="100%" stop-color="#fb7185"/>
         </linearGradient>
+        <linearGradient id="grad-amber" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d97706"/>
+          <stop offset="100%" stop-color="#fbbf24"/>
+        </linearGradient>
       </defs>
     </svg>
     <div class="metrics-strip">
@@ -147,8 +151,20 @@
         <div class="metric-label">Property Tests</div>
       </div>
 
-    </div>
+      <!-- Magnifications -->
+      <div class="metric-card">
+        <div class="metric-icon-wrap" style="background: linear-gradient(135deg, rgba(217,119,6,0.12), rgba(251,191,36,0.08));">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="6" stroke="url(#grad-amber)" stroke-width="2"/>
+            <path d="M15.5 15.5L20 20" stroke="url(#grad-amber)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="metric-num" style="font-size: 1.45rem;">20x, 10x, 5x</div>
+        <div class="metric-label">Magnifications</div>
+      </div>
 
+    </div>
+  </header>
 
 
     <section id="key-idea" class="animate-up" style="padding: 3rem 2rem; background: var(--bg-light); border-bottom: 1px solid #eee;">
