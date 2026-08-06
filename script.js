@@ -2518,23 +2518,30 @@ function buildHeatmap(metricKey) {
         height: am5.percent(100),
     });
 
-    // Color gradient from blue (low) to purple (high)
+    // Filter for lower triangle
+    const filteredData = heatData.filter(item => {
+        const rowIdx = encoders.indexOf(item.y);
+        const colIdx = encoders.indexOf(item.x);
+        return rowIdx >= colIdx;
+    });
+
+    // Premium Color gradient from very light blue/slate (low) to deep purple (high)
     series.set("heatRules", [{
         target: series.columns.template,
-        min: am5.color("#dbeafe"),
-        max: am5.color("#6d28d9"),
+        min: am5.color("#f8fafc"),
+        max: am5.color("#5b21b6"),
         dataField: "value",
         key: "fill",
     }]);
 
-    series.data.setAll(heatData);
+    series.data.setAll(filteredData);
 
     // Heat legend
     const heatLegend = chart.bottomAxesContainer.children.push(
         am5.HeatLegend.new(metricsRoot, {
             orientation: "horizontal",
-            startColor: am5.color("#dbeafe"),
-            endColor: am5.color("#6d28d9"),
+            startColor: am5.color("#f8fafc"),
+            endColor: am5.color("#5b21b6"),
             startText: "0",
             endText: "1",
             stepCount: 5,
