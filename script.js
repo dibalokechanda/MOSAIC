@@ -2587,7 +2587,7 @@ const RQ_DETAILS = [
     body: `
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(59,130,246,0.1); color: #3b82f6;">📊</div>
-        <div><strong>Phase I</strong> — Compute pairwise similarity matrices across all 18 encoders using <strong>7 metrics</strong>: linear CKA, kernel CKA, SVCCA, PWCCA, Procrustes, cosine RSA, and distance correlation.</div>
+        <div><strong>Task:</strong> Compute pairwise similarity matrices across all 18 encoders using <strong>7 metrics</strong>: linear CKA, kernel CKA, SVCCA, PWCCA, Procrustes, cosine RSA, and distance correlation.</div>
       </div>
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(59,130,246,0.1); color: #3b82f6;">🔬</div>
@@ -2614,7 +2614,7 @@ const RQ_DETAILS = [
       </div>
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(124,58,237,0.1); color: #7c3aed;">📈</div>
-        <div><strong>Analysis:</strong> Phase I similarity matrices + the <code>family</code> field in the encoder registry. Examined via hierarchical clustering and block structure in the CKA matrices.</div>
+        <div><strong>Analysis:</strong> The similarity matrices + the <code>family</code> field in the encoder registry. Examined via hierarchical clustering and block structure in the CKA matrices.</div>
       </div>
     `
   },
@@ -2625,7 +2625,7 @@ const RQ_DETAILS = [
     body: `
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(13,148,136,0.1); color: #0d9488;">🔗</div>
-        <div><strong>Phase V</strong> — We benchmark <strong>6 alignment methods</strong>: GCCA, MCCA, generalized Procrustes, joint PCA, shared autoencoder, and optimal transport.</div>
+        <div><strong>Method:</strong> We benchmark <strong>6 alignment methods</strong>: GCCA, MCCA, generalized Procrustes, joint PCA, shared autoencoder, and optimal transport.</div>
       </div>
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(13,148,136,0.1); color: #0d9488;">📏</div>
@@ -2644,7 +2644,7 @@ const RQ_DETAILS = [
     body: `
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(225,29,72,0.1); color: #e11d48;">🎯</div>
-        <div><strong>Phase VIII</strong> — Run <strong>14 downstream tasks</strong> (5 morphological + 9 molecular) using ABMIL and TransMIL aggregators, comparing single-encoder, concatenated, and shared-space features.</div>
+        <div><strong>Experiment:</strong> Run <strong>14 downstream tasks</strong> (5 morphological + 9 molecular) using ABMIL and TransMIL aggregators, comparing single-encoder, concatenated, and shared-space features.</div>
       </div>
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(225,29,72,0.1); color: #e11d48;">🧬</div>
@@ -2663,7 +2663,7 @@ const RQ_DETAILS = [
     body: `
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(217,119,6,0.1); color: #d97706;">🔄</div>
-        <div><strong>Phase VI</strong> — Train a downstream classifier on encoder A's projected features, then evaluate on encoder B's projected features — without retraining.</div>
+        <div><strong>Experiment:</strong> Train a downstream classifier on encoder A's projected features, then evaluate on encoder B's projected features — without retraining.</div>
       </div>
       <div class="rq-detail-row">
         <div class="rq-detail-icon" style="background: rgba(217,119,6,0.1); color: #d97706;">🧪</div>
