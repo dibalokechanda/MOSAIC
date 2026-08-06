@@ -2,654 +2,118 @@
 // Data embedded from results CSVs
 
 const RESULTS_DATA = {
-  "cptac_brca_gata3": [
+  "cptac_luad_stk11": [
     {
       "condition": "single",
       "encoder": "conch_v1",
       "mil": "abmil",
-      "auc": 0.5579,
-      "accuracy": 0.8762,
-      "f1": 0.5333
-    },
-    {
-      "condition": "single",
-      "encoder": "conch_v1",
-      "mil": "transmil",
-      "auc": 0.5337,
-      "accuracy": 0.8762,
-      "f1": 0.467
-    },
-    {
-      "condition": "single",
-      "encoder": "ctranspath",
-      "mil": "abmil",
-      "auc": 0.4642,
-      "accuracy": 0.8667,
-      "f1": 0.4643
-    },
-    {
-      "condition": "single",
-      "encoder": "ctranspath",
-      "mil": "transmil",
-      "auc": 0.5411,
-      "accuracy": 0.8762,
-      "f1": 0.467
-    },
-    {
-      "condition": "single",
-      "encoder": "gigapath",
-      "mil": "abmil",
-      "auc": 0.4616,
-      "accuracy": 0.8952,
-      "f1": 0.4724
-    },
-    {
-      "condition": "single",
-      "encoder": "gigapath",
-      "mil": "transmil",
-      "auc": 0.5116,
-      "accuracy": 0.8381,
-      "f1": 0.456
-    },
-    {
-      "condition": "single",
-      "encoder": "keep",
-      "mil": "abmil",
-      "auc": 0.4947,
-      "accuracy": 0.9048,
-      "f1": 0.475
-    },
-    {
-      "condition": "single",
-      "encoder": "keep",
-      "mil": "transmil",
-      "auc": 0.4889,
-      "accuracy": 0.8381,
-      "f1": 0.456
-    },
-    {
-      "condition": "single",
-      "encoder": "resnet50",
-      "mil": "abmil",
-      "auc": 0.4284,
-      "accuracy": 0.8667,
-      "f1": 0.4643
-    },
-    {
-      "condition": "single",
-      "encoder": "resnet50",
-      "mil": "transmil",
-      "auc": 0.4821,
-      "accuracy": 0.8381,
-      "f1": 0.5081
-    },
-    {
-      "condition": "single",
-      "encoder": "uni_v2",
-      "mil": "abmil",
-      "auc": 0.5474,
-      "accuracy": 0.8762,
-      "f1": 0.467
-    },
-    {
-      "condition": "single",
-      "encoder": "uni_v2",
-      "mil": "transmil",
-      "auc": 0.5305,
-      "accuracy": 0.8762,
-      "f1": 0.467
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.5032,
-      "accuracy": 0.8381,
-      "f1": 0.456
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.4968,
-      "accuracy": 0.8857,
-      "f1": 0.4697
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.62,
-      "accuracy": 0.9048,
-      "f1": 0.475
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.6474,
-      "accuracy": 0.9048,
-      "f1": 0.475
-    }
-  ],
-  "cptac_brca_map3k1": [
-    {
-      "condition": "single",
-      "encoder": "conch_v1",
-      "mil": "abmil",
-      "auc": 0.3618,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7581690871369295,
+      "accuracy": 0.8754578754578755
     },
     {
       "condition": "single",
       "encoder": "conch_v1",
       "mil": "transmil",
-      "auc": 0.3853,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7398858921161825,
+      "accuracy": 0.8168498168498168
     },
     {
       "condition": "single",
       "encoder": "ctranspath",
       "mil": "abmil",
-      "auc": 0.4235,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7230290456431535,
+      "accuracy": 0.8644688644688645
     },
     {
       "condition": "single",
       "encoder": "ctranspath",
       "mil": "transmil",
-      "auc": 0.2382,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7103215767634854,
+      "accuracy": 0.8424908424908425
     },
     {
       "condition": "single",
       "encoder": "gigapath",
       "mil": "abmil",
-      "auc": 0.4118,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.772951244813278,
+      "accuracy": 0.8754578754578755
     },
     {
       "condition": "single",
       "encoder": "gigapath",
       "mil": "transmil",
-      "auc": 0.4706,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7199170124481328,
+      "accuracy": 0.8864468864468864
     },
     {
       "condition": "single",
       "encoder": "keep",
       "mil": "abmil",
-      "auc": 0.4029,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7527230290456431,
+      "accuracy": 0.8754578754578755
     },
     {
       "condition": "single",
       "encoder": "keep",
       "mil": "transmil",
-      "auc": 0.3706,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7173236514522822,
+      "accuracy": 0.8388278388278388
     },
     {
       "condition": "single",
       "encoder": "resnet50",
       "mil": "abmil",
-      "auc": 0.1882,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.6775155601659751,
+      "accuracy": 0.8827838827838828
     },
     {
       "condition": "single",
       "encoder": "resnet50",
       "mil": "transmil",
-      "auc": 0.3412,
-      "accuracy": 0.7416,
-      "f1": 0.4258
+      "auc": 0.6383558091286308,
+      "accuracy": 0.8827838827838828
     },
     {
       "condition": "single",
       "encoder": "uni_v2",
       "mil": "abmil",
-      "auc": 0.4559,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.8022562240663901,
+      "accuracy": 0.8717948717948718
     },
     {
       "condition": "single",
       "encoder": "uni_v2",
       "mil": "transmil",
-      "auc": 0.4088,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.732883817427386,
+      "accuracy": 0.8241758241758241
     },
     {
       "condition": "concat",
       "encoder": "all",
       "mil": "abmil",
-      "auc": 0.4824,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7830653526970954,
+      "accuracy": 0.8315018315018315
     },
     {
       "condition": "concat",
       "encoder": "all",
       "mil": "transmil",
-      "auc": 0.4059,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7208895228215768,
+      "accuracy": 0.8827838827838828
     },
     {
       "condition": "shared",
       "encoder": "all",
       "mil": "abmil",
-      "auc": 0.5706,
-      "accuracy": 0.9551,
-      "f1": 0.4885
+      "auc": 0.7315871369294606,
+      "accuracy": 0.8827838827838828
     },
     {
       "condition": "shared",
       "encoder": "all",
       "mil": "transmil",
-      "auc": 0.2118,
-      "accuracy": 0.9551,
-      "f1": 0.4885
-    }
-  ],
-  "cptac_brca_pik3ca": [
-    {
-      "condition": "single",
-      "encoder": "conch_v1",
-      "mil": "abmil",
-      "auc": 0.5762,
-      "accuracy": 0.6355,
-      "f1": 0.498
-    },
-    {
-      "condition": "single",
-      "encoder": "conch_v1",
-      "mil": "transmil",
-      "auc": 0.5753,
-      "accuracy": 0.6916,
-      "f1": 0.4088
-    },
-    {
-      "condition": "single",
-      "encoder": "ctranspath",
-      "mil": "abmil",
-      "auc": 0.6122,
-      "accuracy": 0.6262,
-      "f1": 0.5368
-    },
-    {
-      "condition": "single",
-      "encoder": "ctranspath",
-      "mil": "transmil",
-      "auc": 0.6249,
-      "accuracy": 0.7103,
-      "f1": 0.4706
-    },
-    {
-      "condition": "single",
-      "encoder": "gigapath",
-      "mil": "abmil",
-      "auc": 0.545,
-      "accuracy": 0.6075,
-      "f1": 0.5033
-    },
-    {
-      "condition": "single",
-      "encoder": "gigapath",
-      "mil": "transmil",
-      "auc": 0.622,
-      "accuracy": 0.6075,
-      "f1": 0.5231
-    },
-    {
-      "condition": "single",
-      "encoder": "keep",
-      "mil": "abmil",
-      "auc": 0.5598,
-      "accuracy": 0.6262,
-      "f1": 0.5754
-    },
-    {
-      "condition": "single",
-      "encoder": "keep",
-      "mil": "transmil",
-      "auc": 0.6028,
-      "accuracy": 0.7103,
-      "f1": 0.4706
-    },
-    {
-      "condition": "single",
-      "encoder": "resnet50",
-      "mil": "abmil",
-      "auc": 0.525,
-      "accuracy": 0.6916,
-      "f1": 0.4088
-    },
-    {
-      "condition": "single",
-      "encoder": "resnet50",
-      "mil": "transmil",
-      "auc": 0.4517,
-      "accuracy": 0.6916,
-      "f1": 0.4088
-    },
-    {
-      "condition": "single",
-      "encoder": "uni_v2",
-      "mil": "abmil",
-      "auc": 0.5401,
-      "accuracy": 0.6262,
-      "f1": 0.5163
-    },
-    {
-      "condition": "single",
-      "encoder": "uni_v2",
-      "mil": "transmil",
-      "auc": 0.6433,
-      "accuracy": 0.6822,
-      "f1": 0.6488
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.5848,
-      "accuracy": 0.6168,
-      "f1": 0.547
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.5934,
-      "accuracy": 0.6822,
-      "f1": 0.4964
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.543,
-      "accuracy": 0.6916,
-      "f1": 0.4088
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.4537,
-      "accuracy": 0.6916,
-      "f1": 0.4088
-    }
-  ],
-  "cptac_coad_kras": [
-    {
-      "condition": "single",
-      "encoder": "conch_v1",
-      "mil": "abmil",
-      "auc": 0.5326,
-      "accuracy": 0.6508,
-      "f1": 0.4949
-    },
-    {
-      "condition": "single",
-      "encoder": "conch_v1",
-      "mil": "transmil",
-      "auc": 0.5302,
-      "accuracy": 0.6984,
-      "f1": 0.4571
-    },
-    {
-      "condition": "single",
-      "encoder": "ctranspath",
-      "mil": "abmil",
-      "auc": 0.5384,
-      "accuracy": 0.6825,
-      "f1": 0.4057
-    },
-    {
-      "condition": "single",
-      "encoder": "ctranspath",
-      "mil": "transmil",
-      "auc": 0.5814,
-      "accuracy": 0.6984,
-      "f1": 0.4571
-    },
-    {
-      "condition": "single",
-      "encoder": "gigapath",
-      "mil": "abmil",
-      "auc": 0.557,
-      "accuracy": 0.6508,
-      "f1": 0.5392
-    },
-    {
-      "condition": "single",
-      "encoder": "gigapath",
-      "mil": "transmil",
-      "auc": 0.5767,
-      "accuracy": 0.6667,
-      "f1": 0.4415
-    },
-    {
-      "condition": "single",
-      "encoder": "keep",
-      "mil": "abmil",
-      "auc": 0.5279,
-      "accuracy": 0.5714,
-      "f1": 0.4834
-    },
-    {
-      "condition": "single",
-      "encoder": "keep",
-      "mil": "transmil",
-      "auc": 0.5209,
-      "accuracy": 0.6984,
-      "f1": 0.4571
-    },
-    {
-      "condition": "single",
-      "encoder": "resnet50",
-      "mil": "abmil",
-      "auc": 0.564,
-      "accuracy": 0.6825,
-      "f1": 0.4057
-    },
-    {
-      "condition": "single",
-      "encoder": "resnet50",
-      "mil": "transmil",
-      "auc": 0.6314,
-      "accuracy": 0.6825,
-      "f1": 0.4057
-    },
-    {
-      "condition": "single",
-      "encoder": "uni_v2",
-      "mil": "abmil",
-      "auc": 0.4721,
-      "accuracy": 0.5873,
-      "f1": 0.4312
-    },
-    {
-      "condition": "single",
-      "encoder": "uni_v2",
-      "mil": "transmil",
-      "auc": 0.4826,
-      "accuracy": 0.6984,
-      "f1": 0.4571
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.5698,
-      "accuracy": 0.619,
-      "f1": 0.4185
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.5616,
-      "accuracy": 0.6667,
-      "f1": 0.4415
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.5826,
-      "accuracy": 0.6825,
-      "f1": 0.4057
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.5628,
-      "accuracy": 0.6825,
-      "f1": 0.4057
-    }
-  ],
-  "cptac_coad_pik3ca": [
-    {
-      "condition": "single",
-      "encoder": "conch_v1",
-      "mil": "abmil",
-      "auc": 0.4296,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "single",
-      "encoder": "conch_v1",
-      "mil": "transmil",
-      "auc": 0.517,
-      "accuracy": 0.7333,
-      "f1": 0.4231
-    },
-    {
-      "condition": "single",
-      "encoder": "ctranspath",
-      "mil": "abmil",
-      "auc": 0.5393,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "single",
-      "encoder": "ctranspath",
-      "mil": "transmil",
-      "auc": 0.5867,
-      "accuracy": 0.7333,
-      "f1": 0.4231
-    },
-    {
-      "condition": "single",
-      "encoder": "gigapath",
-      "mil": "abmil",
-      "auc": 0.4933,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "single",
-      "encoder": "gigapath",
-      "mil": "transmil",
-      "auc": 0.5452,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "single",
-      "encoder": "keep",
-      "mil": "abmil",
-      "auc": 0.5615,
-      "accuracy": 0.7333,
-      "f1": 0.5547
-    },
-    {
-      "condition": "single",
-      "encoder": "keep",
-      "mil": "transmil",
-      "auc": 0.5378,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "single",
-      "encoder": "resnet50",
-      "mil": "abmil",
-      "auc": 0.6726,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "single",
-      "encoder": "resnet50",
-      "mil": "transmil",
-      "auc": 0.5541,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "single",
-      "encoder": "uni_v2",
-      "mil": "abmil",
-      "auc": 0.5926,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "single",
-      "encoder": "uni_v2",
-      "mil": "transmil",
-      "auc": 0.5941,
-      "accuracy": 0.7,
-      "f1": 0.4991
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.5481,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.5585,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.6548,
-      "accuracy": 0.75,
-      "f1": 0.4286
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.7244,
-      "accuracy": 0.75,
-      "f1": 0.4286
+      "auc": 0.7279564315352697,
+      "accuracy": 0.8608058608058609
     }
   ],
   "cptac_coad_tp53": [
@@ -657,129 +121,327 @@ const RESULTS_DATA = {
       "condition": "single",
       "encoder": "conch_v1",
       "mil": "abmil",
-      "auc": 0.5739,
-      "accuracy": 0.6038,
-      "f1": 0.5824
+      "auc": 0.5739130434782609,
+      "accuracy": 0.6037735849056604
     },
     {
       "condition": "single",
       "encoder": "conch_v1",
       "mil": "transmil",
-      "auc": 0.5101,
-      "accuracy": 0.5283,
-      "f1": 0.5283
+      "auc": 0.5101449275362319,
+      "accuracy": 0.5283018867924528
     },
     {
       "condition": "single",
       "encoder": "ctranspath",
       "mil": "abmil",
-      "auc": 0.5826,
-      "accuracy": 0.5849,
-      "f1": 0.5488
+      "auc": 0.5826086956521739,
+      "accuracy": 0.5849056603773585
     },
     {
       "condition": "single",
       "encoder": "ctranspath",
       "mil": "transmil",
-      "auc": 0.4884,
-      "accuracy": 0.4528,
-      "f1": 0.4401
+      "auc": 0.48840579710144927,
+      "accuracy": 0.4528301886792453
     },
     {
       "condition": "single",
       "encoder": "gigapath",
       "mil": "abmil",
-      "auc": 0.4449,
-      "accuracy": 0.4717,
-      "f1": 0.467
+      "auc": 0.444927536231884,
+      "accuracy": 0.4716981132075472
     },
     {
       "condition": "single",
       "encoder": "gigapath",
       "mil": "transmil",
-      "auc": 0.5725,
-      "accuracy": 0.566,
-      "f1": 0.5604
+      "auc": 0.5724637681159421,
+      "accuracy": 0.5660377358490566
     },
     {
       "condition": "single",
       "encoder": "keep",
       "mil": "abmil",
-      "auc": 0.5507,
-      "accuracy": 0.5472,
-      "f1": 0.3537
+      "auc": 0.5507246376811594,
+      "accuracy": 0.5471698113207547
     },
     {
       "condition": "single",
       "encoder": "keep",
       "mil": "transmil",
-      "auc": 0.5087,
-      "accuracy": 0.434,
-      "f1": 0.3026
+      "auc": 0.508695652173913,
+      "accuracy": 0.4339622641509434
     },
     {
       "condition": "single",
       "encoder": "resnet50",
       "mil": "abmil",
-      "auc": 0.5188,
-      "accuracy": 0.566,
-      "f1": 0.3614
+      "auc": 0.518840579710145,
+      "accuracy": 0.5660377358490566
     },
     {
       "condition": "single",
       "encoder": "resnet50",
       "mil": "transmil",
-      "auc": 0.5319,
-      "accuracy": 0.434,
-      "f1": 0.3026
+      "auc": 0.5318840579710145,
+      "accuracy": 0.4339622641509434
     },
     {
       "condition": "single",
       "encoder": "uni_v2",
       "mil": "abmil",
-      "auc": 0.5536,
-      "accuracy": 0.5283,
-      "f1": 0.5109
+      "auc": 0.5536231884057972,
+      "accuracy": 0.5283018867924528
     },
     {
       "condition": "single",
       "encoder": "uni_v2",
       "mil": "transmil",
-      "auc": 0.5725,
-      "accuracy": 0.6038,
-      "f1": 0.5741
+      "auc": 0.5724637681159419,
+      "accuracy": 0.6037735849056604
     },
     {
       "condition": "concat",
       "encoder": "all",
       "mil": "abmil",
-      "auc": 0.4812,
-      "accuracy": 0.4717,
-      "f1": 0.467
+      "auc": 0.4811594202898551,
+      "accuracy": 0.4716981132075472
     },
     {
       "condition": "concat",
       "encoder": "all",
       "mil": "transmil",
-      "auc": 0.558,
-      "accuracy": 0.434,
-      "f1": 0.3026
+      "auc": 0.5579710144927535,
+      "accuracy": 0.4339622641509434
     },
     {
       "condition": "shared",
       "encoder": "all",
       "mil": "abmil",
-      "auc": 0.3551,
-      "accuracy": 0.566,
-      "f1": 0.3614
+      "auc": 0.3550724637681159,
+      "accuracy": 0.5660377358490566
     },
     {
       "condition": "shared",
       "encoder": "all",
       "mil": "transmil",
-      "auc": 0.4652,
-      "accuracy": 0.434,
-      "f1": 0.3026
+      "auc": 0.4652173913043478,
+      "accuracy": 0.4339622641509434
+    }
+  ],
+  "cptac_luad_tp53": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.6714479192317163,
+      "accuracy": 0.5803921568627451
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.5955429697118937,
+      "accuracy": 0.5176470588235295
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.49624476729869493,
+      "accuracy": 0.5215686274509804
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.5016005909874416,
+      "accuracy": 0.5137254901960784
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.5599606008372322,
+      "accuracy": 0.5568627450980392
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.6081014528441271,
+      "accuracy": 0.5882352941176471
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "abmil",
+      "auc": 0.5361979807929081,
+      "accuracy": 0.49411764705882355
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "transmil",
+      "auc": 0.5416769268653042,
+      "accuracy": 0.5137254901960784
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.4929204629401625,
+      "accuracy": 0.49411764705882355
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.5449396700320118,
+      "accuracy": 0.5372549019607843
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.6612903225806451,
+      "accuracy": 0.5882352941176471
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.6441763112533858,
+      "accuracy": 0.6078431372549019
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.6787737010588526,
+      "accuracy": 0.6274509803921569
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.6354961832061068,
+      "accuracy": 0.6078431372549019
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.5768283673971928,
+      "accuracy": 0.5372549019607843
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.5681482393499138,
+      "accuracy": 0.5294117647058824
+    }
+  ],
+  "tcga_nsclc": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.9718006616604526,
+      "accuracy": 0.9202898550724637
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.9730084545502284,
+      "accuracy": 0.9130434782608695
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.9559418158903534,
+      "accuracy": 0.9094202898550725
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.9464895237094996,
+      "accuracy": 0.8804347826086957
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.9528435645644068,
+      "accuracy": 0.9130434782608695
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.9601953473717376,
+      "accuracy": 0.9311594202898551
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.922963818726041,
+      "accuracy": 0.8840579710144928
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.9470146510528803,
+      "accuracy": 0.8623188405797102
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.9590400672163,
+      "accuracy": 0.9166666666666666
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.9578847870608622,
+      "accuracy": 0.9347826086956522
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.9682297957254634,
+      "accuracy": 0.9384057971014492
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.9697526650212677,
+      "accuracy": 0.927536231884058
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.9342015438743897,
+      "accuracy": 0.8876811594202898
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.9609305256524707,
+      "accuracy": 0.9311594202898551
     }
   ],
   "cptac_luad_kras": [
@@ -787,1528 +449,1073 @@ const RESULTS_DATA = {
       "condition": "single",
       "encoder": "conch_v1",
       "mil": "abmil",
-      "auc": 0.7425,
-      "accuracy": 0.6489,
-      "f1": 0.44
+      "auc": 0.742534355179704,
+      "accuracy": 0.648854961832061
     },
     {
       "condition": "single",
       "encoder": "conch_v1",
       "mil": "transmil",
-      "auc": 0.7541,
-      "accuracy": 0.7252,
-      "f1": 0.6637
+      "auc": 0.7540961945031713,
+      "accuracy": 0.7251908396946565
     },
     {
       "condition": "single",
       "encoder": "ctranspath",
       "mil": "abmil",
-      "auc": 0.6518,
-      "accuracy": 0.6641,
-      "f1": 0.4097
+      "auc": 0.6518234672304439,
+      "accuracy": 0.6641221374045801
     },
     {
       "condition": "single",
       "encoder": "ctranspath",
       "mil": "transmil",
-      "auc": 0.615,
-      "accuracy": 0.6718,
-      "f1": 0.4018
+      "auc": 0.6150237843551797,
+      "accuracy": 0.6717557251908397
     },
     {
       "condition": "single",
       "encoder": "gigapath",
       "mil": "abmil",
-      "auc": 0.7379,
-      "accuracy": 0.6985,
-      "f1": 0.6296
+      "auc": 0.7379096194503171,
+      "accuracy": 0.6984732824427481
     },
     {
       "condition": "single",
       "encoder": "gigapath",
       "mil": "transmil",
-      "auc": 0.7046,
-      "accuracy": 0.7061,
-      "f1": 0.6473
+      "auc": 0.7046115221987315,
+      "accuracy": 0.7061068702290076
     },
     {
       "condition": "single",
       "encoder": "keep",
       "mil": "abmil",
-      "auc": 0.7532,
-      "accuracy": 0.687,
-      "f1": 0.5082
+      "auc": 0.7532373150105709,
+      "accuracy": 0.6870229007633588
     },
     {
       "condition": "single",
       "encoder": "keep",
       "mil": "transmil",
-      "auc": 0.7159,
-      "accuracy": 0.6794,
-      "f1": 0.5611
+      "auc": 0.7159090909090908,
+      "accuracy": 0.6793893129770993
     },
     {
       "condition": "single",
       "encoder": "resnet50",
       "mil": "abmil",
-      "auc": 0.6943,
-      "accuracy": 0.6756,
-      "f1": 0.4536
+      "auc": 0.6943049682875264,
+      "accuracy": 0.6755725190839694
     },
     {
       "condition": "single",
       "encoder": "resnet50",
       "mil": "transmil",
-      "auc": 0.684,
-      "accuracy": 0.7061,
-      "f1": 0.5955
+      "auc": 0.6839984143763214,
+      "accuracy": 0.7061068702290076
     },
     {
       "condition": "single",
       "encoder": "uni_v2",
       "mil": "abmil",
-      "auc": 0.7271,
-      "accuracy": 0.6603,
-      "f1": 0.556
+      "auc": 0.7270745243128965,
+      "accuracy": 0.6603053435114504
     },
     {
       "condition": "single",
       "encoder": "uni_v2",
       "mil": "transmil",
-      "auc": 0.6832,
-      "accuracy": 0.6565,
-      "f1": 0.4955
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.7487,
-      "accuracy": 0.7176,
-      "f1": 0.6426
-    },
-    {
-      "condition": "concat",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.7449,
-      "accuracy": 0.7176,
-      "f1": 0.6597
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "abmil",
-      "auc": 0.7346,
-      "accuracy": 0.6641,
-      "f1": 0.4296
-    },
-    {
-      "condition": "shared",
-      "encoder": "all",
-      "mil": "transmil",
-      "auc": 0.6227,
-      "accuracy": 0.6718,
-      "f1": 0.4018
+      "auc": 0.6832056025369979,
+      "accuracy": 0.6564885496183206
     }
   ],
-  "cptac_luad_stk11": [
+  "tcga_brca_subtype": [
     {
       "condition": "single",
       "encoder": "conch_v1",
       "mil": "abmil",
-      "auc": 0.7582,
-      "accuracy": 0.8755,
-      "f1": 0.6257
+      "auc": 0.9667586841499886,
+      "accuracy": 0.9234042553191489
     },
     {
       "condition": "single",
       "encoder": "conch_v1",
       "mil": "transmil",
-      "auc": 0.7399,
-      "accuracy": 0.8168,
-      "f1": 0.5691
+      "auc": 0.9692891649413389,
+      "accuracy": 0.9191489361702128
     },
     {
       "condition": "single",
       "encoder": "ctranspath",
       "mil": "abmil",
-      "auc": 0.723,
-      "accuracy": 0.8645,
-      "f1": 0.552
+      "auc": 0.9667586841499884,
+      "accuracy": 0.9191489361702128
     },
     {
       "condition": "single",
       "encoder": "ctranspath",
       "mil": "transmil",
-      "auc": 0.7103,
-      "accuracy": 0.8425,
-      "f1": 0.5788
+      "auc": 0.972509776857603,
+      "accuracy": 0.9361702127659575
     },
     {
       "condition": "single",
       "encoder": "gigapath",
       "mil": "abmil",
-      "auc": 0.773,
-      "accuracy": 0.8755,
-      "f1": 0.6387
+      "auc": 0.9719346675868415,
+      "accuracy": 0.9191489361702128
     },
     {
       "condition": "single",
       "encoder": "gigapath",
       "mil": "transmil",
-      "auc": 0.7199,
-      "accuracy": 0.8864,
-      "f1": 0.5913
+      "auc": 0.9718196457326892,
+      "accuracy": 0.9404255319148936
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.8584080975385323,
+      "accuracy": 0.8468085106382979
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.8947550034506556,
+      "accuracy": 0.8893617021276595
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.9707844490453186,
+      "accuracy": 0.9234042553191489
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.9641131815044859,
+      "accuracy": 0.9361702127659575
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.9727398205659076,
+      "accuracy": 0.9276595744680851
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.9661835748792271,
+      "accuracy": 0.9276595744680851
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.9322521279043019,
+      "accuracy": 0.8893617021276595
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.959397285484242,
+      "accuracy": 0.9148936170212766
+    }
+  ],
+  "tcga_nsclc_stage": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.555077452667814,
+      "accuracy": 0.7740384615384616
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.5692771084337349,
+      "accuracy": 0.7836538461538461
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.6067125645438899,
+      "accuracy": 0.7980769230769231
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.5890705679862306,
+      "accuracy": 0.7836538461538461
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.6524670109007459,
+      "accuracy": 0.7932692307692307
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.6705393000573723,
+      "accuracy": 0.7884615384615384
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.5764486517498566,
+      "accuracy": 0.7980769230769231
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.5623924268502581,
+      "accuracy": 0.7980769230769231
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.6891853126792885,
+      "accuracy": 0.7980769230769231
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.700229489386116,
+      "accuracy": 0.7884615384615384
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.6616465863453814,
+      "accuracy": 0.7932692307692307
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.6721170395869192,
+      "accuracy": 0.7932692307692307
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.6034136546184738,
+      "accuracy": 0.7980769230769231
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.6047045324153758,
+      "accuracy": 0.7980769230769231
+    }
+  ],
+  "cptac_coad_kras": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.5325581395348837,
+      "accuracy": 0.6507936507936508
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.5302325581395348,
+      "accuracy": 0.6984126984126984
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.5383720930232558,
+      "accuracy": 0.6825396825396826
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.5813953488372093,
+      "accuracy": 0.6984126984126984
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.5569767441860465,
+      "accuracy": 0.6507936507936508
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.5767441860465116,
+      "accuracy": 0.6666666666666666
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "abmil",
+      "auc": 0.5279069767441861,
+      "accuracy": 0.5714285714285714
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "transmil",
+      "auc": 0.5209302325581395,
+      "accuracy": 0.6984126984126984
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.563953488372093,
+      "accuracy": 0.6825396825396826
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.6313953488372093,
+      "accuracy": 0.6825396825396826
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.472093023255814,
+      "accuracy": 0.5873015873015873
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.48255813953488375,
+      "accuracy": 0.6984126984126984
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.569767441860465,
+      "accuracy": 0.6190476190476191
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.5616279069767441,
+      "accuracy": 0.6666666666666666
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.5825581395348837,
+      "accuracy": 0.6825396825396826
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.5627906976744186,
+      "accuracy": 0.6825396825396826
+    }
+  ],
+  "tcga_brca_stage": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.607735767057801,
+      "accuracy": 0.7637795275590551
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.6014776184267709,
+      "accuracy": 0.7322834645669292
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.5975662755323772,
+      "accuracy": 0.7401574803149606
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.5902651021295089,
+      "accuracy": 0.7598425196850394
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.5559322033898305,
+      "accuracy": 0.7519685039370079
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.5879182963928726,
+      "accuracy": 0.7165354330708661
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.5469795740982182,
+      "accuracy": 0.7677165354330708
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.6444154715341156,
+      "accuracy": 0.7362204724409449
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.5743589743589743,
+      "accuracy": 0.7519685039370079
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.5477618426770969,
+      "accuracy": 0.7716535433070866
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.5586266840504128,
+      "accuracy": 0.7598425196850394
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.596697088222512,
+      "accuracy": 0.7165354330708661
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.5047370708387657,
+      "accuracy": 0.7677165354330708
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.4893524554541504,
+      "accuracy": 0.7677165354330708
+    }
+  ],
+  "cptac_brca_map3k1": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.361764705882353,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.3852941176470588,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.42352941176470593,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.23823529411764707,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.411764705882353,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.47058823529411764,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "abmil",
+      "auc": 0.40294117647058825,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "transmil",
+      "auc": 0.37058823529411766,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.18823529411764706,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.3411764705882353,
+      "accuracy": 0.7415730337078652
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.45588235294117646,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.40882352941176464,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.4823529411764706,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.40588235294117647,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.5705882352941176,
+      "accuracy": 0.9550561797752809
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.21176470588235294,
+      "accuracy": 0.9550561797752809
+    }
+  ],
+  "cptac_brca_gata3": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.5578947368421052,
+      "accuracy": 0.8761904761904762
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.5336842105263158,
+      "accuracy": 0.8761904761904762
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.46421052631578946,
+      "accuracy": 0.8666666666666667
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.5410526315789473,
+      "accuracy": 0.8761904761904762
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.46157894736842103,
+      "accuracy": 0.8952380952380953
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.5115789473684211,
+      "accuracy": 0.8380952380952381
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "abmil",
+      "auc": 0.49473684210526314,
+      "accuracy": 0.9047619047619048
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "transmil",
+      "auc": 0.48894736842105263,
+      "accuracy": 0.8380952380952381
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.4284210526315789,
+      "accuracy": 0.8666666666666667
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.4821052631578947,
+      "accuracy": 0.8380952380952381
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.5473684210526316,
+      "accuracy": 0.8761904761904762
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.5305263157894736,
+      "accuracy": 0.8761904761904762
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.5031578947368421,
+      "accuracy": 0.8380952380952381
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.49684210526315786,
+      "accuracy": 0.8857142857142857
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.62,
+      "accuracy": 0.9047619047619048
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.6473684210526316,
+      "accuracy": 0.9047619047619048
+    }
+  ],
+  "cptac_brca_pik3ca": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.5761670761670762,
+      "accuracy": 0.6355140186915887
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.5753480753480753,
+      "accuracy": 0.6915887850467289
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.6122031122031122,
+      "accuracy": 0.6261682242990654
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.6248976248976249,
+      "accuracy": 0.7102803738317757
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.545045045045045,
+      "accuracy": 0.6074766355140186
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.622031122031122,
+      "accuracy": 0.6074766355140186
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "abmil",
+      "auc": 0.5597870597870598,
+      "accuracy": 0.6261682242990654
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "transmil",
+      "auc": 0.6027846027846028,
+      "accuracy": 0.7102803738317757
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.524979524979525,
+      "accuracy": 0.6915887850467289
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.45167895167895167,
+      "accuracy": 0.6915887850467289
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.5401310401310402,
+      "accuracy": 0.6261682242990654
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.6433251433251432,
+      "accuracy": 0.6822429906542056
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.5847665847665848,
+      "accuracy": 0.616822429906542
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.5933660933660934,
+      "accuracy": 0.6822429906542056
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.542997542997543,
+      "accuracy": 0.6915887850467289
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.45372645372645376,
+      "accuracy": 0.6915887850467289
+    }
+  ],
+  "cptac_nsclc": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.9703007518796992,
+      "accuracy": 0.9276729559748428
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.9519266917293233,
+      "accuracy": 0.9528301886792453
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.9390977443609023,
+      "accuracy": 0.9371069182389937
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.9440789473684211,
+      "accuracy": 0.9371069182389937
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.9543233082706767,
+      "accuracy": 0.9308176100628931
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.9459586466165414,
+      "accuracy": 0.9150943396226415
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "abmil",
+      "auc": 0.9654135338345865,
+      "accuracy": 0.949685534591195
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "transmil",
+      "auc": 0.962218045112782,
+      "accuracy": 0.9465408805031447
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.7971804511278195,
+      "accuracy": 0.8805031446540881
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.8642857142857143,
+      "accuracy": 0.889937106918239
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.9711466165413534,
+      "accuracy": 0.9371069182389937
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.9660714285714286,
+      "accuracy": 0.9276729559748428
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.9609022556390978,
+      "accuracy": 0.9276729559748428
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.9656954887218046,
+      "accuracy": 0.9276729559748428
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.931015037593985,
+      "accuracy": 0.9433962264150944
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.9330827067669173,
+      "accuracy": 0.9308176100628931
+    }
+  ],
+  "cptac_coad_pik3ca": [
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "abmil",
+      "auc": 0.4296296296296296,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "single",
+      "encoder": "conch_v1",
+      "mil": "transmil",
+      "auc": 0.5170370370370371,
+      "accuracy": 0.7333333333333333
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "abmil",
+      "auc": 0.5392592592592592,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "single",
+      "encoder": "ctranspath",
+      "mil": "transmil",
+      "auc": 0.5866666666666667,
+      "accuracy": 0.7333333333333333
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "abmil",
+      "auc": 0.49333333333333335,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "single",
+      "encoder": "gigapath",
+      "mil": "transmil",
+      "auc": 0.5451851851851852,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "abmil",
+      "auc": 0.5614814814814815,
+      "accuracy": 0.7333333333333333
+    },
+    {
+      "condition": "single",
+      "encoder": "keep",
+      "mil": "transmil",
+      "auc": 0.5377777777777778,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "abmil",
+      "auc": 0.6725925925925926,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "single",
+      "encoder": "resnet50",
+      "mil": "transmil",
+      "auc": 0.554074074074074,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "abmil",
+      "auc": 0.5925925925925926,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "single",
+      "encoder": "uni_v2",
+      "mil": "transmil",
+      "auc": 0.594074074074074,
+      "accuracy": 0.7
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.5481481481481482,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "concat",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.5585185185185185,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "abmil",
+      "auc": 0.6548148148148148,
+      "accuracy": 0.75
+    },
+    {
+      "condition": "shared",
+      "encoder": "all",
+      "mil": "transmil",
+      "auc": 0.7244444444444444,
+      "accuracy": 0.75
     }
   ]
 };
-const METRICS_DATA = {
-  "cosine_rsa": {
-    "encoders": [
-      "chief",
-      "feather",
-      "gigapath",
-      "madeleine",
-      "prism",
-      "titan"
-    ],
-    "data": [
-      {
-        "x": "chief",
-        "y": "chief",
-        "value": 1.0
-      },
-      {
-        "x": "feather",
-        "y": "chief",
-        "value": 0.5128
-      },
-      {
-        "x": "gigapath",
-        "y": "chief",
-        "value": 0.6762
-      },
-      {
-        "x": "madeleine",
-        "y": "chief",
-        "value": 0.5439
-      },
-      {
-        "x": "prism",
-        "y": "chief",
-        "value": 0.4759
-      },
-      {
-        "x": "titan",
-        "y": "chief",
-        "value": 0.5176
-      },
-      {
-        "x": "chief",
-        "y": "feather",
-        "value": 0.5128
-      },
-      {
-        "x": "feather",
-        "y": "feather",
-        "value": 1.0
-      },
-      {
-        "x": "gigapath",
-        "y": "feather",
-        "value": 0.5917
-      },
-      {
-        "x": "madeleine",
-        "y": "feather",
-        "value": 0.7918
-      },
-      {
-        "x": "prism",
-        "y": "feather",
-        "value": 0.7439
-      },
-      {
-        "x": "titan",
-        "y": "feather",
-        "value": 0.8582
-      },
-      {
-        "x": "chief",
-        "y": "gigapath",
-        "value": 0.6762
-      },
-      {
-        "x": "feather",
-        "y": "gigapath",
-        "value": 0.5917
-      },
-      {
-        "x": "gigapath",
-        "y": "gigapath",
-        "value": 1.0
-      },
-      {
-        "x": "madeleine",
-        "y": "gigapath",
-        "value": 0.7081
-      },
-      {
-        "x": "prism",
-        "y": "gigapath",
-        "value": 0.5625
-      },
-      {
-        "x": "titan",
-        "y": "gigapath",
-        "value": 0.6226
-      },
-      {
-        "x": "chief",
-        "y": "madeleine",
-        "value": 0.5439
-      },
-      {
-        "x": "feather",
-        "y": "madeleine",
-        "value": 0.7918
-      },
-      {
-        "x": "gigapath",
-        "y": "madeleine",
-        "value": 0.7081
-      },
-      {
-        "x": "madeleine",
-        "y": "madeleine",
-        "value": 1.0
-      },
-      {
-        "x": "prism",
-        "y": "madeleine",
-        "value": 0.7062
-      },
-      {
-        "x": "titan",
-        "y": "madeleine",
-        "value": 0.8066
-      },
-      {
-        "x": "chief",
-        "y": "prism",
-        "value": 0.4759
-      },
-      {
-        "x": "feather",
-        "y": "prism",
-        "value": 0.7439
-      },
-      {
-        "x": "gigapath",
-        "y": "prism",
-        "value": 0.5625
-      },
-      {
-        "x": "madeleine",
-        "y": "prism",
-        "value": 0.7062
-      },
-      {
-        "x": "prism",
-        "y": "prism",
-        "value": 1.0
-      },
-      {
-        "x": "titan",
-        "y": "prism",
-        "value": 0.8051
-      },
-      {
-        "x": "chief",
-        "y": "titan",
-        "value": 0.5176
-      },
-      {
-        "x": "feather",
-        "y": "titan",
-        "value": 0.8582
-      },
-      {
-        "x": "gigapath",
-        "y": "titan",
-        "value": 0.6226
-      },
-      {
-        "x": "madeleine",
-        "y": "titan",
-        "value": 0.8066
-      },
-      {
-        "x": "prism",
-        "y": "titan",
-        "value": 0.8051
-      },
-      {
-        "x": "titan",
-        "y": "titan",
-        "value": 1.0
-      }
-    ]
-  },
-  "distance_correlation": {
-    "encoders": [
-      "chief",
-      "feather",
-      "gigapath",
-      "madeleine",
-      "prism",
-      "titan"
-    ],
-    "data": [
-      {
-        "x": "chief",
-        "y": "chief",
-        "value": 1.0
-      },
-      {
-        "x": "feather",
-        "y": "chief",
-        "value": 0.7012
-      },
-      {
-        "x": "gigapath",
-        "y": "chief",
-        "value": 0.8393
-      },
-      {
-        "x": "madeleine",
-        "y": "chief",
-        "value": 0.7437
-      },
-      {
-        "x": "prism",
-        "y": "chief",
-        "value": 0.6808
-      },
-      {
-        "x": "titan",
-        "y": "chief",
-        "value": 0.7197
-      },
-      {
-        "x": "chief",
-        "y": "feather",
-        "value": 0.7012
-      },
-      {
-        "x": "feather",
-        "y": "feather",
-        "value": 1.0
-      },
-      {
-        "x": "gigapath",
-        "y": "feather",
-        "value": 0.7377
-      },
-      {
-        "x": "madeleine",
-        "y": "feather",
-        "value": 0.8792
-      },
-      {
-        "x": "prism",
-        "y": "feather",
-        "value": 0.835
-      },
-      {
-        "x": "titan",
-        "y": "feather",
-        "value": 0.9215
-      },
-      {
-        "x": "chief",
-        "y": "gigapath",
-        "value": 0.8393
-      },
-      {
-        "x": "feather",
-        "y": "gigapath",
-        "value": 0.7377
-      },
-      {
-        "x": "gigapath",
-        "y": "gigapath",
-        "value": 1.0
-      },
-      {
-        "x": "madeleine",
-        "y": "gigapath",
-        "value": 0.8409
-      },
-      {
-        "x": "prism",
-        "y": "gigapath",
-        "value": 0.7139
-      },
-      {
-        "x": "titan",
-        "y": "gigapath",
-        "value": 0.769
-      },
-      {
-        "x": "chief",
-        "y": "madeleine",
-        "value": 0.7437
-      },
-      {
-        "x": "feather",
-        "y": "madeleine",
-        "value": 0.8792
-      },
-      {
-        "x": "gigapath",
-        "y": "madeleine",
-        "value": 0.8409
-      },
-      {
-        "x": "madeleine",
-        "y": "madeleine",
-        "value": 1.0
-      },
-      {
-        "x": "prism",
-        "y": "madeleine",
-        "value": 0.8103
-      },
-      {
-        "x": "titan",
-        "y": "madeleine",
-        "value": 0.8858
-      },
-      {
-        "x": "chief",
-        "y": "prism",
-        "value": 0.6808
-      },
-      {
-        "x": "feather",
-        "y": "prism",
-        "value": 0.835
-      },
-      {
-        "x": "gigapath",
-        "y": "prism",
-        "value": 0.7139
-      },
-      {
-        "x": "madeleine",
-        "y": "prism",
-        "value": 0.8103
-      },
-      {
-        "x": "prism",
-        "y": "prism",
-        "value": 1.0
-      },
-      {
-        "x": "titan",
-        "y": "prism",
-        "value": 0.8856
-      },
-      {
-        "x": "chief",
-        "y": "titan",
-        "value": 0.7197
-      },
-      {
-        "x": "feather",
-        "y": "titan",
-        "value": 0.9215
-      },
-      {
-        "x": "gigapath",
-        "y": "titan",
-        "value": 0.769
-      },
-      {
-        "x": "madeleine",
-        "y": "titan",
-        "value": 0.8858
-      },
-      {
-        "x": "prism",
-        "y": "titan",
-        "value": 0.8856
-      },
-      {
-        "x": "titan",
-        "y": "titan",
-        "value": 1.0
-      }
-    ]
-  },
-  "kernel_cka": {
-    "encoders": [
-      "chief",
-      "feather",
-      "gigapath",
-      "madeleine",
-      "prism",
-      "titan"
-    ],
-    "data": [
-      {
-        "x": "chief",
-        "y": "chief",
-        "value": 1.0
-      },
-      {
-        "x": "feather",
-        "y": "chief",
-        "value": 0.4936
-      },
-      {
-        "x": "gigapath",
-        "y": "chief",
-        "value": 0.7083
-      },
-      {
-        "x": "madeleine",
-        "y": "chief",
-        "value": 0.5564
-      },
-      {
-        "x": "prism",
-        "y": "chief",
-        "value": 0.4687
-      },
-      {
-        "x": "titan",
-        "y": "chief",
-        "value": 0.5179
-      },
-      {
-        "x": "chief",
-        "y": "feather",
-        "value": 0.4936
-      },
-      {
-        "x": "feather",
-        "y": "feather",
-        "value": 1.0
-      },
-      {
-        "x": "gigapath",
-        "y": "feather",
-        "value": 0.5461
-      },
-      {
-        "x": "madeleine",
-        "y": "feather",
-        "value": 0.7724
-      },
-      {
-        "x": "prism",
-        "y": "feather",
-        "value": 0.6968
-      },
-      {
-        "x": "titan",
-        "y": "feather",
-        "value": 0.8459
-      },
-      {
-        "x": "chief",
-        "y": "gigapath",
-        "value": 0.7083
-      },
-      {
-        "x": "feather",
-        "y": "gigapath",
-        "value": 0.5461
-      },
-      {
-        "x": "gigapath",
-        "y": "gigapath",
-        "value": 1.0
-      },
-      {
-        "x": "madeleine",
-        "y": "gigapath",
-        "value": 0.709
-      },
-      {
-        "x": "prism",
-        "y": "gigapath",
-        "value": 0.518
-      },
-      {
-        "x": "titan",
-        "y": "gigapath",
-        "value": 0.5926
-      },
-      {
-        "x": "chief",
-        "y": "madeleine",
-        "value": 0.5564
-      },
-      {
-        "x": "feather",
-        "y": "madeleine",
-        "value": 0.7724
-      },
-      {
-        "x": "gigapath",
-        "y": "madeleine",
-        "value": 0.709
-      },
-      {
-        "x": "madeleine",
-        "y": "madeleine",
-        "value": 1.0
-      },
-      {
-        "x": "prism",
-        "y": "madeleine",
-        "value": 0.661
-      },
-      {
-        "x": "titan",
-        "y": "madeleine",
-        "value": 0.7864
-      },
-      {
-        "x": "chief",
-        "y": "prism",
-        "value": 0.4687
-      },
-      {
-        "x": "feather",
-        "y": "prism",
-        "value": 0.6968
-      },
-      {
-        "x": "gigapath",
-        "y": "prism",
-        "value": 0.518
-      },
-      {
-        "x": "madeleine",
-        "y": "prism",
-        "value": 0.661
-      },
-      {
-        "x": "prism",
-        "y": "prism",
-        "value": 1.0
-      },
-      {
-        "x": "titan",
-        "y": "prism",
-        "value": 0.784
-      },
-      {
-        "x": "chief",
-        "y": "titan",
-        "value": 0.5179
-      },
-      {
-        "x": "feather",
-        "y": "titan",
-        "value": 0.8459
-      },
-      {
-        "x": "gigapath",
-        "y": "titan",
-        "value": 0.5926
-      },
-      {
-        "x": "madeleine",
-        "y": "titan",
-        "value": 0.7864
-      },
-      {
-        "x": "prism",
-        "y": "titan",
-        "value": 0.784
-      },
-      {
-        "x": "titan",
-        "y": "titan",
-        "value": 1.0
-      }
-    ]
-  },
-  "linear_cka": {
-    "encoders": [
-      "chief",
-      "feather",
-      "gigapath",
-      "madeleine",
-      "prism",
-      "titan"
-    ],
-    "data": [
-      {
-        "x": "chief",
-        "y": "chief",
-        "value": 1.0
-      },
-      {
-        "x": "feather",
-        "y": "chief",
-        "value": 0.4504
-      },
-      {
-        "x": "gigapath",
-        "y": "chief",
-        "value": 0.7024
-      },
-      {
-        "x": "madeleine",
-        "y": "chief",
-        "value": 0.5218
-      },
-      {
-        "x": "prism",
-        "y": "chief",
-        "value": 0.4402
-      },
-      {
-        "x": "titan",
-        "y": "chief",
-        "value": 0.489
-      },
-      {
-        "x": "chief",
-        "y": "feather",
-        "value": 0.4504
-      },
-      {
-        "x": "feather",
-        "y": "feather",
-        "value": 1.0
-      },
-      {
-        "x": "gigapath",
-        "y": "feather",
-        "value": 0.5225
-      },
-      {
-        "x": "madeleine",
-        "y": "feather",
-        "value": 0.7506
-      },
-      {
-        "x": "prism",
-        "y": "feather",
-        "value": 0.6607
-      },
-      {
-        "x": "titan",
-        "y": "feather",
-        "value": 0.8158
-      },
-      {
-        "x": "chief",
-        "y": "gigapath",
-        "value": 0.7024
-      },
-      {
-        "x": "feather",
-        "y": "gigapath",
-        "value": 0.5225
-      },
-      {
-        "x": "gigapath",
-        "y": "gigapath",
-        "value": 1.0
-      },
-      {
-        "x": "madeleine",
-        "y": "gigapath",
-        "value": 0.6881
-      },
-      {
-        "x": "prism",
-        "y": "gigapath",
-        "value": 0.5061
-      },
-      {
-        "x": "titan",
-        "y": "gigapath",
-        "value": 0.5828
-      },
-      {
-        "x": "chief",
-        "y": "madeleine",
-        "value": 0.5218
-      },
-      {
-        "x": "feather",
-        "y": "madeleine",
-        "value": 0.7506
-      },
-      {
-        "x": "gigapath",
-        "y": "madeleine",
-        "value": 0.6881
-      },
-      {
-        "x": "madeleine",
-        "y": "madeleine",
-        "value": 1.0
-      },
-      {
-        "x": "prism",
-        "y": "madeleine",
-        "value": 0.6397
-      },
-      {
-        "x": "titan",
-        "y": "madeleine",
-        "value": 0.7703
-      },
-      {
-        "x": "chief",
-        "y": "prism",
-        "value": 0.4402
-      },
-      {
-        "x": "feather",
-        "y": "prism",
-        "value": 0.6607
-      },
-      {
-        "x": "gigapath",
-        "y": "prism",
-        "value": 0.5061
-      },
-      {
-        "x": "madeleine",
-        "y": "prism",
-        "value": 0.6397
-      },
-      {
-        "x": "prism",
-        "y": "prism",
-        "value": 1.0
-      },
-      {
-        "x": "titan",
-        "y": "prism",
-        "value": 0.7726
-      },
-      {
-        "x": "chief",
-        "y": "titan",
-        "value": 0.489
-      },
-      {
-        "x": "feather",
-        "y": "titan",
-        "value": 0.8158
-      },
-      {
-        "x": "gigapath",
-        "y": "titan",
-        "value": 0.5828
-      },
-      {
-        "x": "madeleine",
-        "y": "titan",
-        "value": 0.7703
-      },
-      {
-        "x": "prism",
-        "y": "titan",
-        "value": 0.7726
-      },
-      {
-        "x": "titan",
-        "y": "titan",
-        "value": 1.0
-      }
-    ]
-  },
-  "procrustes": {
-    "encoders": [
-      "chief",
-      "feather",
-      "gigapath",
-      "madeleine",
-      "prism",
-      "titan"
-    ],
-    "data": [
-      {
-        "x": "chief",
-        "y": "chief",
-        "value": 1.0
-      },
-      {
-        "x": "feather",
-        "y": "chief",
-        "value": 0.5808
-      },
-      {
-        "x": "gigapath",
-        "y": "chief",
-        "value": 0.7305
-      },
-      {
-        "x": "madeleine",
-        "y": "chief",
-        "value": 0.6833
-      },
-      {
-        "x": "prism",
-        "y": "chief",
-        "value": 0.5807
-      },
-      {
-        "x": "titan",
-        "y": "chief",
-        "value": 0.6293
-      },
-      {
-        "x": "chief",
-        "y": "feather",
-        "value": 0.5808
-      },
-      {
-        "x": "feather",
-        "y": "feather",
-        "value": 1.0
-      },
-      {
-        "x": "gigapath",
-        "y": "feather",
-        "value": 0.54
-      },
-      {
-        "x": "madeleine",
-        "y": "feather",
-        "value": 0.7138
-      },
-      {
-        "x": "prism",
-        "y": "feather",
-        "value": 0.6417
-      },
-      {
-        "x": "titan",
-        "y": "feather",
-        "value": 0.7567
-      },
-      {
-        "x": "chief",
-        "y": "gigapath",
-        "value": 0.7305
-      },
-      {
-        "x": "feather",
-        "y": "gigapath",
-        "value": 0.54
-      },
-      {
-        "x": "gigapath",
-        "y": "gigapath",
-        "value": 1.0
-      },
-      {
-        "x": "madeleine",
-        "y": "gigapath",
-        "value": 0.6966
-      },
-      {
-        "x": "prism",
-        "y": "gigapath",
-        "value": 0.564
-      },
-      {
-        "x": "titan",
-        "y": "gigapath",
-        "value": 0.6093
-      },
-      {
-        "x": "chief",
-        "y": "madeleine",
-        "value": 0.6833
-      },
-      {
-        "x": "feather",
-        "y": "madeleine",
-        "value": 0.7138
-      },
-      {
-        "x": "gigapath",
-        "y": "madeleine",
-        "value": 0.6966
-      },
-      {
-        "x": "madeleine",
-        "y": "madeleine",
-        "value": 1.0
-      },
-      {
-        "x": "prism",
-        "y": "madeleine",
-        "value": 0.6361
-      },
-      {
-        "x": "titan",
-        "y": "madeleine",
-        "value": 0.7282
-      },
-      {
-        "x": "chief",
-        "y": "prism",
-        "value": 0.5807
-      },
-      {
-        "x": "feather",
-        "y": "prism",
-        "value": 0.6417
-      },
-      {
-        "x": "gigapath",
-        "y": "prism",
-        "value": 0.564
-      },
-      {
-        "x": "madeleine",
-        "y": "prism",
-        "value": 0.6361
-      },
-      {
-        "x": "prism",
-        "y": "prism",
-        "value": 1.0
-      },
-      {
-        "x": "titan",
-        "y": "prism",
-        "value": 0.7012
-      },
-      {
-        "x": "chief",
-        "y": "titan",
-        "value": 0.6293
-      },
-      {
-        "x": "feather",
-        "y": "titan",
-        "value": 0.7567
-      },
-      {
-        "x": "gigapath",
-        "y": "titan",
-        "value": 0.6093
-      },
-      {
-        "x": "madeleine",
-        "y": "titan",
-        "value": 0.7282
-      },
-      {
-        "x": "prism",
-        "y": "titan",
-        "value": 0.7012
-      },
-      {
-        "x": "titan",
-        "y": "titan",
-        "value": 1.0
-      }
-    ]
-  },
-  "pwcca": {
-    "encoders": [
-      "chief",
-      "feather",
-      "gigapath",
-      "madeleine",
-      "prism",
-      "titan"
-    ],
-    "data": [
-      {
-        "x": "chief",
-        "y": "chief",
-        "value": 1.0
-      },
-      {
-        "x": "feather",
-        "y": "chief",
-        "value": 0.778
-      },
-      {
-        "x": "gigapath",
-        "y": "chief",
-        "value": 0.7681
-      },
-      {
-        "x": "madeleine",
-        "y": "chief",
-        "value": 0.8093
-      },
-      {
-        "x": "prism",
-        "y": "chief",
-        "value": 0.8801
-      },
-      {
-        "x": "titan",
-        "y": "chief",
-        "value": 0.7402
-      },
-      {
-        "x": "chief",
-        "y": "feather",
-        "value": 0.778
-      },
-      {
-        "x": "feather",
-        "y": "feather",
-        "value": 1.0
-      },
-      {
-        "x": "gigapath",
-        "y": "feather",
-        "value": 0.7514
-      },
-      {
-        "x": "madeleine",
-        "y": "feather",
-        "value": 0.6907
-      },
-      {
-        "x": "prism",
-        "y": "feather",
-        "value": 0.8927
-      },
-      {
-        "x": "titan",
-        "y": "feather",
-        "value": 0.801
-      },
-      {
-        "x": "chief",
-        "y": "gigapath",
-        "value": 0.7681
-      },
-      {
-        "x": "feather",
-        "y": "gigapath",
-        "value": 0.7514
-      },
-      {
-        "x": "gigapath",
-        "y": "gigapath",
-        "value": 1.0
-      },
-      {
-        "x": "madeleine",
-        "y": "gigapath",
-        "value": 0.807
-      },
-      {
-        "x": "prism",
-        "y": "gigapath",
-        "value": 0.87
-      },
-      {
-        "x": "titan",
-        "y": "gigapath",
-        "value": 0.736
-      },
-      {
-        "x": "chief",
-        "y": "madeleine",
-        "value": 0.8093
-      },
-      {
-        "x": "feather",
-        "y": "madeleine",
-        "value": 0.6907
-      },
-      {
-        "x": "gigapath",
-        "y": "madeleine",
-        "value": 0.807
-      },
-      {
-        "x": "madeleine",
-        "y": "madeleine",
-        "value": 1.0
-      },
-      {
-        "x": "prism",
-        "y": "madeleine",
-        "value": 0.8863
-      },
-      {
-        "x": "titan",
-        "y": "madeleine",
-        "value": 0.7997
-      },
-      {
-        "x": "chief",
-        "y": "prism",
-        "value": 0.8801
-      },
-      {
-        "x": "feather",
-        "y": "prism",
-        "value": 0.8927
-      },
-      {
-        "x": "gigapath",
-        "y": "prism",
-        "value": 0.87
-      },
-      {
-        "x": "madeleine",
-        "y": "prism",
-        "value": 0.8863
-      },
-      {
-        "x": "prism",
-        "y": "prism",
-        "value": 1.0
-      },
-      {
-        "x": "titan",
-        "y": "prism",
-        "value": 0.8865
-      },
-      {
-        "x": "chief",
-        "y": "titan",
-        "value": 0.7402
-      },
-      {
-        "x": "feather",
-        "y": "titan",
-        "value": 0.801
-      },
-      {
-        "x": "gigapath",
-        "y": "titan",
-        "value": 0.736
-      },
-      {
-        "x": "madeleine",
-        "y": "titan",
-        "value": 0.7997
-      },
-      {
-        "x": "prism",
-        "y": "titan",
-        "value": 0.8865
-      },
-      {
-        "x": "titan",
-        "y": "titan",
-        "value": 1.0
-      }
-    ]
-  },
-  "svcca": {
-    "encoders": [
-      "chief",
-      "feather",
-      "gigapath",
-      "madeleine",
-      "prism",
-      "titan"
-    ],
-    "data": [
-      {
-        "x": "chief",
-        "y": "chief",
-        "value": 1.0
-      },
-      {
-        "x": "feather",
-        "y": "chief",
-        "value": 0.5009
-      },
-      {
-        "x": "gigapath",
-        "y": "chief",
-        "value": 0.7462
-      },
-      {
-        "x": "madeleine",
-        "y": "chief",
-        "value": 0.5968
-      },
-      {
-        "x": "prism",
-        "y": "chief",
-        "value": 0.596
-      },
-      {
-        "x": "titan",
-        "y": "chief",
-        "value": 0.4907
-      },
-      {
-        "x": "chief",
-        "y": "feather",
-        "value": 0.5009
-      },
-      {
-        "x": "feather",
-        "y": "feather",
-        "value": 1.0
-      },
-      {
-        "x": "gigapath",
-        "y": "feather",
-        "value": 0.6555
-      },
-      {
-        "x": "madeleine",
-        "y": "feather",
-        "value": 0.5966
-      },
-      {
-        "x": "prism",
-        "y": "feather",
-        "value": 0.6178
-      },
-      {
-        "x": "titan",
-        "y": "feather",
-        "value": 0.5429
-      },
-      {
-        "x": "chief",
-        "y": "gigapath",
-        "value": 0.7462
-      },
-      {
-        "x": "feather",
-        "y": "gigapath",
-        "value": 0.6555
-      },
-      {
-        "x": "gigapath",
-        "y": "gigapath",
-        "value": 1.0
-      },
-      {
-        "x": "madeleine",
-        "y": "gigapath",
-        "value": 0.671
-      },
-      {
-        "x": "prism",
-        "y": "gigapath",
-        "value": 0.5156
-      },
-      {
-        "x": "titan",
-        "y": "gigapath",
-        "value": 0.667
-      },
-      {
-        "x": "chief",
-        "y": "madeleine",
-        "value": 0.5968
-      },
-      {
-        "x": "feather",
-        "y": "madeleine",
-        "value": 0.5966
-      },
-      {
-        "x": "gigapath",
-        "y": "madeleine",
-        "value": 0.671
-      },
-      {
-        "x": "madeleine",
-        "y": "madeleine",
-        "value": 1.0
-      },
-      {
-        "x": "prism",
-        "y": "madeleine",
-        "value": 0.5574
-      },
-      {
-        "x": "titan",
-        "y": "madeleine",
-        "value": 0.5535
-      },
-      {
-        "x": "chief",
-        "y": "prism",
-        "value": 0.596
-      },
-      {
-        "x": "feather",
-        "y": "prism",
-        "value": 0.6178
-      },
-      {
-        "x": "gigapath",
-        "y": "prism",
-        "value": 0.5156
-      },
-      {
-        "x": "madeleine",
-        "y": "prism",
-        "value": 0.5574
-      },
-      {
-        "x": "prism",
-        "y": "prism",
-        "value": 1.0
-      },
-      {
-        "x": "titan",
-        "y": "prism",
-        "value": 0.5929
-      },
-      {
-        "x": "chief",
-        "y": "titan",
-        "value": 0.4907
-      },
-      {
-        "x": "feather",
-        "y": "titan",
-        "value": 0.5429
-      },
-      {
-        "x": "gigapath",
-        "y": "titan",
-        "value": 0.667
-      },
-      {
-        "x": "madeleine",
-        "y": "titan",
-        "value": 0.5535
-      },
-      {
-        "x": "prism",
-        "y": "titan",
-        "value": 0.5929
-      },
-      {
-        "x": "titan",
-        "y": "titan",
-        "value": 1.0
-      }
-    ]
-  }
-};
+
 
 // ──────────────────────────────────────────────
 // Results Bar Chart (amCharts 5)
@@ -2335,22 +1542,54 @@ function buildResultsChart(taskKey) {
     const data = RESULTS_DATA[taskKey];
     if (!data) return;
 
-    // Group by encoder, pick single condition only for the bar chart
-    const singleData = data.filter(d => d.condition === 'single');
+    // Map encoder names for better display
+    const formatEncoderName = (enc, condition) => {
+        if (condition === 'concat') return 'Concat (All)';
+        if (condition === 'shared') return 'Shared Space (All)';
+        
+        const nameMap = {
+            'conch_v1': 'CONCH v1',
+            'uni_v2': 'UNI v2',
+            'ctranspath': 'CTransPath',
+            'gigapath': 'GigaPath',
+            'resnet50': 'ResNet50',
+            'virchow2': 'Virchow 2',
+            'virchow2_local': 'Virchow 2 Local',
+            'owkin': 'Owkin',
+            'phikon': 'Phikon',
+            'phikon_v2': 'Phikon v2',
+            'h-opt-125m': 'H-Opt',
+            'ibot': 'iBOT',
+            'lunit': 'Lunit',
+            'plip': 'PLIP',
+            'kaiko': 'Kaiko',
+            'rudolf_v': 'RudolfV',
+            'chf': 'CHF',
+            'uni_v1': 'UNI v1'
+        };
+        return nameMap[enc] || enc;
+    };
+
     const grouped = {};
-    singleData.forEach(d => {
-        if (!grouped[d.encoder]) grouped[d.encoder] = {};
-        grouped[d.encoder][d.mil] = d.auc;
+    data.forEach(d => {
+        const displayName = formatEncoderName(d.encoder, d.condition);
+        if (!grouped[displayName]) grouped[displayName] = { is_joint: d.condition !== 'single' };
+        grouped[displayName][d.mil] = d.auc;
     });
 
     const chartData = Object.keys(grouped).map(enc => ({
         encoder: enc,
         abmil: grouped[enc]['abmil'] || 0,
         transmil: grouped[enc]['transmil'] || 0,
+        is_joint: grouped[enc].is_joint
     }));
 
-    // Sort by best AUC descending
-    chartData.sort((a, b) => Math.max(b.abmil, b.transmil) - Math.max(a.abmil, a.transmil));
+    // Sort by best AUC descending, but keep joint methods at the end
+    chartData.sort((a, b) => {
+        if (a.is_joint && !b.is_joint) return 1;
+        if (!a.is_joint && b.is_joint) return -1;
+        return Math.max(b.abmil, b.transmil) - Math.max(a.abmil, a.transmil);
+    });
 
     // X-axis (category)
     const xAxis = chart.xAxes.push(
@@ -2586,7 +1825,7 @@ function switchMetric(btn, metricKey) {
 // ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
     // Build default charts
-    buildResultsChart('cptac_luad_kras');
+    buildResultsChart('tcga_brca_subtype');
     buildHeatmap('linear_cka');
     if (typeof updateMetricInfo === 'function') {
         updateMetricInfo('linear_cka');
