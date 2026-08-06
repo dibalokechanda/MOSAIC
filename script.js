@@ -2461,6 +2461,26 @@ function buildHeatmap(metricKey) {
     const encoders = metricInfo.encoders;
     const heatData = metricInfo.data;
 
+    const ENCODER_NAMES = {
+        "chief": "CHIEF",
+        "feather": "Feather",
+        "gigapath": "GigaPath-slide",
+        "madeleine": "Madeleine",
+        "prism": "PRISM",
+        "titan": "TITAN"
+    };
+
+    // Filter for lower triangle and map names
+    const filteredData = heatData.filter(item => {
+        const rowIdx = encoders.indexOf(item.y);
+        const colIdx = encoders.indexOf(item.x);
+        return rowIdx >= colIdx;
+    }).map(item => ({
+        x: ENCODER_NAMES[item.x] || item.x,
+        y: ENCODER_NAMES[item.y] || item.y,
+        value: item.value
+    }));
+
     // X-axis
     const xAxis = chart.xAxes.push(
         am5xy.CategoryAxis.new(metricsRoot, {
@@ -2473,9 +2493,9 @@ function buildHeatmap(metricKey) {
     xAxis.get("renderer").labels.template.setAll({
         fontSize: 13, fontWeight: "600",
         rotation: -45, centerY: am5.p50, centerX: am5.p100,
-        paddingRight: 10,
+        paddingRight: 10, paddingBottom: 15
     });
-    xAxis.data.setAll(encoders.map(e => ({ x: e })));
+    xAxis.data.setAll(encoders.map(e => ({ x: ENCODER_NAMES[e] || e })));
 
     // Y-axis
     const yAxis = chart.yAxes.push(
@@ -2489,8 +2509,9 @@ function buildHeatmap(metricKey) {
     );
     yAxis.get("renderer").labels.template.setAll({
         fontSize: 13, fontWeight: "600",
+        paddingRight: 15
     });
-    yAxis.data.setAll(encoders.map(e => ({ y: e })));
+    yAxis.data.setAll(encoders.map(e => ({ y: ENCODER_NAMES[e] || e })));
 
     // Heatmap series
     const series = chart.series.push(
@@ -2518,13 +2539,6 @@ function buildHeatmap(metricKey) {
         height: am5.percent(100),
     });
 
-    // Filter for lower triangle
-    const filteredData = heatData.filter(item => {
-        const rowIdx = encoders.indexOf(item.y);
-        const colIdx = encoders.indexOf(item.x);
-        return rowIdx >= colIdx;
-    });
-
     // Premium Color gradient from very light blue/slate (low) to deep purple (high)
     series.set("heatRules", [{
         target: series.columns.template,
@@ -2536,15 +2550,22 @@ function buildHeatmap(metricKey) {
 
     series.data.setAll(filteredData);
 
+    let minVal = Math.min(...filteredData.map(d => d.value));
+    let maxVal = Math.max(...filteredData.map(d => d.value));
+
     // Heat legend
     const heatLegend = chart.bottomAxesContainer.children.push(
         am5.HeatLegend.new(metricsRoot, {
             orientation: "horizontal",
             startColor: am5.color("#f8fafc"),
             endColor: am5.color("#5b21b6"),
-            startText: "0",
-            endText: "1",
+            startValue: minVal,
+            endValue: maxVal,
+            startText: minVal.toFixed(2),
+            endText: maxVal.toFixed(2),
             stepCount: 5,
+            paddingTop: 20,
+            paddingBottom: 20
         })
     );
 
