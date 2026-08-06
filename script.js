@@ -2574,6 +2574,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.animate-up').forEach(el => observer.observe(el));
+
+    // Scroll Progress Bar
+    const progressBar = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / scrollHeight) * 100;
+        if (progressBar) {
+            progressBar.style.width = scrollPercent + '%';
+        }
+    });
 });
 
 // ──────────────────────────────────────────────
