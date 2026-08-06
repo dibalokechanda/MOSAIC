@@ -1527,3 +1527,27 @@ footer {
       100% { transform: scale(1); }
     }
     .metric-label { color: var(--rm-sub); font-size: 0.86rem; font-weight: 500; margin-top: 0.2rem; }
+
+    /* ====== RESULTS/METRICS TAB BUTTONS ====== */
+    .results-tab {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Outfit', sans-serif;
+    }
+    .results-tab:hover {
+      background: #e2e8f0;
+      color: #1e293b;
+    }
+    .results-tab.active {
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
