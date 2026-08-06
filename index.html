@@ -95,6 +95,10 @@
           <stop offset="0%" stop-color="#10b981"/>
           <stop offset="100%" stop-color="#34d399"/>
         </linearGradient>
+        <linearGradient id="grad-fuchsia" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#c026d3"/>
+          <stop offset="100%" stop-color="#e879f9"/>
+        </linearGradient>
       </defs>
     </svg>
     <div class="metrics-strip">
@@ -151,6 +155,18 @@
         </div>
         <div class="metric-num">4,465</div>
         <div class="metric-label">Total Slides (TCGA & CPTAC)</div>
+      </div>
+
+      <!-- Organs -->
+      <div class="metric-card">
+        <div class="metric-icon-wrap" style="background: linear-gradient(135deg, rgba(192,38,211,0.12), rgba(232,121,249,0.08));">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="url(#grad-fuchsia)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="3" fill="url(#grad-fuchsia)" opacity="0.6"/>
+          </svg>
+        </div>
+        <div class="metric-num">3</div>
+        <div class="metric-label">Organs (Breast, Lung, Colon)</div>
       </div>
 
       <!-- Property Tests -->
