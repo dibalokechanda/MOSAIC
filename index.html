@@ -64,27 +64,84 @@
     </header>
 
     <!-- Headline metrics -->
+    <svg width="0" height="0" style="position:absolute">
+      <defs>
+        <linearGradient id="grad-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#3b82f6"/>
+          <stop offset="100%" stop-color="#6366f1"/>
+        </linearGradient>
+        <linearGradient id="grad-violet" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#7c3aed"/>
+          <stop offset="100%" stop-color="#a78bfa"/>
+        </linearGradient>
+        <linearGradient id="grad-teal" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0d9488"/>
+          <stop offset="100%" stop-color="#2dd4bf"/>
+        </linearGradient>
+        <linearGradient id="grad-rose" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#e11d48"/>
+          <stop offset="100%" stop-color="#fb7185"/>
+        </linearGradient>
+      </defs>
+    </svg>
     <div class="metrics-strip">
+
+      <!-- Encoders Tested -->
       <div class="metric-card">
-        <div class="metric-icon" style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #3b82f6;"><i class="fas fa-network-wired"></i></div>
+        <div class="metric-icon-wrap" style="background: linear-gradient(135deg, rgba(59,130,246,0.12), rgba(99,102,241,0.08));">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="5" r="2.5" stroke="url(#grad-blue)" stroke-width="1.8"/>
+            <circle cx="5" cy="19" r="2.5" stroke="url(#grad-blue)" stroke-width="1.8"/>
+            <circle cx="19" cy="19" r="2.5" stroke="url(#grad-blue)" stroke-width="1.8"/>
+            <path d="M12 7.5V12M12 12L6.5 16.5M12 12L17.5 16.5" stroke="url(#grad-blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <div class="metric-num">18</div>
         <div class="metric-label">Encoders Tested</div>
       </div>
+
+      <!-- Downstream Tasks -->
       <div class="metric-card">
-        <div class="metric-icon" style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #3b82f6;"><i class="fas fa-tasks"></i></div>
+        <div class="metric-icon-wrap" style="background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(167,139,250,0.08));">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="18" height="4" rx="1.5" fill="url(#grad-violet)" opacity="0.25"/>
+            <rect x="3" y="10" width="18" height="4" rx="1.5" fill="url(#grad-violet)" opacity="0.5"/>
+            <rect x="3" y="16" width="18" height="4" rx="1.5" fill="url(#grad-violet)" opacity="0.85"/>
+            <path d="M7 6H15M7 12H13M7 18H11" stroke="url(#grad-violet)" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div class="metric-num">14</div>
         <div class="metric-label">Downstream Tasks</div>
       </div>
+
+      <!-- Total Slides -->
       <div class="metric-card">
-        <div class="metric-icon" style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #3b82f6;"><i class="fas fa-images"></i></div>
+        <div class="metric-icon-wrap" style="background: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(45,212,191,0.08));">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="6" width="14" height="12" rx="2" stroke="url(#grad-teal)" stroke-width="1.6" fill="url(#grad-teal)" fill-opacity="0.1"/>
+            <rect x="6" y="4" width="14" height="12" rx="2" stroke="url(#grad-teal)" stroke-width="1.6" fill="url(#grad-teal)" fill-opacity="0.15"/>
+            <rect x="8" y="8" width="14" height="12" rx="2" stroke="url(#grad-teal)" stroke-width="1.6" fill="url(#grad-teal)" fill-opacity="0.25"/>
+            <circle cx="13" cy="13" r="2" fill="url(#grad-teal)" opacity="0.6"/>
+          </svg>
+        </div>
         <div class="metric-num">4,465</div>
         <div class="metric-label">Total Slides (TCGA & CPTAC)</div>
       </div>
+
+      <!-- Property Tests -->
       <div class="metric-card">
-        <div class="metric-icon" style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #3b82f6;"><i class="fas fa-vial"></i></div>
+        <div class="metric-icon-wrap" style="background: linear-gradient(135deg, rgba(225,29,72,0.12), rgba(251,113,133,0.08));">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 3H15V8L18 11V19C18 20.1 17.1 21 16 21H8C6.9 21 6 20.1 6 19V11L9 8V3Z" stroke="url(#grad-rose)" stroke-width="1.6" fill="url(#grad-rose)" fill-opacity="0.1"/>
+            <path d="M9 3H15" stroke="url(#grad-rose)" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="12" cy="16" r="2" fill="url(#grad-rose)" opacity="0.5"/>
+            <path d="M10 13H14" stroke="url(#grad-rose)" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div class="metric-num">229</div>
         <div class="metric-label">Property Tests</div>
       </div>
+
     </div>
 
 
