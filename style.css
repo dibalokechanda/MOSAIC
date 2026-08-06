@@ -416,16 +416,7 @@ footer {
     color: var(--text-muted);
 }
 
-.animate-up {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.animate-up.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
+/* Removed .animate-up to match ReOPD's default visibility and fix the blank screen bug */
 
 .delay-1 { animation-delay: 0.2s; }
 .delay-2 { animation-delay: 0.4s; }
