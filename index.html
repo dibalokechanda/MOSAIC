@@ -298,6 +298,12 @@
             <button class="results-tab" onclick="switchMetric(this, 'distance_correlation')">Distance Correlation</button>
         </div>
 
+        <!-- Metric description and equation -->
+        <div id="metric-info" style="text-align: center; margin-bottom: 2rem; min-height: 80px; padding: 0 1rem;">
+            <p id="metric-desc" style="color: var(--text-muted); margin-bottom: 0.5rem;"></p>
+            <div id="metric-equation" style="font-size: 1.1rem; color: var(--dark); overflow-x: auto;"></div>
+        </div>
+
         <!-- Heatmap container -->
         <div id="metrics-chart" style="width: 100%; height: 600px; background: #fff; border-radius: 16px; box-shadow: var(--shadow-md); border: 1px solid #e2e8f0; padding: 1rem;"></div>
     </section>
