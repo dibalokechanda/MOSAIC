@@ -1102,6 +1102,45 @@ footer {
     line-height: 1.3;
 }
 
+.section-desc {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Callout Cards */
+.callout-container {
+    margin: 3rem auto;
+    text-align: left;
+    max-width: 900px;
+}
+
+.callout-header {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--dark);
+    margin-bottom: 0.75rem;
+}
+
+.callout-underline {
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, #2563eb, #f59e0b);
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+}
+
+.callout-box {
+    border-left: 4px solid #2563eb;
+    background: linear-gradient(90deg, rgba(239, 246, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 100%);
+    padding: 1.5rem 1.75rem;
+    border-radius: 0 12px 12px 0;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #0f172a;
+}
+
 .card-desc {
     font-size: 1rem;
     color: var(--text-muted);
