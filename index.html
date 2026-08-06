@@ -99,6 +99,10 @@
           <stop offset="0%" stop-color="#c026d3"/>
           <stop offset="100%" stop-color="#e879f9"/>
         </linearGradient>
+        <linearGradient id="grad-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#0ea5e9"/>
+          <stop offset="100%" stop-color="#38bdf8"/>
+        </linearGradient>
       </defs>
     </svg>
     <div class="metrics-strip">
@@ -155,6 +159,20 @@
         </div>
         <div class="metric-num">4,465</div>
         <div class="metric-label">Total Slides (TCGA & CPTAC)</div>
+      </div>
+
+      <!-- Total Patches -->
+      <div class="metric-card">
+        <div class="metric-icon-wrap" style="background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(56,189,248,0.08));">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="3" width="7" height="7" rx="1.5" fill="url(#grad-cyan)" fill-opacity="0.85"/>
+            <rect x="14" y="3" width="7" height="7" rx="1.5" fill="url(#grad-cyan)" fill-opacity="0.55"/>
+            <rect x="3" y="14" width="7" height="7" rx="1.5" fill="url(#grad-cyan)" fill-opacity="0.55"/>
+            <rect x="14" y="14" width="7" height="7" rx="1.5" fill="url(#grad-cyan)" fill-opacity="0.25"/>
+          </svg>
+        </div>
+        <div class="metric-num">47.5M+</div>
+        <div class="metric-label">Extracted Patches</div>
       </div>
 
       <!-- Organs -->
