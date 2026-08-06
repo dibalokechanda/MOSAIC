@@ -1919,10 +1919,14 @@ footer {
 }
 
 .premium-table td {
-    padding: 1.25rem 1.5rem;
+    padding: 1rem 1.5rem;
     color: #475569;
     vertical-align: middle;
     line-height: 1.5;
+}
+
+.premium-table mjx-container[display="true"] {
+    margin: 0.25rem 0 !important;
 }
 
 .premium-table td.font-bold {
