@@ -1754,3 +1754,140 @@ footer {
       font-family: 'JetBrains Mono', monospace;
       color: #6366f1;
     }
+
+/* MOSAIC-Bench Premium Cards */
+.bench-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.bench-card {
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    padding: 1.8rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.bench-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.bench-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.bench-card:hover::before {
+    opacity: 1;
+}
+
+.bench-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.bench-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0;
+}
+
+.bench-badge {
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    background: rgba(59,130,246,0.1);
+    color: #3b82f6;
+    letter-spacing: 0.03em;
+}
+
+.bench-badge.orange {
+    background: rgba(245,158,11,0.1);
+    color: #d97706;
+}
+
+.bench-badge.green {
+    background: rgba(16,185,129,0.1);
+    color: #059669;
+}
+
+.bench-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.bench-stat-row:not(:last-child) {
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.bench-stat-label {
+    font-weight: 600;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bench-stat-value {
+    font-weight: 500;
+}
+
+.bench-task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bench-task-item {
+    padding: 0.6rem 0;
+    font-size: 0.95rem;
+    color: #475569;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+}
+
+.bench-task-item::before {
+    content: "•";
+    color: #8b5cf6;
+    font-weight: bold;
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+.bench-category-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 2rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
