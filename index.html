@@ -167,27 +167,65 @@
 
             <!-- Research questions grid -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
-                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #3b82f6; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ1 — Similarity</div>
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">How similar are the representation spaces of 18 pathology encoders measured by 7 similarity metrics?</p>
+
+                <!-- RQ1 -->
+                <div class="rq-card" onclick="openRqModal(0)">
+                    <div class="rq-badge" style="color: #3b82f6;">RQ1 — Similarity</div>
+                    <p class="rq-text">How similar are the representation spaces of 18 pathology encoders measured by 7 similarity metrics?</p>
+                    <button class="rq-expand" aria-label="Expand">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
                 </div>
-                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #7c3aed; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ2 — Architecture vs Objective</div>
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">Does the pretraining objective (vision SSL vs vision-language) drive latent geometry more than architecture?</p>
+
+                <!-- RQ2 -->
+                <div class="rq-card" onclick="openRqModal(1)">
+                    <div class="rq-badge" style="color: #7c3aed;">RQ2 — Architecture vs Objective</div>
+                    <p class="rq-text">Does the pretraining objective (vision SSL vs vision-language) drive latent geometry more than architecture?</p>
+                    <button class="rq-expand" aria-label="Expand">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
                 </div>
-                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #0d9488; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ3 — Alignment</div>
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">Can GCCA, Procrustes, optimal transport and other methods align several models into one shared latent space?</p>
+
+                <!-- RQ3 -->
+                <div class="rq-card" onclick="openRqModal(2)">
+                    <div class="rq-badge" style="color: #0d9488;">RQ3 — Alignment</div>
+                    <p class="rq-text">Can GCCA, Procrustes, optimal transport and other methods align several models into one shared latent space?</p>
+                    <button class="rq-expand" aria-label="Expand">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
                 </div>
-                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #e11d48; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ4 — Downstream Impact</div>
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">Does the aligned space improve downstream MIL classification on 14 molecular and morphological tasks?</p>
+
+                <!-- RQ4 -->
+                <div class="rq-card" onclick="openRqModal(3)">
+                    <div class="rq-badge" style="color: #e11d48;">RQ4 — Downstream Impact</div>
+                    <p class="rq-text">Does the aligned space improve downstream MIL classification on 14 molecular and morphological tasks?</p>
+                    <button class="rq-expand" aria-label="Expand">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
                 </div>
-                <div style="background: #fff; border-radius: 14px; padding: 1.5rem; border: 1px solid #e2e8f0; box-shadow: 0 2px 8px rgba(0,0,0,0.03); transition: transform 0.2s; cursor: default;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='none'">
-                    <div style="font-size: 0.75rem; font-weight: 700; color: #d97706; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.5rem;">RQ5 — Cross-model Transfer</div>
-                    <p style="margin: 0; font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">Does a classifier trained on one encoder generalise to another encoder's features through the shared space?</p>
+
+                <!-- RQ5 -->
+                <div class="rq-card" onclick="openRqModal(4)">
+                    <div class="rq-badge" style="color: #d97706;">RQ5 — Cross-model Transfer</div>
+                    <p class="rq-text">Does a classifier trained on one encoder generalise to another encoder's features through the shared space?</p>
+                    <button class="rq-expand" aria-label="Expand">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </button>
                 </div>
+
             </div>
+
+    <!-- RQ Modal Overlay -->
+    <div id="rq-modal-overlay" class="rq-modal-overlay" onclick="closeRqModal()">
+        <div class="rq-modal" onclick="event.stopPropagation()">
+            <button class="rq-modal-close" onclick="closeRqModal()" aria-label="Close">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+            </button>
+            <div class="rq-modal-badge" id="rq-modal-badge"></div>
+            <h3 class="rq-modal-title" id="rq-modal-title"></h3>
+            <div class="rq-modal-body" id="rq-modal-body"></div>
+        </div>
+    </div>
 
             <!-- Two difficulty regimes -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 900px; margin: 0 auto;">

@@ -2569,3 +2569,124 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.animate-up').forEach(el => observer.observe(el));
 });
+
+// ──────────────────────────────────────────────
+// RQ Modal System
+// ──────────────────────────────────────────────
+const RQ_DETAILS = [
+  {
+    badge: 'RQ1 — Similarity',
+    badgeColor: '#3b82f6',
+    title: 'How similar are the representation spaces?',
+    body: `
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(59,130,246,0.1); color: #3b82f6;">📊</div>
+        <div><strong>Phase I</strong> — Compute pairwise similarity matrices across all 18 encoders using <strong>7 metrics</strong>: linear CKA, kernel CKA, SVCCA, PWCCA, Procrustes, cosine RSA, and distance correlation.</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(59,130,246,0.1); color: #3b82f6;">🔬</div>
+        <div><strong>Method:</strong> 20,000 patches are randomly sampled per cohort. Each encoder produces its native-dim features, and all 7 metrics are computed on the resulting feature matrices.</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(59,130,246,0.1); color: #3b82f6;">💻</div>
+        <div><strong>Script:</strong> <code>representation_similarity.py</code></div>
+      </div>
+    `
+  },
+  {
+    badge: 'RQ2 — Architecture vs Objective',
+    badgeColor: '#7c3aed',
+    title: 'Does pretraining objective drive latent geometry?',
+    body: `
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(124,58,237,0.1); color: #7c3aed;">🏷️</div>
+        <div><strong>Family grouping</strong> — Each encoder is tagged by its pretraining family: <em>vision SSL</em> (DINOv2-based), <em>vision-language</em> (CoCa, CLIP), or <em>control</em> (ImageNet supervised).</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(124,58,237,0.1); color: #7c3aed;">📐</div>
+        <div><strong>Hypothesis:</strong> Models sharing the same pretraining objective should cluster together in similarity space regardless of architecture (ViT-B vs ViT-H vs CNN).</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(124,58,237,0.1); color: #7c3aed;">📈</div>
+        <div><strong>Analysis:</strong> Phase I similarity matrices + the <code>family</code> field in the encoder registry. Examined via hierarchical clustering and block structure in the CKA matrices.</div>
+      </div>
+    `
+  },
+  {
+    badge: 'RQ3 — Alignment',
+    badgeColor: '#0d9488',
+    title: 'Can several models be aligned into one shared space?',
+    body: `
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(13,148,136,0.1); color: #0d9488;">🔗</div>
+        <div><strong>Phase V</strong> — We benchmark <strong>6 alignment methods</strong>: GCCA, MCCA, generalized Procrustes, joint PCA, shared autoencoder, and optimal transport.</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(13,148,136,0.1); color: #0d9488;">📏</div>
+        <div><strong>Evaluation:</strong> Alignment quality is measured by reconstruction R², cosine similarity, alignment error, paired cosine, CKA in the shared space, and neighbourhood preservation.</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(13,148,136,0.1); color: #0d9488;">💻</div>
+        <div><strong>Script:</strong> <code>shared_latent_space.py</code></div>
+      </div>
+    `
+  },
+  {
+    badge: 'RQ4 — Downstream Impact',
+    badgeColor: '#e11d48',
+    title: 'Does the aligned space improve downstream learning?',
+    body: `
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(225,29,72,0.1); color: #e11d48;">🎯</div>
+        <div><strong>Phase VIII</strong> — Run <strong>14 downstream tasks</strong> (5 morphological + 9 molecular) using ABMIL and TransMIL aggregators, comparing single-encoder, concatenated, and shared-space features.</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(225,29,72,0.1); color: #e11d48;">🧬</div>
+        <div><strong>Molecular tasks:</strong> TP53, KRAS, STK11 mutations in LUAD; PIK3CA, GATA3, MAP3K1 in BRCA; TP53, KRAS, PIK3CA in COAD. These have weak morphological signal (AUC 0.6–0.75) and are the true discriminators.</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(225,29,72,0.1); color: #e11d48;">💻</div>
+        <div><strong>Script:</strong> <code>downstream_mil.py</code></div>
+      </div>
+    `
+  },
+  {
+    badge: 'RQ5 — Cross-model Transfer',
+    badgeColor: '#d97706',
+    title: 'Does a classifier trained on one encoder generalise to another?',
+    body: `
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(217,119,6,0.1); color: #d97706;">🔄</div>
+        <div><strong>Phase VI</strong> — Train a downstream classifier on encoder A's projected features, then evaluate on encoder B's projected features — without retraining.</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(217,119,6,0.1); color: #d97706;">🧪</div>
+        <div><strong>Implication:</strong> If cross-model transfer works, it validates that the shared latent space captures a genuinely encoder-invariant morphological manifold, not just a statistical artefact of alignment.</div>
+      </div>
+      <div class="rq-detail-row">
+        <div class="rq-detail-icon" style="background: rgba(217,119,6,0.1); color: #d97706;">💻</div>
+        <div><strong>Script:</strong> <code>cross_model_transfer.py</code></div>
+      </div>
+    `
+  }
+];
+
+function openRqModal(index) {
+    const rq = RQ_DETAILS[index];
+    document.getElementById('rq-modal-badge').textContent = rq.badge;
+    document.getElementById('rq-modal-badge').style.color = rq.badgeColor;
+    document.getElementById('rq-modal-title').textContent = rq.title;
+    document.getElementById('rq-modal-body').innerHTML = rq.body;
+    document.getElementById('rq-modal-overlay').classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeRqModal() {
+    document.getElementById('rq-modal-overlay').classList.remove('is-open');
+    document.body.style.overflow = '';
+}
+
+// Close modal on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeRqModal();
+});
