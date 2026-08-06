@@ -1,14 +1,14 @@
-$ /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/downstream_mil.py --task cptac_coad_pik3ca --group best --latent-dim 64 --max-patches 4000 --epochs 80 --align-patches 50000 --mil abmil transmil --seed 0 --out results/full_run/downstream/downstream/cptac_coad_pik3ca
+$ /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/downstream_mil.py --task cptac_coad_tp53 --group best --latent-dim 64 --max-patches 4000 --epochs 80 --align-patches 50000 --mil abmil transmil --seed 0 --out results/full_run/downstream/downstream/cptac_coad_tp53
 
 FeatureGroup(cptac_benchmark/10x_256px, 6 encoders: ['conch_v1', 'ctranspath', 'gigapath', 'keep', 'resnet50', 'uni_v2'])
-task: cptac_coad_pik3ca — CPTAC-COAD: predict PIK3CA mutation status from morphology
+task: cptac_coad_tp53 — CPTAC-COAD: predict TP53 mutation status from morphology
 note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
 
 223 slides, 106 patients
 label
-WT     175
-MUT     48
-split: 163 train / 60 test slides (patient-disjoint)
+MUT    118
+WT     105
+split: 170 train / 53 test slides (patient-disjoint)
 
 Fitting gcca on TRAINING slides only ... /users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   warnings.warn(
@@ -26,89 +26,89 @@ Fitting gcca on TRAINING slides only ... /users/home/dchanda/.local/lib/python3.
   warnings.warn(
 /users/home/dchanda/.local/lib/python3.12/site-packages/torch/nn/modules/transformer.py:382: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
   warnings.warn(
-done (39.0s)
+done (45.9s)
 
 === single [conch_v1] ===
   223 slides usable (0 not in the feature group)
   loaded 100/223 slides
   loaded 200/223 slides
-  loaded 223 bags, dim=512 (2.3s)
-  abmil     auc=0.4296 bacc=0.5000 f1=0.4286 acc=0.7500
-  transmil  auc=0.5170 bacc=0.4889 f1=0.4231 acc=0.7333
+  loaded 223 bags, dim=512 (2.1s)
+  abmil     auc=0.5739 bacc=0.5841 f1=0.5824 acc=0.6038
+  transmil  auc=0.5101 bacc=0.5377 f1=0.5283 acc=0.5283
 
 === single [ctranspath] ===
   223 slides usable (0 not in the feature group)
   loaded 100/223 slides
   loaded 200/223 slides
-  loaded 223 bags, dim=768 (2.4s)
-  abmil     auc=0.5393 bacc=0.5000 f1=0.4286 acc=0.7500
-  transmil  auc=0.5867 bacc=0.4889 f1=0.4231 acc=0.7333
+  loaded 223 bags, dim=768 (2.3s)
+  abmil     auc=0.5826 bacc=0.5572 f1=0.5488 acc=0.5849
+  transmil  auc=0.4884 bacc=0.4812 f1=0.4401 acc=0.4528
 
 === single [gigapath] ===
   223 slides usable (0 not in the feature group)
   loaded 100/223 slides
   loaded 200/223 slides
-  loaded 223 bags, dim=1536 (3.2s)
-  abmil     auc=0.4933 bacc=0.5000 f1=0.4286 acc=0.7500
-  transmil  auc=0.5452 bacc=0.5000 f1=0.4286 acc=0.7500
+  loaded 223 bags, dim=1536 (3.7s)
+  abmil     auc=0.4449 bacc=0.4674 f1=0.4670 acc=0.4717
+  transmil  auc=0.5725 bacc=0.5609 f1=0.5604 acc=0.5660
 
 === single [keep] ===
   223 slides usable (0 not in the feature group)
   loaded 100/223 slides
   loaded 200/223 slides
   loaded 223 bags, dim=768 (2.1s)
-  abmil     auc=0.5615 bacc=0.5556 f1=0.5547 acc=0.7333
-  transmil  auc=0.5378 bacc=0.5000 f1=0.4286 acc=0.7500
+  abmil     auc=0.5507 bacc=0.4833 f1=0.3537 acc=0.5472
+  transmil  auc=0.5087 bacc=0.5000 f1=0.3026 acc=0.4340
 
 === single [resnet50] ===
   223 slides usable (0 not in the feature group)
   loaded 100/223 slides
   loaded 200/223 slides
-  loaded 223 bags, dim=1024 (2.3s)
-  abmil     auc=0.6726 bacc=0.5000 f1=0.4286 acc=0.7500
-  transmil  auc=0.5541 bacc=0.5000 f1=0.4286 acc=0.7500
+  loaded 223 bags, dim=1024 (2.6s)
+  abmil     auc=0.5188 bacc=0.5000 f1=0.3614 acc=0.5660
+  transmil  auc=0.5319 bacc=0.5000 f1=0.3026 acc=0.4340
 
 === single [uni_v2] ===
   223 slides usable (0 not in the feature group)
   loaded 100/223 slides
   loaded 200/223 slides
-  loaded 223 bags, dim=1536 (2.7s)
-  abmil     auc=0.5926 bacc=0.5000 f1=0.4286 acc=0.7500
-  transmil  auc=0.5941 bacc=0.5111 f1=0.4991 acc=0.7000
+  loaded 223 bags, dim=1536 (3.0s)
+  abmil     auc=0.5536 bacc=0.5123 f1=0.5109 acc=0.5283
+  transmil  auc=0.5725 bacc=0.5790 f1=0.5741 acc=0.6038
 
 === concat [all] ===
   223 slides usable (0 not in the feature group)
   loaded 100/223 slides
   loaded 200/223 slides
-  loaded 223 bags, dim=6144 (18.3s)
-  abmil     auc=0.5481 bacc=0.5000 f1=0.4286 acc=0.7500
-  transmil  auc=0.5585 bacc=0.5000 f1=0.4286 acc=0.7500
+  loaded 223 bags, dim=6144 (18.4s)
+  abmil     auc=0.4812 bacc=0.4674 f1=0.4670 acc=0.4717
+  transmil  auc=0.5580 bacc=0.5000 f1=0.3026 acc=0.4340
 
 === shared [all] ===
   223 slides usable (0 not in the feature group)
   loaded 100/223 slides
   loaded 200/223 slides
-  loaded 223 bags, dim=64 (17.5s)
-  abmil     auc=0.6548 bacc=0.5000 f1=0.4286 acc=0.7500
-  transmil  auc=0.7244 bacc=0.5000 f1=0.4286 acc=0.7500
+  loaded 223 bags, dim=64 (28.1s)
+  abmil     auc=0.3551 bacc=0.5000 f1=0.3614 acc=0.5660
+  transmil  auc=0.4652 bacc=0.5000 f1=0.3026 acc=0.4340
 
 === Phase VIII results (patient-disjoint test split) ===
 condition   encoders      mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
-   single   conch_v1    abmil  512 0.4296    0.7500 0.4286             0.5000      60      7.3
-   single   conch_v1 transmil  512 0.5170    0.7333 0.4231             0.4889      60      8.8
-   single ctranspath    abmil  768 0.5393    0.7500 0.4286             0.5000      60      3.8
-   single ctranspath transmil  768 0.5867    0.7333 0.4231             0.4889      60      9.1
-   single   gigapath    abmil 1536 0.4933    0.7500 0.4286             0.5000      60      4.6
-   single   gigapath transmil 1536 0.5452    0.7500 0.4286             0.5000      60      8.4
-   single       keep    abmil  768 0.5615    0.7333 0.5547             0.5556      60      9.1
-   single       keep transmil  768 0.5378    0.7500 0.4286             0.5000      60      8.8
-   single   resnet50    abmil 1024 0.6726    0.7500 0.4286             0.5000      60      4.6
-   single   resnet50 transmil 1024 0.5541    0.7500 0.4286             0.5000      60     10.2
-   single     uni_v2    abmil 1536 0.5926    0.7500 0.4286             0.5000      60      4.2
-   single     uni_v2 transmil 1536 0.5941    0.7000 0.4991             0.5111      60      9.9
-   concat        all    abmil 6144 0.5481    0.7500 0.4286             0.5000      60     13.0
-   concat        all transmil 6144 0.5585    0.7500 0.4286             0.5000      60     18.8
-   shared        all    abmil   64 0.6548    0.7500 0.4286             0.5000      60     17.0
-   shared        all transmil   64 0.7244    0.7500 0.4286             0.5000      60     10.3
+   single   conch_v1    abmil  512 0.5739    0.6038 0.5824             0.5841      53     10.0
+   single   conch_v1 transmil  512 0.5101    0.5283 0.5283             0.5377      53      9.2
+   single ctranspath    abmil  768 0.5826    0.5849 0.5488             0.5572      53      7.2
+   single ctranspath transmil  768 0.4884    0.4528 0.4401             0.4812      53     12.2
+   single   gigapath    abmil 1536 0.4449    0.4717 0.4670             0.4674      53      6.2
+   single   gigapath transmil 1536 0.5725    0.5660 0.5604             0.5609      53     12.5
+   single       keep    abmil  768 0.5507    0.5472 0.3537             0.4833      53      3.6
+   single       keep transmil  768 0.5087    0.4340 0.3026             0.5000      53      8.0
+   single   resnet50    abmil 1024 0.5188    0.5660 0.3614             0.5000      53      4.6
+   single   resnet50 transmil 1024 0.5319    0.4340 0.3026             0.5000      53      9.8
+   single     uni_v2    abmil 1536 0.5536    0.5283 0.5109             0.5123      53     13.4
+   single     uni_v2 transmil 1536 0.5725    0.6038 0.5741             0.5790      53     11.8
+   concat        all    abmil 6144 0.4812    0.4717 0.4670             0.4674      53     12.7
+   concat        all transmil 6144 0.5580    0.4340 0.3026             0.5000      53     15.3
+   shared        all    abmil   64 0.3551    0.5660 0.3614             0.5000      53      4.2
+   shared        all transmil   64 0.4652    0.4340 0.3026             0.5000      53      8.2
 
-Wrote results to results/full_run/downstream/downstream/cptac_coad_pik3ca
+Wrote results to results/full_run/downstream/downstream/cptac_coad_tp53

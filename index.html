@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOSAIC: Towards a Universal Latent Space for Computational Pathology Foundation Models</title>
+    <meta name="description" content="Prompt-Guided Few-Shot Cancer Subtyping in Computational Pathology">
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MathJax for LaTeX rendering -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true,
+                packages: {'[+]': ['ams', 'boldsymbol']}
+            },
+            options: {
+                enableMenu: false
+            },
+            loader: {load: ['[tex]/ams', '[tex]/boldsymbol']}
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">MOSAIC</a>
+            <div class="nav-links">
+                <a href="#dataset">MOSAIC-Bench</a>
+                <a href="#gcca-algorithm">GCCA Algorithm</a>
+                <a href="#chorus-variants">MOSAIC-Variants</a>
+                <a href="#model-weights">Model Weights</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero" style="min-height: 80vh; display: flex; flex-direction: column; justify-content: center;">
+
+        <div class="logo-container animate-up" style="margin-bottom: 3rem; text-align: center;">
+            <img src="images/mosaic.jpg" alt="MOSAIC Logo" class="floating-logo" style="max-height: 450px; width: auto;">
+        </div>
+        <h1 class="animate-up" style="max-width: 1000px; margin-left: auto; margin-right: auto;">
+            MOSAIC: Towards a Universal Latent Space for Computational Pathology Foundation Models for Prompt-Guided Few-Shot Cancer Subtyping in
+            Computational Pathology
+        </h1>
+
+        <div class="authors animate-up delay-1" style="margin-top: 2rem;">
+            <span class="author-link" style="text-decoration: none; cursor: default;">Anonymous Authors</span>
+        </div>
+
+        <div class="affiliations animate-up delay-1">
+            <p style="margin-top: 0.5rem; font-weight: 600; color: var(--secondary); font-size: 1.5rem;">Submitted to
+                NeurIPS 2026
+            </p>
+        </div>
+
+        <div class="hero-buttons animate-up delay-2" style="margin-top: 3rem;">
+            <a href="https://github.com/anonymousneurip2026/Chorus_anon" class="btn btn-primary" target="_blank"><i
+                    class="fab fa-github"></i> Code</a>
+            <a href="#dataset" class="btn btn-secondary"><i class="fas fa-database"></i> MOSAIC-Bench</a>
+            <a href="#gcca-algorithm" class="btn btn-secondary"><i class="fas fa-code"></i> GCCA Algorithm</a>
+            <a href="#chorus-variants" class="btn btn-secondary"><i class="fas fa-superscript"></i> MOSAIC-Variants</a>
+            <a href="#interpretability" class="btn btn-secondary"><i class="fas fa-search-location"></i> Text
+                Interpretability</a>
+            <a href="#visual-interpretability" class="btn btn-secondary"><i class="fas fa-microscope"></i> Image
+                Interpretability</a>
+            <a href="#model-weights" class="btn btn-secondary"><img src="hf-logo.svg" alt="Hugging Face" style="height: 1.6rem; width: auto; margin-right: 0.5rem;"> Model Weights</a>
+            <a href="#docker" class="btn btn-secondary"><i class="fab fa-docker"></i> Docker</a>
+        </div>
+    </header>
+
+    <!-- Headline metrics -->
+    <div class="metrics-strip">
+      <div class="metric-card">
+        <div class="metric-num">18</div>
+        <div class="metric-label">Encoders Tested</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">14</div>
+        <div class="metric-label">Downstream Tasks</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">4,465</div>
+        <div class="metric-label">Total Slides (TCGA & CPTAC)</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-num">229</div>
+        <div class="metric-label">Property Tests</div>
+      </div>
+    </div>
+
+
+
+    <section id="key-idea" class="animate-up" style="padding: 4rem 2rem; background: var(--bg-light); border-bottom: 1px solid #eee;">
+        <div style="max-width: 1100px; margin: 0 auto;">
+            <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">The Key Idea</h2>
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <img src="concept.png" alt="MOSAIC Concept" style="max-width: 100%; height: auto; mix-blend-mode: multiply;">
+            </div>
+            <div class="math-detail" style="margin-top: 0; padding-top: 0; border-top: none;">
+                <p style="font-size: 1.05rem; color: var(--text-main); line-height: 1.7; text-align: left; margin: 0 auto; max-width: 1000px;">
+                    <span style="display: block; margin-bottom: 1rem; font-size: 1.1rem;"><strong>Overview of the MOSAIC framework.</strong></span>
+                    <span style="display: block; margin-bottom: 0.75rem;"><strong>(1) Calibration phase.</strong> Patches are randomly sampled from a calibration set of WSIs and encoded by \(K_v\) pathology foundation models, each producing features in its own native dimensionality. Generalized Canonical Correlation Analysis (GCCA) fits projection matrices \(\{\mathbf{W}_k\}\) that map all encoders into a unified \(D\)-dimensional representation space.</span>
+                    <span style="display: block; margin-bottom: 0.75rem;"><strong>(2) Global agreement signal.</strong> In the unified space, each feature dimension is characterized by how strongly the projected encoder views correlate. The agreement spectrum \(\boldsymbol{\rho} \in [0,1]^D\) separates dimensions where encoders <em>Do Agree</em> (encoder-invariant tissue structure) from dimensions where they <em>Do Not Agree</em> (encoder-specific variation).</span>
+                    <span style="display: block; margin-bottom: 0.75rem;"><strong>(3) Local uncertainty signal.</strong> At inference time, each patch is projected by all encoders and the cross-encoder variance is computed. Patches with high variance (red Gaussian) indicate encoder disagreement and are treated as locally uncertain; patches with low variance (green Gaussian) indicate consensus and are treated as informative. MOSAIC uses \(\boldsymbol{\rho}\) and \(\boldsymbol{\sigma}^2(x)\) jointly to guide prompt-based MIL aggregation.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Consolidated Dataset Section -->
+    <section id="dataset" class="animate-up" style="padding: 6rem 2rem; max-width: 1100px; margin: 0 auto;">
+        <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">MOSAIC-Bench Artifacts</h2>
+
+        <p style="margin-bottom: 2.5rem; color: var(--text-muted); font-size: 1.1rem; max-width: 800px;">
+            The following artifacts contain the Generalised Canonical Correlation Analysis (GCCA) projection matrices
+            and agreement signals used to align multi-encoder visual features into the MOSAIC latent space.
+        </p>
+
+        <div class="table-container"
+            style="background: white; border-radius: 16px; box-shadow: var(--shadow-md); overflow: hidden; border: 1px solid #e2e8f0; margin-bottom: 4rem;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                        <th style="padding: 1.25rem 1.5rem; font-weight: 600; color: var(--dark);">Cohort</th>
+                        <th style="padding: 1.25rem 1.5rem; font-weight: 600; color: var(--dark);">Artifact Filename
+                        </th>
+                        <th style="padding: 1.25rem 1.5rem; font-weight: 600; color: var(--dark);">Size</th>
+                        <th style="padding: 1.25rem 1.5rem; font-weight: 600; color: var(--dark); text-align: right;">
+                            Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">TCGA-NSCLC</td>
+                        <td
+                            style="padding: 1.25rem 1.5rem; font-family: monospace; font-size: 0.9rem; color: var(--text-muted);">
+                            visual_cca_LUNG_20x_256px_0px_overlap.npz</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">14.7 MB</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="visual_cca_LUNG_20x_256px_0px_overlap.npz" download
+                                style="color: var(--primary); text-decoration: none; font-weight: 600;"><i
+                                    class="fas fa-download"></i></a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">TCGA-RCC</td>
+                        <td
+                            style="padding: 1.25rem 1.5rem; font-family: monospace; font-size: 0.9rem; color: var(--text-muted);">
+                            visual_cca_RCC_20x_256px_0px_overlap.npz</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">14.7 MB</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="visual_cca_RCC_20x_256px_0px_overlap.npz" download
+                                style="color: var(--primary); text-decoration: none; font-weight: 600;"><i
+                                    class="fas fa-download"></i></a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Calibration IDs</td>
+                        <td
+                            style="padding: 1.25rem 1.5rem; font-family: monospace; font-size: 0.9rem; color: var(--text-muted);">
+                            cca_calibration_slide_ids.csv</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">6.6 KB</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="cca_calibration_slide_ids.csv" download
+                                style="color: var(--primary); text-decoration: none; font-weight: 600;"><i
+                                    class="fas fa-file-csv"></i></a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">License</td>
+                        <td
+                            style="padding: 1.25rem 1.5rem; font-family: monospace; font-size: 0.9rem; color: var(--text-muted);">
+                            CC BY-NC-SA 4.0</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">1.2 KB</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="LICENSE" download
+                                style="color: var(--primary); text-decoration: none; font-weight: 600;"><i
+                                    class="fas fa-file-contract"></i></a>
+                        </td>
+                    </tr>
+                    <tr style="background: #f8fafc;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 700; color: var(--primary);">Full Bundle</td>
+                        <td
+                            style="padding: 1.25rem 1.5rem; font-family: monospace; font-size: 0.9rem; color: var(--text-muted);">
+                            MOSAIC_CCA_Artifacts.zip</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">28.2 MB</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="MOSAIC_CCA_Artifacts.zip" download
+                                style="color: var(--primary); text-decoration: none; font-weight: 700;"><i
+                                    class="fas fa-file-archive"></i></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pre-computed Features Note Card -->
+        <div class="animate-up" style="background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 16px; padding: 2rem; display: flex; align-items: center; gap: 1.5rem; margin-bottom: 4rem; box-shadow: var(--shadow-sm);">
+            <div style="background: #0f172a; color: white; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.5rem;">
+                <i class="fas fa-microchip"></i>
+            </div>
+            <div>
+                <h4 style="font-family: 'Outfit'; font-size: 1.1rem; margin-bottom: 0.25rem; color: #0f172a;">Upcoming Feature Release</h4>
+                <p style="color: #475569; font-size: 0.95rem; margin: 0; font-weight: 500;">
+                    Note: The pre-computed feature sets for each individual foundation model encoder (UNI, GigaPath, and ResNet50) will be released upon acceptance.
+                </p>
+            </div>
+        </div>
+
+        <div id="alignment-details" style="border-top: 1px solid #e2e8f0; padding-top: 3rem;">
+            <h3 style="font-family: 'Outfit'; font-size: 1.8rem; margin-bottom: 1.5rem;">Alignment & Calibration History
+            </h3>
+
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">
+                GCCA parameters were derived using 16-shot training sets (Fold 0) to maintain few-shot constraints. The
+                following table summarizes the deterministic sampling used for multi-encoder alignment.
+            </p>
+
+            <div class="table-container"
+                style="background: white; border-radius: 12px; box-shadow: var(--shadow-sm); overflow: hidden; border: 1px solid #e2e8f0; margin-bottom: 3rem;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
+                    <thead>
+                        <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                            <th style="padding: 1rem; font-weight: 600;">Cohort</th>
+                            <th style="padding: 1rem; font-weight: 600;">Training Slides</th>
+                            <th style="padding: 1rem; font-weight: 600;">Calibration Set</th>
+                            <th style="padding: 1rem; font-weight: 600;">Holdout Set</th>
+                            <th style="padding: 1rem; font-weight: 600;">Total Patches</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border-bottom: 1px solid #f1f5f9;">
+                            <td style="padding: 1rem;">TCGA-NSCLC</td>
+                            <td style="padding: 1rem;">32</td>
+                            <td style="padding: 1rem;">27</td>
+                            <td style="padding: 1rem;">5</td>
+                            <td style="padding: 1rem;">138,131</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 1rem;">TCGA-RCC</td>
+                            <td style="padding: 1rem;">48</td>
+                            <td style="padding: 1rem;">43</td>
+                            <td style="padding: 1rem;">5</td>
+                            <td style="padding: 1rem;">150,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interpretability Explorer Section -->
+    <section id="interpretability" class="interpret-section animate-up">
+        <h2 class="section-title">Text Interpretability Explorer</h2>
+
+        <div class="explorer-box">
+            <!-- Cohort Selector -->
+            <div class="cohort-selector">
+                <button class="cohort-btn active" onclick="setCohort('TCGA-NSCLC')">TCGA-NSCLC</button>
+                <button class="cohort-btn" onclick="setCohort('TCGA-RCC')">TCGA-RCC</button>
+            </div>
+
+            <!-- Subclass Tabs -->
+            <div id="subclass-container" class="subclass-tabs">
+                <!-- Buttons will be injected by JS -->
+            </div>
+
+            <!-- Color Legend -->
+            <div class="interpret-legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #9C27B0;"></div>
+                    <span>Pathology</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #1E88E5;"></div>
+                    <span>Anatomy</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FF9800;"></div>
+                    <span>Characteristics</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #FF0D57;"></div>
+                    <span>Actions</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #E0E0E0;"></div>
+                    <span>Background / Other</span>
+                </div>
+            </div>
+
+            <!-- Image Display -->
+            <div class="interpret-display">
+                <img id="interpret-img" src="" alt="Interpretability Map" class="interpret-image">
+            </div>
+
+            <!-- Technical Detail Box -->
+            <div class="math-detail animate-up">
+                <p>
+                    <strong>Semantic Alignment Calculation:</strong> The interpretability of the MOSAIC framework is
+                    derived from the alignment between visual patch embeddings and clinical token features. For a given
+                    image patch \(i\) with visual feature mean \(\mu_i\) and a clinical text prompt tokenized into
+                    tokens \(\{t_j\}_{j=1}^N\), the relevance score \(R_{i,j}\) is defined as the normalized dot product
+                    in the joint embedding space:
+                </p>
+
+                <div class="equation-box">
+                    \[ R_{i,j} = \frac{\mu_i \cdot t_j}{\|\mu_i\| \|t_j\|} \]
+                </div>
+
+                <p>
+                    The final diagnostic heatmap for a specific clinical term \(j\) is generated by aggregating these
+                    relevance scores across the slide manifold, providing a spatially-resolved audit of the model's
+                    evidence-based reasoning.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Interpretability Explorer Section -->
+    <section id="visual-interpretability" class="visual-section animate-up">
+        <h2 class="section-title">Image Interpretability Explorer</h2>
+        <div class="explorer-box visual-split">
+            <!-- Heatmap Display (Left) -->
+            <div class="visual-main">
+                <div class="heatmap-display">
+                    <img id="heatmap-img" src="" alt="Visual Heatmap" class="heatmap-img">
+                </div>
+
+                <!-- Colorbar Legend -->
+                <div class="colorbar-legend animate-up delay-1" style="margin-top: 2rem; display: flex; flex-direction: column; align-items: center; gap: 0.75rem;">
+                    <img src="coolwarm_clean_bar.png" alt="Colorbar" style="width: 280px; height: 12px; border-radius: 2px; object-fit: cover;">
+                    <div style="width: 280px; display: flex; justify-content: space-between; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em;">
+                        <span>Low Uncertainty</span>
+                        <span>High Uncertainty</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Controls Sidebar (Right) -->
+            <div class="visual-sidebar">
+                <div class="control-group">
+                    <label class="control-label">Cohort Selection</label>
+                    <div class="cohort-selector">
+                        <button class="cohort-btn active" id="v-cohort-nsclc"
+                            onclick="setVisualCohort('TCGA-NSCLC')">TCGA-NSCLC</button>
+                        <button class="cohort-btn" id="v-cohort-rcc"
+                            onclick="setVisualCohort('TCGA-RCC')">TCGA-RCC</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label for="slide-select" class="control-label">Select Slide ID</label>
+                    <select id="slide-select" class="slide-select" onchange="setVisualSlide(this.value)">
+                        <!-- Options injected by JS -->
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label class="control-label">Analysis Variation</label>
+                    <div class="variation-tabs" id="variation-container">
+                        <!-- MOSAIC -->
+                        <div class="variation-card active" onclick="setVisualVariation('combined')">
+                            <div class="var-num">01</div>
+                            <div class="var-content">
+                                <h3>MOSAIC (Combined)</h3>
+                            </div>
+                        </div>
+                        <!-- UNI -->
+                        <div class="variation-card" onclick="setVisualVariation('uni_v1')">
+                            <div class="var-num">02</div>
+                            <div class="var-content">
+                                <h3>UNI v1</h3>
+                            </div>
+                        </div>
+                        <!-- Gigapath -->
+                        <div class="variation-card" onclick="setVisualVariation('gigapath')">
+                            <div class="var-num">03</div>
+                            <div class="var-content">
+                                <h3>Gigapath</h3>
+                            </div>
+                        </div>
+                        <!-- ResNet50 -->
+                        <div class="variation-card" onclick="setVisualVariation('resnet50')">
+                            <div class="var-num">04</div>
+                            <div class="var-content">
+                                <h3>ResNet-50</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Detail Box (Full Width) -->
+            <div class="math-detail animate-up"
+                style="grid-column: 1 / -1; margin-top: 4rem; background: transparent; border: none; padding: 0;">
+                <p>
+                    <strong>Hierarchical Uncertainty Visualization:</strong> The visual interpretability maps are
+                    generated through a multi-scale alignment process. For each whole slide image (WSI), feature
+                    embeddings are extracted across three heterogeneous backbones (UNI, GigaPath, and ResNet50) and
+                    projected into a joint latent space via Generalized Canonical Correlation Analysis (GCCA). The
+                    diagnostic uncertainty for each image patch \(i\) is quantified by the variance \(\Sigma^2_i\)
+                    across the aligned encoder outputs, representing the degree of consensus among the vision models.
+                    These patch-level uncertainty scores are then hierarchically mapped onto the original WSI thumbnail
+                    using a high-resolution heatmap overlay.
+                </p>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 3rem;">
+                    <div class="significance-table">
+                        <h4
+                            style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--dark); text-transform: uppercase; letter-spacing: 0.05em;">
+                            📊 Diagnostic Significance (MOSAIC)</h4>
+                        <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #f1f5f9;">
+                                    <th style="padding: 0.75rem 0; font-weight: 700; width: 100px;">Level</th>
+                                    <th style="padding: 0.75rem 0; font-weight: 700;">Interpretation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 0.75rem 0;"><span style="color: #B40426; font-weight: 700;">🟥
+                                            High</span></td>
+                                    <td style="padding: 0.75rem 0; color: var(--text-muted);"><strong
+                                            style="color: var(--dark);">Diagnostic Ambiguity:</strong> Encoders provide
+                                        conflicting morphological signals.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 0.75rem 0;"><span style="color: #64748b; font-weight: 700;">⬜
+                                            Middle</span></td>
+                                    <td style="padding: 0.75rem 0; color: var(--text-muted);"><strong
+                                            style="color: var(--dark);">Transitional:</strong> Normal baseline variance
+                                        in feature extraction.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 0.75rem 0;"><span style="color: #3B4CC0; font-weight: 700;">🟦
+                                            Low</span></td>
+                                    <td style="padding: 0.75rem 0; color: var(--text-muted);"><strong
+                                            style="color: var(--dark);">Strong Consensus:</strong> Robust agreement
+                                        across vision models.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="significance-table">
+                        <h4
+                            style="font-size: 0.85rem; margin-bottom: 1rem; color: var(--dark); text-transform: uppercase; letter-spacing: 0.05em;">
+                            🎨 Encoder Significance (Baseline)</h4>
+                        <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #f1f5f9;">
+                                    <th style="padding: 0.75rem 0; font-weight: 700; width: 100px;">Level</th>
+                                    <th style="padding: 0.75rem 0; font-weight: 700;">Interpretation (e.g., UNI)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 0.75rem 0;"><span style="color: #B40426; font-weight: 700;">🟥
+                                            High</span></td>
+                                    <td style="padding: 0.75rem 0; color: var(--text-muted);"><strong
+                                            style="color: var(--dark);">Outlier Signal:</strong> Encoder provides
+                                        evidence different from the consensus.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 0.75rem 0;"><span style="color: #64748b; font-weight: 700;">⬜
+                                            Middle</span></td>
+                                    <td style="padding: 0.75rem 0; color: var(--text-muted);"><strong
+                                            style="color: var(--dark);">Average:</strong> Features are consistent with
+                                        the model population.</td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td style="padding: 0.75rem 0;"><span style="color: #3B4CC0; font-weight: 700;">🟦
+                                            Low</span></td>
+                                    <td style="padding: 0.75rem 0; color: var(--text-muted);"><strong
+                                            style="color: var(--dark);">Stable:</strong> In near-perfect agreement with
+                                        the multi-modal mean.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Docker Section -->
+    <section id="docker" class="animate-up" style="padding: 8rem 2rem 6rem; max-width: 1100px; margin: 0 auto; background: #fff; border-radius: 24px; border: 1px solid #e2e8f0; margin-bottom: 4rem; box-shadow: var(--shadow-md);">
+        <div style="display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+                <h2 class="section-title" style="text-align: left; margin-bottom: 1.5rem;">Docker Deployment</h2>
+                <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                    To ensure reproducibility and ease of deployment, we are preparing a comprehensive Docker image that
+                    contains the entire MOSAIC environment, including all foundation model dependencies and the
+                    uncertainty-aware harmonization pipeline.
+                </p>
+                <div style="background: #f8fafc; border-left: 4px solid var(--primary); padding: 1.5rem; border-radius: 0 12px 12px 0;">
+                    <p style="margin: 0; font-weight: 600; color: var(--dark);">
+                        <i class="fas fa-info-circle" style="color: var(--primary); margin-right: 0.5rem;"></i>
+                        The Docker image and associated execution instructions will be released upon acceptance.
+                    </p>
+                </div>
+            </div>
+            <div style="flex: 0 0 250px; display: flex; justify-content: center; align-items: center;">
+                <i class="fab fa-docker" style="font-size: 10rem; color: var(--dark); opacity: 0.1;"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Model Weights Section -->
+    <section id="model-weights" class="animate-up" style="padding: 6rem 2rem; max-width: 1100px; margin: 0 auto;">
+        <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">Model Weights</h2>
+
+        <p style="margin-bottom: 2.5rem; color: var(--text-muted); font-size: 1.1rem; max-width: 800px;">
+            MOSAIC model weights for various architecture variants will be made available on Hugging Face. 
+            <strong>Note: Model weights will be released upon acceptance.</strong>
+        </p>
+
+        <div class="table-container"
+            style="background: white; border-radius: 16px; box-shadow: var(--shadow-md); overflow: hidden; border: 1px solid #e2e8f0; margin-bottom: 4rem;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                    <tr style="background: #f8fafc; border-bottom: 1px solid #e2e8f0;">
+                        <th style="padding: 1.25rem 1.5rem; font-weight: 600; color: var(--dark);">Variant</th>
+                        <th style="padding: 1.25rem 1.5rem; font-weight: 600; color: var(--dark);">Status</th>
+                        <th style="padding: 1.25rem 1.5rem; font-weight: 600; color: var(--dark); text-align: right;">
+                            Hugging Face</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-Base</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-\(\rho\)</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-\(\rho^A\)</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-\(\sigma\)</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-Sum</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-Prec</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-Mask</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-\(\rho^T\)</td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #f1f5f9;">
+                        <td style="padding: 1.25rem 1.5rem; font-weight: 600;">Chorus-Inv <span style="font-style: italic; font-weight: 400; color: var(--text-muted);">(falsification)</span></td>
+                        <td style="padding: 1.25rem 1.5rem; color: var(--text-muted); font-size: 0.9rem;">Released upon acceptance</td>
+                        <td style="padding: 1.25rem 1.5rem; text-align: right;">
+                            <a href="#" style="text-decoration: none;" title="Hugging Face - Released upon acceptance">
+                                <img src="hf-logo.svg" alt="Hugging Face" style="height: 2.2rem; width: auto; vertical-align: middle;">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Technical Walkthrough Section -->
+    <section id="walkthrough" class="animate-up walkthrough-section">
+        <h2 class="section-title">Key Components</h2>
+        <p class="section-description">
+            A formal walkthrough of the MOSAIC algorithmic pipeline, illustrating the integration of multi-modal
+            alignment kernels and uncertainty-modulated attention mechanisms.
+        </p>
+
+        <div class="explainer-container">
+            <!-- Code Viewport -->
+            <div id="code-viewport" class="code-viewport-style">
+
+                <!-- Code Stage 1 -->
+                <div class="code-stage active" id="stage-0">
+                    <h4 class="stage-title">Stage 1 & 2: Adaptive Token Selection</h4>
+                    <div class="citation-box">
+                        <button class="copy-btn" onclick="copyCode(this, 'snippet-0')">Copy</button>
+                        <pre id="snippet-0">
+<span class="code-keyword">def</span> <span class="code-func">adaptive_token_selection_chorus</span>(self, features, sigma_sq, rho_v, text_features):
+    <span class="code-comment"># Compute patch-level similarity & filter redundant windows</span>
+    _, indices = self.compute_patch_similarity_chorus(features, sigma_sq, rho_v, self.window_size)
+
+    <span class="code-comment"># Penalize text relevance by uncertainty (beta * sigma_sq)</span>
+    text_relevance = torch.matmul(feats_for_score, text_features.T).mean(-1)
+    <span class="code-keyword">if</span> self.variant <span class="code-keyword">in</span> (<span class="code-string">"v3_local"</span>, <span class="code-string">"v4_hybrid"</span>):
+        patch_penalty = self.beta * sigma_sq.sum(dim=-1)
+        text_relevance = text_relevance - patch_penalty
+
+    <span class="code-comment"># Select Top-K tokens based on importance mask</span>
+    _, selected_indices = torch.topk(importance_mask, <span class="code-builtin">min</span>(self.L_max, N))
+    <span class="code-keyword">return</span> features[selected_indices], sigma_sq[selected_indices]</pre>
+                    </div>
+                </div>
+
+                <!-- Code Stage 2 -->
+                <div class="code-stage" id="stage-1" style="display: none;">
+                    <h4 class="stage-title">Uncertainty Estimation (GCCA)</h4>
+                    <div class="citation-box">
+                        <button class="copy-btn" onclick="copyCode(this, 'snippet-1')">Copy</button>
+                        <pre id="snippet-1">
+<span class="code-keyword">def</span> <span class="code-func">_fuse</span>(self, x_l_list):
+    <span class="code-comment"># Align multiple encoders into shared latent space</span>
+    z_list = [x.squeeze(<span class="code-number">0</span>).float() <span class="code-keyword">for</span> x <span class="code-keyword">in</span> x_l_list]
+    
+    <span class="code-comment"># mu: latent mean, sigma_sq: per-patch uncertainty</span>
+    mu, sigma_sq, _ = self.visual_align(z_list)
+    <span class="code-keyword">return</span> mu, sigma_sq
+
+<span class="code-comment"># rho: global agreement signal</span>
+rho_v = self._get_rho_v()</pre>
+                    </div>
+                </div>
+
+                <!-- Code Stage 3 -->
+                <div class="code-stage" id="stage-2" style="display: none;">
+                    <h4 class="stage-title">Stage 3: Spatial Token Compression</h4>
+                    <div class="citation-box">
+                        <button class="copy-btn" onclick="copyCode(this, 'snippet-2')">Copy</button>
+                        <pre id="snippet-2">
+<span class="code-keyword">def</span> <span class="code-func">spatial_token_compression_chorus</span>(self, features, sigma_sq, rho_v):
+    <span class="code-comment"># Normalize using agreement signal rho</span>
+    chunk_norm = rho_weighted_normalize(chunk, rho_v, self.variant)
+    
+    <span class="code-comment"># Filter adjacent tokens with high similarity in latent space</span>
+    sim = F.cosine_similarity(chunk_norm[:-1], chunk_norm[1:], dim=-1)
+    keep_mask = sim < self.sim_threshold
+    <span class="code-keyword">return</span> torch.cat([chunk[:<span class="code-number">1</span>], chunk[<span class="code-number">1</span>:][keep_mask]])</pre>
+                    </div>
+                </div>
+
+                <!-- Code Stage 4 -->
+                <div class="code-stage" id="stage-3" style="display: none;">
+                    <h4 class="stage-title">Stage 4: Uncertainty-Aware Attention</h4>
+                    <div class="citation-box">
+                        <button class="copy-btn" onclick="copyCode(this, 'snippet-3')">Copy</button>
+                        <pre id="snippet-3">
+<span class="code-keyword">def</span> <span class="code-func">cross_attention_chorus</span>(self, queries, keys, values, sigma_sq_v, rho_v, rho_t):
+    <span class="code-comment"># Modulate QK by sqrt(rho) to focus on reliable alignment dimensions</span>
+    k = k * torch.sqrt(torch.clamp(rho_v, min=<span class="code-number">0.0</span>))
+    q = q * torch.sqrt(torch.clamp(rho_t, min=<span class="code-number">0.0</span>))
+
+    <span class="code-comment"># Bias attention scores by patch reliability bias</span>
+    patch_bias = per_patch_reliability_bias(sigma_sq_v, self.beta)
+    scores = (q @ k.transpose(-2, -1)) * scale + patch_bias</pre>
+                    </div>
+                </div>
+
+                <!-- Code Stage 5 -->
+                <div class="code-stage" id="stage-4" style="display: none;">
+                    <h4 class="stage-title">Uncertainty Utility Kernels</h4>
+                    <div class="citation-box">
+                        <button class="copy-btn" onclick="copyCode(this, 'snippet-4')">Copy</button>
+                        <pre id="snippet-4">
+<span class="code-keyword">def</span> <span class="code-func">reweight_features</span>(mu, sigma_sq, rho, variant, alpha=<span class="code-number">1.0</span>, tau=<span class="code-number">0.3</span>):
+    <span class="code-comment"># mu_tilde = g(mu, sigma^2, rho)</span>
+    <span class="code-keyword">if</span> variant == <span class="code-string">"v5_precision"</span>:
+        w = rho / (<span class="code-number">1.0</span> + alpha * sigma_sq)
+        <span class="code-keyword">return</span> mu * w
+    <span class="code-keyword">return</span> mu
+
+<span class="code-keyword">def</span> <span class="code-func">rho_weighted_normalize</span>(x, rho, variant, eps=<span class="code-number">1e-8</span>, tau=<span class="code-number">0.3</span>):
+    <span class="code-comment"># rho-weighted L2 normalization</span>
+    weight = torch.sqrt(torch.clamp(rho, min=<span class="code-number">0.0</span>))
+    xw = x * weight
+    <span class="code-keyword">return</span> F.normalize(xw, p=<span class="code-number">2</span>, dim=-<span class="code-number">1</span>, eps=eps)
+
+<span class="code-keyword">def</span> <span class="code-func">per_patch_reliability_bias</span>(sigma_sq, beta):
+    <span class="code-keyword">return</span> -beta * sigma_sq.sum(dim=-<span class="code-number">1</span>)
+
+<span class="code-keyword">def</span> <span class="code-func">modulate_qkv_for_attention</span>(q, k, v, rho_v, rho_t, variant):
+    <span class="code-keyword">if</span> variant <span class="code-keyword">in</span> (<span class="code-string">"v2_attn"</span>, <span class="code-string">"v4_hybrid"</span>):
+        k = k * torch.sqrt(torch.clamp(rho_v, min=<span class="code-number">0.0</span>))
+        q = q * torch.sqrt(torch.clamp(rho_t, min=<span class="code-number">0.0</span>))
+    <span class="code-keyword">return</span> q, k, v</pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps Sidebar -->
+            <div class="explainer-sidebar">
+                <div class="step-card active" onclick="switchStage(0)" id="card-0">
+                    <div class="step-num">01</div>
+                    <div class="step-content">
+                        <h3>Token Selection</h3>
+                        <p>Adaptive filtering based on prompt relevance.</p>
+                    </div>
+                </div>
+                <div class="step-card" onclick="switchStage(1)" id="card-1">
+                    <div class="step-num">02</div>
+                    <div class="step-content">
+                        <h3>GCCA Alignment</h3>
+                        <p>Multi-encoder latent space alignment.</p>
+                    </div>
+                </div>
+                <div class="step-card" onclick="switchStage(2)" id="card-2">
+                    <div class="step-num">03</div>
+                    <div class="step-content">
+                        <h3>Spatial Compression</h3>
+                        <p>Redundancy removal via cosine similarity.</p>
+                    </div>
+                </div>
+                <div class="step-card" onclick="switchStage(3)" id="card-3">
+                    <div class="step-num">04</div>
+                    <div class="step-content">
+                        <h3>Cross-Attention</h3>
+                        <p>Uncertainty-biased classification.</p>
+                    </div>
+                </div>
+                <div class="step-card" onclick="switchStage(4)" id="card-4">
+                    <div class="step-num">05</div>
+                    <div class="step-content">
+                        <h3>Utility Kernels</h3>
+                        <p>Core reweighting and modulation functions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <!-- GCCA Algorithm Section -->
+    <section id="gcca-algorithm" class="animate-up" style="padding: 6rem 2rem; background: var(--bg-light); border-top: 1px solid #eee;">
+        <div style="max-width: 800px; margin: 0 auto; margin-bottom: 4rem;">
+            <h2 class="section-title" style="text-align: left; margin-bottom: 1.5rem;">GCCA Algorithmic Walkthrough</h2>
+            <p style="color: var(--text-muted); font-size: 1.15rem; max-width: 700px; line-height: 1.7;">
+                Step through the regularized MAXVAR-GCCA procedure that aligns heterogeneous pathology foundation models into a shared latent space.
+            </p>
+        </div>
+
+        <div class="gcca-progress" style="max-width: 800px; margin: 0 auto 2.5rem; display: flex; align-items: center; justify-content: space-between; background: var(--bg-white); padding: 1rem 1.5rem; border-radius: 9999px; border: 1px solid #e2e8f0; box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <span class="progress-text" id="stepLabel" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--dark);">Step 1 / 9</span>
+                <div class="progress-dots" id="dots" style="display: flex; gap: 8px;"></div>
+            </div>
+            
+            <div class="gcca-nav-inline" style="display: flex; gap: 0.75rem;">
+                <button class="gcca-btn-sm btn-prev" id="gccaPrevBtn" disabled onclick="goGCCA(-1)" style="padding: 0.5rem 1.25rem; font-size: 0.85rem;">
+                    <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;"><polyline points="15 18 9 12 15 6"/></svg>
+                    Back
+                </button>
+                <button class="gcca-btn-sm btn-next" id="gccaNextBtn" onclick="goGCCA(1)" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; background: var(--dark); color: white; border: none; border-radius: 9999px; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                    Next
+                    <svg viewBox="0 0 24 24" style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round;"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </div>
+
+
+
+
+
+        <div class="gcca-cards" id="gcca-cards-container" style="max-width: 800px; margin: 0 auto; padding: 16px 0 32px; display: flex; flex-direction: column; gap: 20px;">
+            <!-- 1 -->
+            <div class="gcca-card active">
+                <div class="card-step">Step 1: Setup</div>
+                <div class="card-title">Multi-Encoder Feature Extraction</div>
+                <div class="card-desc">Three frozen foundation models encode every patch independently, each producing features in its own native dimensionality \(d_k\).</div>
+                <div class="card-eq">\[\mathbf{Z}_{s,k} \in \mathbb{R}^{N_s \times d_k}, \quad k \in \{1,2,3\}\]</div>
+                <table class="dim-table">
+                    <thead><tr><th>Encoder</th><th>Dim \(d_k\)</th></tr></thead>
+                    <tbody>
+                        <tr><td>UNI</td><td>1024</td></tr>
+                        <tr><td>GigaPath</td><td>1536</td></tr>
+                        <tr><td>ResNet-50</td><td>1024</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 2 -->
+            <div class="gcca-card locked">
+                <div class="card-step">Step 2: Centering</div>
+                <div class="card-title">Center Each View</div>
+                <div class="card-desc">Compute the empirical mean of each encoder on a calibration set of ~140K patches and subtract it.</div>
+                <div class="card-eq">\[\bar{\mathbf{Z}}_k = \mathbf{Z}_k - \mathbf{1}\boldsymbol{\mu}_k^\top\]</div>
+                <div class="card-note">The means \(\boldsymbol{\mu}_k\) are saved and reused at inference.</div>
+            </div>
+
+            <!-- 3 -->
+            <div class="gcca-card locked">
+                <div class="card-step">Step 3: Covariance</div>
+                <div class="card-title">Regularized Covariance</div>
+                <div class="card-desc">Estimate within-view covariance with a ridge term for numerical stability.</div>
+                <div class="card-eq">\[\tilde{\boldsymbol{\Sigma}}_{kk} = \tfrac{1}{N}\bar{\mathbf{Z}}_k^\top \bar{\mathbf{Z}}_k + \lambda\mathbf{I}, \quad \lambda{=}10^{-3}\]</div>
+            </div>
+
+            <!-- 4 -->
+            <div class="gcca-card locked">
+                <div class="card-step">Step 4: Whitening</div>
+                <div class="card-title">Inverse Square Root</div>
+                <div class="card-desc">Transform each view to have identity covariance via eigendecomposition.</div>
+                <div class="card-eq">\[\tilde{\mathbf{Z}}_k = \bar{\mathbf{Z}}_k\;\tilde{\boldsymbol{\Sigma}}_{kk}^{-1/2}\]</div>
+                <div class="card-note">After whitening each encoder's features are decorrelated and unit-variance.</div>
+            </div>
+
+            <!-- 5 -->
+            <div class="gcca-card locked">
+                <div class="card-step">Step 5: Concatenation</div>
+                <div class="card-title">Stack Whitened Views</div>
+                <div class="card-desc">Concatenate all whitened matrices into one wide matrix.</div>
+                <div class="card-eq">\[\mathbf{M} = [\,\tilde{\mathbf{Z}}_1 \mid \tilde{\mathbf{Z}}_2 \mid \tilde{\mathbf{Z}}_3\,] \in \mathbb{R}^{N \times 3584}\]</div>
+            </div>
+
+            <!-- 6 -->
+            <div class="gcca-card locked">
+                <div class="card-step">Step 6: SVD</div>
+                <div class="card-title">Truncated SVD</div>
+                <div class="card-desc">Extract the top \(D{=}512\) right singular vectors: the directions of maximum consensus variance.</div>
+                <div class="card-eq">\[\mathbf{M} = \mathbf{U}\boldsymbol{\Sigma}\mathbf{V}^\top\]</div>
+            </div>
+
+            <!-- 7 -->
+            <div class="gcca-card locked">
+                <div class="card-step">Step 7: Recovery</div>
+                <div class="card-title">Per-Encoder Projections</div>
+                <div class="card-desc">Partition \(\mathbf{V}\) and undo whitening to recover frozen projection matrices.</div>
+                <div class="card-eq">\[\mathbf{W}_k = \tilde{\boldsymbol{\Sigma}}_{kk}^{-1/2}\mathbf{V}_k \in \mathbb{R}^{d_k \times 512}\]</div>
+            </div>
+
+            <!-- 8 -->
+            <div class="gcca-card locked">
+                <div class="card-step">Step 8: Global Signal</div>
+                <div class="card-title">Agreement Spectrum \(\boldsymbol{\rho}\)</div>
+                <div class="card-desc">Measure per-dimension correlation across encoders. Image-independent.</div>
+                <div class="card-eq">\[\rho_j = \tfrac{1}{3}\sum_{i \lt k}\mathrm{corr}(\mathbf{H}_{i,j}, \mathbf{H}_{k,j})\]</div>
+                <div class="card-note">\(\boldsymbol{\rho}\in[0,1]^{512}\) is the same for all slides.</div>
+            </div>
+
+            <!-- 9 -->
+            <div class="gcca-card locked">
+                <div class="card-step">Step 9: Local Signal</div>
+                <div class="card-title">Per-Patch Uncertainty \(\boldsymbol{\sigma}^2\)</div>
+                <div class="card-desc">At inference, compute cross-encoder variance per patch. Image-dependent.</div>
+                <div class="card-eq">\[\sigma^2(x) = \tfrac{1}{3}\sum_k (\mathbf{h}_k(x) - \boldsymbol{\mu}(x))^2\]</div>
+                <div class="card-note">\(\boldsymbol{\sigma}^2 \in \mathbb{R}^{N_s \times 512}\) is different for every slide.</div>
+            </div>
+        </div>
+
+
+    </section>
+
+
+    <!-- MOSAIC Variants Equation Explorer -->
+    <section id="chorus-variants" class="variants-section animate-up">
+        <div class="variants-page">
+            <h2 class="section-title" style="text-align: left; margin-bottom: 1.5rem;">MOSAIC Variant Equations</h2>
+            <p class="variants-intro">
+                Each MOSAIC variant defines a different way to combine the fused embedding \(\boldsymbol{\mu}\)
+                with the two uncertainty signals \(\boldsymbol{\rho}\) and \(\boldsymbol{\sigma}^2\).
+                Click on any underlined part of an equation to reveal what it means.
+            </p>
+            <div class="variants-hint">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                Click the underlined symbols in each equation
+            </div>
+
+            <!-- BASELINE -->
+
+            <div class="v-card open" id="v-base">
+                <div class="v-header" onclick="toggleVCard('v-base')">
+                    <span class="v-tag">Chorus-Base</span>
+                    <span class="v-name">Multi-encoder fusion only</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Isolates whether fusion alone provides gains without any uncertainty signals.</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-base" data-key="output" onclick="showVTip(this)">\(\tilde{\boldsymbol{\mu}}\)</span>
+                            \(\;=\;\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-base" data-key="mu" onclick="showVTip(this)">\(\boldsymbol{\mu}\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-base','output')">output</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-base','mu')">fused mean</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-base-tip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ρ-BASED -->
+
+            <div class="v-card open" id="v-rho">
+                <div class="v-header" onclick="toggleVCard('v-rho')">
+                    <span class="v-tag">Chorus-ρ</span>
+                    <span class="v-name">Global agreement at features</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Scale each feature dimension by its cross-encoder agreement signal.</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-rho" data-key="output" onclick="showVTip(this)">\(\tilde{\boldsymbol{\mu}}\)</span>
+                            \(\;=\;\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-rho" data-key="mu" onclick="showVTip(this)">\(\boldsymbol{\mu}\)</span>
+                            \(\;\odot\;\)
+                            <span class="v-eq-part" data-hl="c" data-card="v-rho" data-key="rho" onclick="showVTip(this)">\(\boldsymbol{\rho}\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-rho','output')">output</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-rho','mu')">fused mean</span>
+                                <span class="v-eq-arrow-label" data-hl="c" onclick="clickVLabel(this,'v-rho','rho')">agreement</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-rho-tip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ATTENTION -->
+
+            <div class="v-card open" id="v-attn">
+                <div class="v-header" onclick="toggleVCard('v-attn')">
+                    <span class="v-tag">Chorus-ρ<sup>A</sup></span>
+                    <span class="v-name">Attention-time modulation</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Apply agreement weighting to all components of the attention mechanism (Q, K, and V).</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-attn" data-key="attn_out" onclick="showVTip(this)">\(\mathrm{Attn}\)</span>
+                            \(\;=\;\mathrm{softmax}\!\Bigl(\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-attn" data-key="qk" onclick="showVTip(this)">\((\mathbf{Q}\!\odot\!\sqrt{\boldsymbol{\rho}})(\mathbf{K}\!\odot\!\sqrt{\boldsymbol{\rho}})^\top\)</span>
+                            \(\;/\;\)
+                            <span class="v-eq-part" data-hl="c" data-card="v-attn" data-key="sqrt_dh" onclick="showVTip(this)">\(\sqrt{d_h}\)</span>
+                            \(\Bigr)\;\)
+                            <span class="v-eq-part" data-hl="e" data-card="v-attn" data-key="values_mod" onclick="showVTip(this)">\((\mathbf{V}\!\odot\!\sqrt{\boldsymbol{\rho}})\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-attn','attn_out')">output</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-attn','qk')">ρ-weighted scores</span>
+                                <span class="v-eq-arrow-label" data-hl="c" onclick="clickVLabel(this,'v-attn','sqrt_dh')">scale</span>
+                                <span class="v-eq-arrow-label" data-hl="e" onclick="clickVLabel(this,'v-attn','values_mod')">weighted values</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-attn-tip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- σ²-BASED -->
+
+            <div class="v-card open" id="v-sigma">
+                <div class="v-header" onclick="toggleVCard('v-sigma')">
+                    <span class="v-tag">Chorus-σ</span>
+                    <span class="v-name">Per-patch local uncertainty (basis-invariant)</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Penalize uncertain patches during token selection based on variance across encoders.</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-sigma" data-key="score" onclick="showVTip(this)">\(\mathrm{score}(x)\)</span>
+                            \(\;=\;\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-sigma" data-key="base_score" onclick="showVTip(this)">\(\mathbf{x}^\top \mathbf{T}\)</span>
+                            \(\;-\;\)
+                            <span class="v-eq-part" data-hl="c" data-card="v-sigma" data-key="beta" onclick="showVTip(this)">\(\beta\)</span>
+                            <span class="v-eq-part" data-hl="d" data-card="v-sigma" data-key="sigma_sum" onclick="showVTip(this)">\(\displaystyle\sum_{j} \sigma^2_j(x)\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-sigma','score')">score</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-sigma','base_score')">similarity</span>
+                                <span class="v-eq-arrow-label" data-hl="c" onclick="clickVLabel(this,'v-sigma','beta')">scale</span>
+                                <span class="v-eq-arrow-label" data-hl="d" onclick="clickVLabel(this,'v-sigma','sigma_sum')">uncertainty</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-sigma-tip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMBINED -->
+
+            <div class="v-card open" id="v-sum">
+                <div class="v-header" onclick="toggleVCard('v-sum')">
+                    <span class="v-tag">Chorus-Sum</span>
+                    <span class="v-name">Combined modulation</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Uses both ρ and σ² jointly to modulate the final embedding.</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-sum" data-key="output" onclick="showVTip(this)">\(\tilde{\boldsymbol{\mu}}\)</span>
+                            \(\;=\;\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-sum" data-key="mu" onclick="showVTip(this)">\(\boldsymbol{\mu}\)</span>
+                            \(\;\odot\;\)
+                            <span class="v-eq-part" data-hl="c" data-card="v-sum" data-key="rho" onclick="showVTip(this)">\(\boldsymbol{\rho}\)</span>
+                            \(\;-\;\)
+                            <span class="v-eq-part" data-hl="d" data-card="v-sum" data-key="sigma_sum" onclick="showVTip(this)">\(\text{penalty}(\boldsymbol{\sigma}^2)\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-sum','output')">output</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-sum','mu')">fused mean</span>
+                                <span class="v-eq-arrow-label" data-hl="c" onclick="clickVLabel(this,'v-sum','rho')">prior</span>
+                                <span class="v-eq-arrow-label" data-hl="d" onclick="clickVLabel(this,'v-sum','sigma_sum')">joint penalty</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-sum-tip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="v-card open" id="v-prec">
+                <div class="v-header" onclick="toggleVCard('v-prec')">
+                    <span class="v-tag">Chorus-Prec</span>
+                    <span class="v-name">Bayesian precision weighting</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Multiplicative form where both signals must concur to trust a dimension.</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-prec" data-key="output" onclick="showVTip(this)">\(\tilde{\boldsymbol{\mu}}\)</span>
+                            \(\;=\;\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-prec" data-key="mu" onclick="showVTip(this)">\(\boldsymbol{\mu}\)</span>
+                            \(\;\odot\;\)
+                            <span class="v-eq-part" data-hl="c" data-card="v-prec" data-key="rho" onclick="showVTip(this)">\(\boldsymbol{\rho}\)</span>
+                            \(\;\oslash\;\)
+                            <span class="v-eq-part" data-hl="d" data-card="v-prec" data-key="denom" onclick="showVTip(this)">\(\bigl(1 + \alpha\,\boldsymbol{\sigma}^2(x)\bigr)\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-prec','output')">output</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-prec','mu')">fused mean</span>
+                                <span class="v-eq-arrow-label" data-hl="c" onclick="clickVLabel(this,'v-prec','rho')">global prior</span>
+                                <span class="v-eq-arrow-label" data-hl="d" onclick="clickVLabel(this,'v-prec','denom')">local precision</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-prec-tip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBSPACE -->
+
+            <div class="v-card open" id="v-mask">
+                <div class="v-header" onclick="toggleVCard('v-mask')">
+                    <span class="v-tag">Chorus-Mask</span>
+                    <span class="v-name">Hard subspace projection</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Zero out dimensions below an agreement threshold to isolate robust features.</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-mask" data-key="output" onclick="showVTip(this)">\(\tilde{\boldsymbol{\mu}}\)</span>
+                            \(\;=\;\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-mask" data-key="mu" onclick="showVTip(this)">\(\boldsymbol{\mu}\)</span>
+                            \(\;\odot\;\)
+                            <span class="v-eq-part" data-hl="d" data-card="v-mask" data-key="indicator" onclick="showVTip(this)">\(\mathbb{1}[\boldsymbol{\rho} \gt \tau]\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-mask','output')">output</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-mask','mu')">fused mean</span>
+                                <span class="v-eq-arrow-label" data-hl="d" onclick="clickVLabel(this,'v-mask','indicator')">threshold mask</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-mask-tip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="v-card open" id="v-inv">
+                <div class="v-header" onclick="toggleVCard('v-inv')">
+                    <span class="v-tag">Chorus-Inv</span>
+                    <span class="v-name">Falsification check (Inverted agreement)</span>
+                    <span class="v-falsification">designed to fail</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Weights features by disagreement to verify that agreement is the source of signal.</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-inv" data-key="output" onclick="showVTip(this)">\(\tilde{\boldsymbol{\mu}}\)</span>
+                            \(\;=\;\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-inv" data-key="mu" onclick="showVTip(this)">\(\boldsymbol{\mu}\)</span>
+                            \(\;\odot\;\)
+                            <span class="v-eq-part" data-hl="d" data-card="v-inv" data-key="inv_rho" onclick="showVTip(this)">\((1 - \boldsymbol{\rho})\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-inv','output')">output</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-inv','mu')">fused mean</span>
+                                <span class="v-eq-arrow-label" data-hl="d" onclick="clickVLabel(this,'v-inv','inv_rho')">inverted ρ</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-inv-tip"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="v-card open" id="v-attn-min">
+                <div class="v-header" onclick="toggleVCard('v-attn-min')">
+                    <span class="v-tag">Chorus-ρ<sup>T</sup></span>
+                    <span class="v-name">Minimal attention modulation</span>
+                    <svg class="v-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+                <div class="v-body">
+                    <div class="v-purpose">Modulates only the Queries and Keys (attention scores) while keeping the original Value vectors.</div>
+                    <div class="v-eq-area">
+                        <div class="v-eq-box">
+                            <span class="v-eq-part" data-hl="a" data-card="v-attn-min" data-key="attn_out" onclick="showVTip(this)">\(\mathrm{Attn}\)</span>
+                            \(\;=\;\mathrm{softmax}\!\Bigl(\)
+                            <span class="v-eq-part" data-hl="b" data-card="v-attn-min" data-key="qk" onclick="showVTip(this)">\((\mathbf{Q}\!\odot\!\sqrt{\boldsymbol{\rho}})(\mathbf{K}\!\odot\!\sqrt{\boldsymbol{\rho}})^\top\)</span>
+                            \(\;/\;\)
+                            <span class="v-eq-part" data-hl="c" data-card="v-attn-min" data-key="sqrt_dh" onclick="showVTip(this)">\(\sqrt{d_h}\)</span>
+                            \(\Bigr)\;\)
+                            <span class="v-eq-part" data-hl="e" data-card="v-attn-min" data-key="values" onclick="showVTip(this)">\(\mathbf{V}\)</span>
+                            <div class="v-eq-arrows">
+                                <span class="v-eq-arrow-label" data-hl="a" onclick="clickVLabel(this,'v-attn-min','attn_out')">output</span>
+                                <span class="v-eq-arrow-label" data-hl="b" onclick="clickVLabel(this,'v-attn-min','qk')">ρ-weighted scores</span>
+                                <span class="v-eq-arrow-label" data-hl="c" onclick="clickVLabel(this,'v-attn-min','sqrt_dh')">scale</span>
+                                <span class="v-eq-arrow-label" data-hl="e" onclick="clickVLabel(this,'v-attn-min','values')">unweighted values</span>
+                            </div>
+                        </div>
+                        <div class="v-tip" id="v-attn-min-tip"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 MOSAIC</p>
+        <p style="font-size: 0.8rem; margin-top: 1rem; opacity: 0.7;">This work is for research purposes only under CC
+            BY-NC-SA 4.0.</p>
+    </footer>
+
+    <script src="visual_heatmap_manifest.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

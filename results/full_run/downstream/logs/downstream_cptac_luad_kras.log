@@ -1,0 +1,2 @@
+$ /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/downstream_mil.py --task cptac_luad_kras --group best --latent-dim 64 --max-patches 4000 --epochs 80 --align-patches 50000 --mil abmil transmil --seed 0 --out results/full_run/downstream/downstream/cptac_luad_kras
+

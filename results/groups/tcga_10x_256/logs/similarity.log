@@ -1,0 +1,2 @@
+$ /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/representation_similarity.py --group master_benchmark/10x_256px --n-patches 50000 --max-slides 500 --max-samples 8000 --seed 0 --no-umap --out results/groups/tcga_10x_256/similarity
+

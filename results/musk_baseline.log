@@ -1,0 +1,268 @@
+=== cptac_luad_tp53 ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_luad_tp53 — CPTAC-LUAD: predict TP53 mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+1058 slides, 227 patients
+label
+MUT    541
+WT     517
+split: 803 train / 255 test slides (patient-disjoint)
+
+=== single [musk] ===
+  1058 slides usable (0 not in the feature group)
+  loaded 100/1058 slides
+  loaded 200/1058 slides
+  loaded 300/1058 slides
+  loaded 400/1058 slides
+  loaded 500/1058 slides
+  loaded 600/1058 slides
+  loaded 700/1058 slides
+  loaded 800/1058 slides
+  loaded 900/1058 slides
+  loaded 1000/1058 slides
+  loaded 1058 bags, dim=1024 (98.5s)
+  abmil     auc=0.6793 bacc=0.6264 f1=0.6263 acc=0.6275
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.6793    0.6275 0.6263             0.6264     255     31.8
+
+Wrote results to results/musk_baseline/cptac_luad_tp53
+=== cptac_luad_kras ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_luad_kras — CPTAC-LUAD: predict KRAS mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+1058 slides, 227 patients
+label
+WT     724
+MUT    334
+split: 796 train / 262 test slides (patient-disjoint)
+
+=== single [musk] ===
+  1058 slides usable (0 not in the feature group)
+  loaded 100/1058 slides
+  loaded 200/1058 slides
+  loaded 300/1058 slides
+  loaded 400/1058 slides
+  loaded 500/1058 slides
+  loaded 600/1058 slides
+  loaded 700/1058 slides
+  loaded 800/1058 slides
+  loaded 900/1058 slides
+  loaded 1000/1058 slides
+  loaded 1058 bags, dim=1024 (9.4s)
+  abmil     auc=0.7049 bacc=0.5383 f1=0.4985 acc=0.6832
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.7049    0.6832 0.4985             0.5383     262     47.9
+
+Wrote results to results/musk_baseline/cptac_luad_kras
+=== cptac_luad_stk11 ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_luad_stk11 — CPTAC-LUAD: predict STK11 mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+1058 slides, 227 patients
+label
+WT     921
+MUT    137
+split: 785 train / 273 test slides (patient-disjoint)
+
+=== single [musk] ===
+  1058 slides usable (0 not in the feature group)
+  loaded 100/1058 slides
+  loaded 200/1058 slides
+  loaded 300/1058 slides
+  loaded 400/1058 slides
+  loaded 500/1058 slides
+  loaded 600/1058 slides
+  loaded 700/1058 slides
+  loaded 800/1058 slides
+  loaded 900/1058 slides
+  loaded 1000/1058 slides
+  loaded 1058 bags, dim=1024 (9.9s)
+  abmil     auc=0.7636 bacc=0.6220 f1=0.6477 acc=0.8828
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.7636    0.8828 0.6477              0.622     273     56.5
+
+Wrote results to results/musk_baseline/cptac_luad_stk11
+=== cptac_brca_pik3ca ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_brca_pik3ca — CPTAC-BRCA: predict PIK3CA mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+377 slides, 116 patients
+label
+WT     265
+MUT    112
+split: 270 train / 107 test slides (patient-disjoint)
+
+=== single [musk] ===
+  377 slides usable (0 not in the feature group)
+  loaded 100/377 slides
+  loaded 200/377 slides
+  loaded 300/377 slides
+  loaded 377 bags, dim=1024 (32.5s)
+  abmil     auc=0.5876 bacc=0.4711 f1=0.4411 acc=0.6168
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.5876    0.6168 0.4411             0.4711     107     13.2
+
+Wrote results to results/musk_baseline/cptac_brca_pik3ca
+=== cptac_brca_gata3 ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_brca_gata3 — CPTAC-BRCA: predict GATA3 mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+377 slides, 116 patients
+label
+WT     338
+MUT     39
+split: 272 train / 105 test slides (patient-disjoint)
+
+=== single [musk] ===
+  377 slides usable (0 not in the feature group)
+  loaded 100/377 slides
+  loaded 200/377 slides
+  loaded 300/377 slides
+  loaded 377 bags, dim=1024 (2.1s)
+  abmil     auc=0.5000 bacc=0.4947 f1=0.4724 acc=0.8952
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim  auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024  0.5    0.8952 0.4724             0.4947     105     13.1
+
+Wrote results to results/musk_baseline/cptac_brca_gata3
+=== cptac_brca_map3k1 ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_brca_map3k1 — CPTAC-BRCA: predict MAP3K1 mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+377 slides, 116 patients
+label
+WT     348
+MUT     29
+split: 288 train / 89 test slides (patient-disjoint)
+
+=== single [musk] ===
+  377 slides usable (0 not in the feature group)
+  loaded 100/377 slides
+  loaded 200/377 slides
+  loaded 300/377 slides
+  loaded 377 bags, dim=1024 (1.7s)
+  abmil     auc=0.4294 bacc=0.5000 f1=0.4885 acc=0.9551
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.4294    0.9551 0.4885                0.5      89     11.1
+
+Wrote results to results/musk_baseline/cptac_brca_map3k1
+=== cptac_coad_tp53 ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_coad_tp53 — CPTAC-COAD: predict TP53 mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+223 slides, 106 patients
+label
+MUT    118
+WT     105
+split: 170 train / 53 test slides (patient-disjoint)
+
+=== single [musk] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=1024 (12.9s)
+  abmil     auc=0.4971 bacc=0.4826 f1=0.4715 acc=0.4717
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.4971    0.4717 0.4715             0.4826      53     11.4
+
+Wrote results to results/musk_baseline/cptac_coad_tp53
+=== cptac_coad_kras ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_coad_kras — CPTAC-COAD: predict KRAS mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+223 slides, 106 patients
+label
+WT     151
+MUT     72
+split: 160 train / 63 test slides (patient-disjoint)
+
+=== single [musk] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=1024 (1.4s)
+  abmil     auc=0.6151 bacc=0.5169 f1=0.4949 acc=0.6508
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.6151    0.6508 0.4949             0.5169      63      9.4
+
+Wrote results to results/musk_baseline/cptac_coad_kras
+=== cptac_coad_pik3ca ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_coad_pik3ca — CPTAC-COAD: predict PIK3CA mutation status from morphology
+note: Patients without sequencing are excluded, not called WT. Mutation prediction from H&E is a weak-signal task — AUCs in the 0.6-0.75 range are the norm — which makes it far more discriminative between encoders than tissue typing.
+
+223 slides, 106 patients
+label
+WT     175
+MUT     48
+split: 163 train / 60 test slides (patient-disjoint)
+
+=== single [musk] ===
+  223 slides usable (0 not in the feature group)
+  loaded 100/223 slides
+  loaded 200/223 slides
+  loaded 223 bags, dim=1024 (1.3s)
+  abmil     auc=0.5763 bacc=0.5000 f1=0.4286 acc=0.7500
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.5763      0.75 0.4286                0.5      60      6.8
+
+Wrote results to results/musk_baseline/cptac_coad_pik3ca
+=== cptac_nsclc ===
+FeatureGroup(cptac_benchmark/10x_384px, 1 encoders: ['musk'])
+task: cptac_nsclc — CPTAC NSCLC subtyping: adenocarcinoma vs squamous cell carcinoma
+note: The external-validation counterpart to tcga_nsclc: train on TCGA, test here, to show a shared latent space transfers across cohorts. SEVERELY IMBALANCED as extracted (1139 LUAD vs 134 LSCC) because only ~12% of the LSCC cohort has features — report balanced accuracy and AUC, never accuracy. Extracting the rest of LSCC fixes it.
+
+1273 slides, 275 patients
+label
+CPTAC-LUAD    1139
+CPTAC-LSCC     134
+split: 955 train / 318 test slides (patient-disjoint)
+
+=== single [musk] ===
+  1273 slides usable (0 not in the feature group)
+  loaded 100/1273 slides
+  loaded 200/1273 slides
+  loaded 300/1273 slides
+  loaded 400/1273 slides
+  loaded 500/1273 slides
+  loaded 600/1273 slides
+  loaded 700/1273 slides
+  loaded 800/1273 slides
+  loaded 900/1273 slides
+  loaded 1000/1273 slides
+  loaded 1100/1273 slides
+  loaded 1200/1273 slides
+  loaded 1273 bags, dim=1024 (22.5s)
+  abmil     auc=0.9178 bacc=0.6316 f1=0.6845 acc=0.9119
+
+=== Phase VIII results (patient-disjoint test split) ===
+condition encoders   mil  dim    auc  accuracy     f1  balanced_accuracy  n_test  seconds
+   single     musk abmil 1024 0.9178    0.9119 0.6845             0.6316     318     39.7
+
+Wrote results to results/musk_baseline/cptac_nsclc
+MUSK BASELINES DONE

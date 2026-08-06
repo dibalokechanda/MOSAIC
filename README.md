@@ -12,6 +12,37 @@
   </a>
 </div>
 
+
+<div align="center">
+
+### 18 encoders · 2 cohorts · 4,465 slides · 14 tasks
+
+</div>
+
+| | |
+|---|---|
+| **Patch encoders** | **12** — UNI2-h, Prov-GigaPath, Virchow, Virchow2, H-optimus-0, GPFM, CTransPath, CONCH, CONCH v1.5, KEEP, MUSK, ResNet50 *(control)* |
+| **Slide encoders** | **6** — TITAN, PRISM, CHIEF, Madeleine, GigaPath-slide, Feather |
+| **Cohorts** | **2** — TCGA (2,169 slides) · CPTAC (2,296 slides) |
+| **Organs** | breast, lung (adeno + squamous), colon |
+| **Magnifications** | 5× / 10× / 20×, at 224 / 256 / 384 / 512 px |
+| **Similarity metrics** | **7** — linear CKA, kernel CKA, SVCCA, PWCCA, Procrustes, cosine RSA, distance correlation |
+| **Alignment methods** | **6** — GCCA, MCCA, generalized Procrustes, joint PCA, shared autoencoder, optimal transport |
+| **Downstream tasks** | **14** — 5 morphological/clinical + 9 molecular |
+| **MIL heads** | 3 — ABMIL, TransMIL, mean-pool control |
+| **Tests** | 229 property tests |
+
+**Tasks split into two difficulty regimes**, which is the point:
+
+- **High-level (morphological / clinical)** — NSCLC subtyping, breast IDC-vs-ILC,
+  breast and lung staging, CPTAC NSCLC subtyping. Directly visible in tissue
+  architecture; subtyping saturates near AUC 0.97, so it separates encoders
+  poorly.
+- **Low-level (molecular)** — 9 mutation-prediction tasks across LUAD
+  (TP53/KRAS/STK11), BRCA (PIK3CA/GATA3/MAP3K1) and COAD (TP53/KRAS/PIK3CA).
+  Weak morphological signal, AUCs typically 0.6–0.75 — **these are what actually
+  discriminate between representations.**
+
 ---
 
 ## Contents
@@ -191,8 +222,31 @@ families across 2296 slides. The 224px group is a useful second experiment (four
 large vision-SSL models) but has **no vision-language model**, so RQ2 must be
 answered on the 256px group.
 
-MUSK is stranded alone at 384px and CONCH v1.5 pairs only with CONCH v1 at 512px;
-both need re-extraction at 256px to join the main comparison.
+CONCH v1.5 pairs only with CONCH v1 at 512px; re-extracting it at 256px would
+bring it into the main comparison.
+
+**MUSK is the one encoder alone on its grid** (384px), so no other encoder
+shares its patches. That rules it out of every *comparative* analysis — there is
+no partner to compute a similarity against, align to, or transfer between:
+
+| Analysis | MUSK |
+|---|---|
+| Phase VIII, `single` condition | **yes** — 2296 CPTAC slides, all 14 tasks |
+| Phase I similarity | no — needs a paired partner |
+| Phase V shared space | no — needs ≥2 paired encoders |
+| Phase VI transfer / VII retrieval | no |
+| Magnification ablation | no — its series has one encoder |
+
+So MUSK is kept as a **standalone downstream baseline**, which is a legitimate
+and useful role: it answers "how good is MUSK on this task" even though it
+cannot answer "how similar is MUSK to UNI2". Re-extracting it at 256px is what
+would unlock the comparative half.
+
+```bash
+python scripts/downstream_mil.py --task cptac_luad_tp53 \
+    --group cptac_benchmark/10x_384px --encoders musk --conditions single \
+    --out results/musk_baseline
+```
 
 ```python
 from utils.features import FeatureStore
@@ -409,7 +463,9 @@ canonical correlations: $\frac{1}{k}\sum_i \rho_i$.
 representation its direction accounts for ($h_i$ = i-th canonical variate of $X$,
 $x_j$ = its feature columns):
 
-$$\alpha_i=\sum_j\lvert\langle h_i, x_j\rangle\rvert,\qquad \mathrm{PWCCA}=\sum_i\tilde{\alpha}_i\,\rho_i$$
+$$\alpha_i = \sum_j |\langle h_i, x_j \rangle|$$
+
+$$\mathrm{PWCCA} = \sum_i \tilde{\alpha}_i \rho_i$$
 
 **Orthogonal Procrustes** — the value the optimal rotation attains, normalised;
 $\lVert\cdot\rVert_*$ is the nuclear norm:
@@ -474,11 +530,20 @@ optimising either alone gives a degenerate result:
 
 ### 8.3 Retrieval (Phase VII) and transfer (Phase VI)
 
-With binary relevance, $R$ relevant items and ranked hits $h_i$:
+With binary relevance and ranked hits $h_i$ (1 if the item at rank $i$ is
+relevant), over a query's $R$ relevant items:
 
-$$\mathrm{AP}=\frac{1}{R}\sum_i \frac{\sum_{j\le i} h_j}{i}\,h_i,\qquad
-\mathrm{MRR}=\frac{1}{\lvert Q\rvert}\sum_q\frac{1}{\mathrm{rank}_q},\qquad
-\mathrm{NDCG}=\frac{\sum_i h_i/\log_2(i+1)}{\sum_{i\le R}1/\log_2(i+1)}$$
+Average precision:
+
+$$\mathrm{AP} = \frac{1}{R} \sum_i \frac{\sum_{j \le i} h_j}{i} h_i$$
+
+Mean reciprocal rank, over the query set $Q$:
+
+$$\mathrm{MRR} = \frac{1}{|Q|} \sum_q \frac{1}{\mathrm{rank}_q}$$
+
+Normalised discounted cumulative gain:
+
+$$\mathrm{NDCG} = \frac{\sum_i h_i / \log_2(i+1)}{\sum_{i \le R} 1 / \log_2(i+1)}$$
 
 Two relevance modes, because only one makes all four metrics distinct:
 

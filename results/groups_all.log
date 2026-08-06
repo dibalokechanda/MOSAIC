@@ -1,0 +1,10 @@
+==============================================================
+GROUP master_benchmark/10x_256px  ->  results/groups/tcga_10x_256
+==============================================================
+MOSAIC study — preset 'full', 4 stages
+output: /users/home/dchanda/pfm_latent_space/results/groups/tcga_10x_256
+tasks : ['cptac_brca_gata3', 'cptac_brca_map3k1', 'cptac_brca_pik3ca', 'cptac_coad_kras', 'cptac_coad_pik3ca', 'cptac_coad_tp53', 'cptac_luad_kras', 'cptac_luad_stk11', 'cptac_luad_tp53', 'cptac_nsclc', 'tcga_brca_stage', 'tcga_brca_subtype', 'tcga_nsclc', 'tcga_nsclc_stage']
+
+==============================================================================
+[similarity] /opt/anaconda3/bin/python /users/home/dchanda/pfm_latent_space/scripts/representation_similarity.py --group master_benchmark/10x_256px --n-patches 50000 --max-slides 500 --max-samples 8000 --seed 0 --no-umap --out results/groups/tcga_10x_256/similarity
+==============================================================================
